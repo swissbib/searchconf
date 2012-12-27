@@ -1,0 +1,17 @@
+#!/usr//bin/sh
+
+
+
+export SOLR_BASE=/home/swissbib/swissbib/infrastructure/basel.31
+export SOLR_RUN=${SOLR_BASE}/solr
+export SOLR_HOME=${SOLR_RUN}/solr.home
+export SOLR_CONF=${SOLR_HOME}/conf
+export SOLR_TOMCAT=${SOLR_BASE}/tomcat
+export SOLR_INDEX=${SOLR_BASE}/solrindex
+export SOLR_LIBDIR=${SOLR_BASE}/shared.solr.libs
+
+
+#Verzeichnisstruktur für Documentprocessing
+export SOLR_DOCPROCBASE=${SOLR_BASE}/solrDocumentProcessing
+
+
