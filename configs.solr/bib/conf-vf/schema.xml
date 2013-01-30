@@ -372,9 +372,9 @@ Schema fuer swissbib vufind
          ************** -->
     <field name="language" type="navFieldLangCode" indexed="true" stored="true" multiValued="true"/>
     <field name="format" type="stdID" indexed="true" stored="true" multiValued="true"/>
-    <field name="author" type="text_untreated" indexed="true" stored="true" termVectors="true" multiValued="true" />
+    <field name="author" type="text_untreated" indexed="true" stored="false" termVectors="true" multiValued="true" />
     <field name="title" type="text_untreated" indexed="true" stored="true"/>
-    <field name="title_short" type="text_untreated" indexed="true" stored="false"/>
+    <field name="title_short" type="text_untreated" indexed="true" stored="true"/>
     <field name="title_sub" type="text_untreated" indexed="true" stored="false"/>
     <field name="publishDate" type="int" indexed="true" stored="false" multiValued="true" />
     <field name="thumbnail" type="string" indexed="false" stored="true"/>
@@ -425,14 +425,14 @@ Schema fuer swissbib vufind
    
     <!-- Sort Fields 
          *********** -->
-    <field name="author_sort" type="alphaOnlySort" indexed="true" stored="true"/>
-    <field name="title_sort" type="alphaOnlySort" indexed="true" stored="true"/>
+    <field name="author_sort" type="alphaOnlySort" indexed="true" stored="false"/>
+    <field name="title_sort" type="alphaOnlySort" indexed="true" stored="false"/>
     <field name="publishDateSort" type="string" indexed="true" stored="false"/>
     
     <!-- Container & Hierarchy Fields
          **************** -->
     <field name="container_id" type="stdID" multiValued="true" indexed="true" />
-    <field name="herrarchytype" type="string" indexed="true" stored="true" multiValued="false" />
+    <field name="hierarchytype" type="string" indexed="true" stored="true" multiValued="false" />
     <field name="hierarchy_top_id" type="string" indexed="true" stored="true" multiValued="true" />
     <field name="hierarchy_parent_title" type="string" indexed="true" stored="true" multiValued="true"/>
     <field name="hierarchy_parent_id" type="stdID" indexed="true" multiValued="true" />
