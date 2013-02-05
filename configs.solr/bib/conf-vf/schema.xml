@@ -471,7 +471,7 @@ Schema fuer swissbib vufind
     <field name="_version_" type="long" indexed="true" stored="true"/>
     <field name="spelltext" type="text_spelled" indexed="true" stored="false" multiValued="true" />
     <field name="sfilter" type="string" indexed="true" stored="true" multiValued="true" />
-    <field name="group_id" type="stdID" indexed="true" multiValued="true" />
+    <field name="group_id" type="string" indexed="true" stored="true" multiValued="true" />
     <!-- Fallback-Feld zur Fehlervermeidung beim Indexierung, nicht vorhergesehenes wird nicht
          indexiert, darf aber sein -->
     <dynamicField name="*" type="text_untreated" indexed="false" stored="false" multiValued="true" />
