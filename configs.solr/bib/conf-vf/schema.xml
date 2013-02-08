@@ -72,7 +72,7 @@ Schema fuer swissbib vufind
          <tokenizer class="solr.KeywordTokenizerFactory" />
          <filter class="solr.TrimFilterFactory" />
          <filter class="solr.PatternReplaceFilterFactory"
-                 pattern="[\[\]*]|\u0022|\u003C|\u003E|\u003F"
+                 pattern="s\.n\.|[Aa]nonym|[\[\]*]|\u0022|\u003C|\u003E|\u003F"
                  replacement=""
                  replace="all"
          />
