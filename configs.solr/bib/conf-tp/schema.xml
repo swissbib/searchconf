@@ -465,6 +465,7 @@ Versionen:
    <dynamicField name="subgeo_*" type="text_untreated" indexed="true" stored="false" multiValued="true" />
    <dynamicField name="subform_*" type="text_untreated" indexed="true" stored="false" multiValued="true" />
    <field name="subundef" type="text_untreated" indexed="true" stored="false" multiValued="true" />
+   <field name="subgnd_enriched" type="text_untreated" index="true" stored="false" multiValued="true" />
    <!-- Special or local subject indexing (sources are fields 690/691) -->
    <field name="submusic" type="text_untreated" indexed="true" stored="false" multiValued="true" termVectors="true" />
    <dynamicField name="sublocal_*" type="text_untreated" indexed="true" stored="false" multiValued="true" />

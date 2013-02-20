@@ -375,9 +375,9 @@ Schema fuer swissbib vufind
     <field name="language" type="navFieldLangCode" indexed="true" stored="true" multiValued="true"/>
     <field name="format" type="stdID" indexed="true" stored="true" multiValued="true"/>
     <field name="author" type="text_untreated" indexed="true" stored="false" termVectors="true" multiValued="true" />
-    <field name="title" type="text_untreated" indexed="true" stored="true"/>
-    <field name="title_short" type="text_untreated" indexed="true" stored="true"/>
-    <field name="title_sub" type="text_untreated" indexed="true" stored="false"/>
+    <field name="title" type="text_untreated" indexed="true" stored="true" multiValued="true"/>
+    <field name="title_short" type="text_untreated" indexed="true" stored="true" multiValued="true"/>
+    <field name="title_sub" type="text_untreated" indexed="true" stored="false" multiValued="true"/>
     <field name="publishDate" type="int" indexed="true" stored="false" multiValued="true" />
     <field name="thumbnail" type="string" indexed="false" stored="true"/>
     <!-- vf-generic fields still missing, some for display, others for snippets/highlight and building alphabrowse, check later -->
@@ -416,6 +416,7 @@ Schema fuer swissbib vufind
     <dynamicField name="subgeo_*" type="text_untreated" indexed="true" stored="false" multiValued="true" />
     <dynamicField name="subform_*" type="text_untreated" indexed="true" stored="false" multiValued="true" />
     <field name="subundef" type="text_untreated" indexed="true" stored="false" multiValued="true" />
+    <field name="subgnd_enriched" type="text_untreated" index="true" stored="false" multiValued="true" />
     <!-- Special or local subject indexing (sources are fields 690/691) -->
     <field name="submusic" type="text_untreated" indexed="true" stored="false" multiValued="true" termVectors="true" />
     <dynamicField name="sublocal_*" type="text_untreated" indexed="true" stored="false" multiValued="true" />
@@ -482,6 +483,7 @@ Schema fuer swissbib vufind
          COPY INSTRUCTIONS 
          =================
     -->
+    <!-- copy to generic fields -->
     <copyField source="author*" dest="authorfull" />
     <copyField source="sub*" dest="topic" />
     <copyField source="stag" dest="topic" />
