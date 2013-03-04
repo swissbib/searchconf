@@ -410,6 +410,7 @@ Versionen:
    <dynamicField name="navSubtopudc_*" type="navFieldTopUDC" indexed="true" stored="false" multiValued="true" />
    <dynamicField name="navSubpersudc_*" type="navFieldTopUDC" indexed="true" stored="false" multiValued="true" />
    <field name="navYear" type="tint" stored="false" multiValued="true" />
+   <field name="navDrsys" type="string" multiValued="true" indexed="true" stored="false" />
    <!--<field name="navYearUTC" type="tdate" stored="false" />-->
    <field name="navPublplace" type="navFieldCombined" multiValued="true" indexed="true" stored="false" />
    <dynamicField name="navRelator_*" type="navFieldAuth" multiValued="true" indexed="true" stored="false" />
@@ -554,6 +555,9 @@ Versionen:
     
    <!-- Time Subject Facette für swissbib gruen (19.03.2012/osc) -->
    <copyField source="subtime_*" dest="navSubtime" />
+    
+    <!-- Facette Rechtssystematik fuer Jus-Portal (04.03.2013/osc) -->
+    <copyField source="classif_drsys" dest="navDrsys" />
     
    <!-- Form Facette, mit Reduktionsmechanismus -->
    <copyField source="subform_ids*" dest="navSubform" />
