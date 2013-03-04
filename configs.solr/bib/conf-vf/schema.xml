@@ -453,6 +453,7 @@ Schema fuer swissbib vufind
     <field name="navSubfull" type="navFieldCombined" multiValued="true" stored="false" />
     <field name="navSubidsbb" type="navFieldCombined" multiValued="true" stored="false" />
     <field name="navSubtime" type="navFieldTime" multiValued="true" stored="false" />
+    <field name="navDrsys" type="string" multiValued="true" indexed="true" stored="false" />
     <dynamicField name="navSubtopudc_*" type="navFieldTopUDC" indexed="true" stored="false" multiValued="true" />
     <dynamicField name="navSubpersudc_*" type="navFieldTopUDC" indexed="true" stored="false" multiValued="true" />
     <field name="navYear" type="tint" stored="false" multiValued="true" />
@@ -547,6 +548,9 @@ Schema fuer swissbib vufind
     <!-- UDC Subject Facette (01.11.2011/osc) -->
     <copyField source="subtopudc_*" dest="navSubtopudc_*" />
     <copyField source="subpersudc_*" dest="navSubpersudc_*" />
+    
+    <!-- Facette Rechtssystematik fuer Jus-Portal (04.03.2013/osc) -->
+    <copyField source="classif_drsys" dest="navDrsys" />
    
     <!-- spelltext, not implemented yet (06.2012/osc) 
     <copyField source="title_long" dest="spelltext" />
