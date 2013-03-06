@@ -289,14 +289,17 @@ Anpassungen fuer final version Lucene 4.0
             <str name="replicateAfter">optimize</str>
             <str name="replicateAfter">startup</str>
             <str name="confFiles">solrconfig.4.0.slave.swissbib.sb-s7.xml,
-                solrconfig.4.0.slave.swissbib.sb-s9.xml,
+                solrconfig.4.0.slave.swissbib.sb-s9.xml,solrconfig.4.0.slave.swissbib.sb-s11.xml
                 schema.xml,
                 formsynonyms.txt,
                 punctuation-synonyms.txt,
                 timesynonyms.txt,
                 stopspellwords.txt,
                 mediatypesynonyms.txt,
-                mapping_unicode_ids.txt
+                mapping_unicode_ids.txt,
+                dr_sys_synonyms.txt
+
+
             </str>
         </lst>
     </requestHandler>
@@ -396,7 +399,7 @@ Anpassungen fuer final version Lucene 4.0
             <!-- use the extended dismax query parser -->
             <str name="defType">edismax</str>
             <str name="echoParams">explicit</str>
-            <str name="timeAllowed">2000</str>
+            <str name="timeAllowed">3000</str>
 
 
             <str name="qf">
@@ -470,7 +473,7 @@ Anpassungen fuer final version Lucene 4.0
             <!-- use the extended dismax query parser -->
             <str name="defType">edismax</str>
             <str name="echoParams">explicit</str>
-            <str name="timeAllowed">2000</str>
+            <str name="timeAllowed">3000</str>
 
 
             <str name="qf">
@@ -648,7 +651,7 @@ Anpassungen fuer final version Lucene 4.0
             <!-- use the extended dismax query parser -->
             <str name="defType">edismax</str>
             <str name="echoParams">explicit</str>
-            <str name="timeAllowed">2000</str>
+            <str name="timeAllowed">3000</str>
 
 
             <str name="qf">
