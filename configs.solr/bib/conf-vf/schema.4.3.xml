@@ -1,0 +1,591 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+
+ Licensed to the Apache Software Foundation (ASF) under one or more
+ contributor license agreements.  See the NOTICE file distributed with
+ this work for additional information regarding copyright ownership.
+ The ASF licenses this file to You under the Apache License, Version 2.0
+ (the "License"); you may not use this file except in compliance with
+ the License.  You may obtain a copy of the License at
+ 
+     http://www.apache.org/licenses/LICENSE-2.0
+     
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+<!--
+====================
+SWISSBIB SOLR-SCHEMA
+====================
+
+Schema fuer swissbib vufind
+
+
+
+
+
+-->
+
+<schema name="swissbib vufind bibliographic schema" version="1.5">
+
+
+
+  <types>
+
+      <fieldType name="string" class="solr.StrField" sortMissingLast="true" omitNorms="true"/>
+      <fieldType name="int" class="solr.TrieIntField" precisionStep="0" omitNorms="true" positionIncrementGap="0"/>
+      <fieldType name="tdate" class="solr.TrieDateField" omitNorms="true" precisionStep="6" positionIncrementGap="0"/>
+      <fieldType name="tint" class="solr.TrieIntField" precisionStep="8" omitNorms="true" positionIncrementGap="0"/>a
+      <fieldType name="long" class="solr.TrieLongField" precisionStep="0" positionIncrementGap="0"/>
+
+      <!-- text field type for IDs of all sorts and colors, generic usage (20.03.2012/osc) -->
+      <fieldType name="stdID" class="solr.TextField" sortMissingLast="true" omitNorms="true">
+          <analyzer>
+              <tokenizer class="solr.KeywordTokenizerFactory" />
+              <filter class="solr.LowerCaseFilterFactory" />
+              <filter class="solr.PatternReplaceFilterFactory"
+                      pattern="^(\([a-z]+\))vtls0"
+                      replacement="$10"
+                      replace="all"
+                      />
+              <filter class="solr.PatternReplaceFilterFactory"
+                      pattern="[^\w]+"
+                      replacement=""
+                      replace="all"
+                      />
+              <filter class="solr.TrimFilterFactory" />
+              <filter class="solr.LengthFilterFactory" min="2" max="100" />
+          </analyzer>
+      </fieldType>
+
+      <!-- field types for navigators / facets
+           ===================================
+      -->
+      <!-- used for: Navigator author -->
+      <fieldType name="navFieldAuth" class="solr.TextField">
+          <analyzer>
+              <tokenizer class="solr.KeywordTokenizerFactory" />
+              <filter class="solr.TrimFilterFactory" />
+              <filter class="solr.PatternReplaceFilterFactory"
+                      pattern="[Ss]\.[Nn]\.|[Aa]nonym|[\[\]*]|\u0022|\u003C|\u003E|\u003F"
+                      replacement=""
+                      replace="all"
+                      />
+              <filter class="solr.LengthFilterFactory" min="2" max="100" />
+          </analyzer>
+      </fieldType>
+
+      <!-- Field Type for subjects facets of controlled vocabs, i.e. 'navSubidsbb', 'navSubsbfull', 'navPublplace' (last one not in use)
+           (05.09.2011/osc) -->
+      <fieldType name="navFieldCombined" class="solr.TextField">
+          <analyzer>
+              <tokenizer class="solr.KeywordTokenizerFactory" />
+              <filter class="solr.PatternReplaceFilterFactory"
+                      pattern="\[.*\]|\u0022|\u003C|\u003E|\u003F|^\d{4}-\d{4}$|, \d{4}-\d{4}"
+                      replacement=""
+                      replace="all" />
+              <filter class="solr.PatternReplaceFilterFactory"
+                      pattern="Formschlagwort|Aufsatzsammlung"
+                      replacement=""
+                      replace="all" />
+              <filter class="solr.TrimFilterFactory" />
+              <filter class="solr.LengthFilterFactory" min="2" max="100" />
+          </analyzer>
+      </fieldType>
+
+      <!-- used for: Navigator language (specific to correct some values) -->
+      <fieldType name="navFieldLangCode" class="solr.TextField">
+          <analyzer>
+              <tokenizer class="solr.KeywordTokenizerFactory" />
+              <filter class="solr.LowerCaseFilterFactory" />
+              <filter class="solr.PatternReplaceFilterFactory"
+                      pattern="([^a-z])"
+                      replacement=""
+                      replace="all" />
+              <filter class="solr.PatternReplaceFilterFactory"
+                      pattern="fer|xxx"
+                      replacement="und"
+                      replace="all" />
+              <filter class="solr.LengthFilterFactory" min="3" max="3" />
+          </analyzer>
+      </fieldType>
+
+      <!-- used for: Navigator mediatype (reduce to simpler values -->
+      <fieldType name="navFieldMediaType" class="solr.TextField">
+          <analyzer>
+              <tokenizer class="solr.KeywordTokenizerFactory" />
+              <filter class="solr.SynonymFilterFactory"
+                      synonyms="mediatypesynonyms.txt"
+                      ignoreCase="true"
+                      expand="false"
+                      tokenizerFactory="solr.KeywordTokenizerFactory"/>
+          </analyzer>
+      </fieldType>
+
+      <!-- used for: Navigator topic, not in use (29.01.2013 / osc) -->
+      <!--<fieldType name="navFieldTopic" class="solr.TextField">
+         <analyzer>
+            <tokenizer class="solr.PatternTokenizerFactory" pattern="[,;:]\s*" />
+            <filter class="solr.PatternReplaceFilterFactory"
+                    pattern="[().\[\]]"
+                    replacement=""
+            />
+            <filter class="solr.TrimFilterFactory" />
+         </analyzer>
+      </fieldType>-->
+
+      <!-- used for: Navigator form (Formschlagworte)-->
+      <fieldType name="navFieldForm" class="solr.TextField">
+          <analyzer>
+              <tokenizer class="solr.KeywordTokenizerFactory" />
+              <!-- PatternReplacements / osc -->
+              <filter class="solr.PatternReplaceFilterFactory"
+                      pattern="^[0A] Gesamtdarstell.*$"
+                      replacement="Gesamtdarstellung"
+                      />
+              <filter class="solr.PatternReplaceFilterFactory"
+                      pattern="^Kongress \(.*\)"
+                      replacement="Kongressbericht"
+                      />
+              <filter class="solr.PatternReplaceFilterFactory"
+                      pattern="^Ausstellung \(.*\)"
+                      replacement="Ausstellung"
+                      />
+              <filter class="solr.PatternReplaceFilterFactory"
+                      pattern="\u003C|\u003E|\[|\]|Formschlagwort|Sondersammlungen"
+                      replacement=""
+                      />
+              <filter class="solr.TrimFilterFactory" />
+              <!-- SynonymFilter erarbeitet mit Fachferenten Basel, Version 1.0 fertig (12.2011/osc)-->
+              <filter class="solr.SynonymFilterFactory" synonyms="formsynonyms.txt" ignoreCase="true" expand="false" tokenizerFactory="solr.KeywordTokenizerFactory"/>
+              <filter class="solr.LengthFilterFactory" min="2" max="60" />
+          </analyzer>
+      </fieldType>
+
+      <!-- used for: Navigator time (not in use at the moment, 29.01.2013) (Facette Zeitschlagworte) -->
+      <fieldType name="navFieldTime" class="solr.TextField">
+          <analyzer>
+              <filter class="solr.TrimFilterFactory" />
+              <tokenizer class="solr.KeywordTokenizerFactory" />
+              <filter class="solr.PatternReplaceFilterFactory"
+                      pattern="[()\[\]&lt;&gt;*]"
+                      replacement=""
+                      />
+              <filter class="solr.PatternReplaceFilterFactory"
+                      pattern=" [/,] "
+                      replacement="-"
+                      />
+              <!-- SynonymFilter aktuell mit drei Beispielen, entwickeln, nicht gebraucht (osc)
+              <filter class="solr.SynonymFilterFactory" synonyms="timesynonyms.txt" ignoreCase="true" expand="false" tokenizerFactory="solr.KeywordTokenizerFactory" /> -->
+          </analyzer>
+      </fieldType>
+
+      <!-- UDC TOPIC (all three languages ) -->
+      <fieldType name="navFieldTopUDC" class="solr.TextField">
+          <analyzer>
+              <tokenizer class="solr.KeywordTokenizerFactory" />
+              <filter class="solr.CapitalizationFilterFactory" onlyFirstWord="false" />
+              <filter class="solr.TrimFilterFactory" />
+          </analyzer>
+      </fieldType>
+
+      <!-- field types for search fields
+           =============================
+      -->
+      <!-- text_untreated : Feldtyp fuer Text, nur leicht behandelt, hohes Boosting fuer exact match -->
+      <fieldType name="text_untreated" class="solr.TextField" positionIncrementGap="100">
+          <analyzer type="index">
+              <charFilter class="solr.MappingCharFilterFactory" mapping="mapping-chars.txt"/>
+              <tokenizer class="solr.ICUTokenizerFactory"/>
+              <filter class="solr.WordDelimiterFilterFactory" splitOnCaseChange="0"
+                      splitOnNumerics="0"
+                      generateWordParts="1"
+                      generateNumberParts="1"
+                      catenateWords="1"
+                      catenateNumbers="0"
+                      />
+              <filter class="solr.ICUFoldingFilterFactory"/>
+              <filter class="solr.CJKWidthFilterFactory"/>
+              <filter class="solr.CJKBigramFilterFactory"/>
+              <filter class="solr.ReversedWildcardFilterFactory" />
+              <filter class="solr.RemoveDuplicatesTokenFilterFactory"/>
+          </analyzer>
+          <analyzer type="query">
+              <charFilter class="solr.MappingCharFilterFactory" mapping="mapping-chars.txt"/>
+              <tokenizer class="solr.ICUTokenizerFactory"/>
+              <filter class="solr.WordDelimiterFilterFactory" splitOnCaseChange="0"
+                      splitOnNumerics="0"
+                      generateWordParts="1"
+                      generateNumberParts="1"
+                      catenateWords="1"
+                      catenateNumbers="0"
+                      />
+              <filter class="solr.ICUFoldingFilterFactory"/>
+              <filter class="solr.CJKWidthFilterFactory"/>
+              <filter class="solr.CJKBigramFilterFactory"/>
+              <filter class="solr.RemoveDuplicatesTokenFilterFactory"/>
+          </analyzer>
+      </fieldType>
+
+      <!-- stringlike : Feldtyp fuer Klassifikationen und Codes, lowercase und trunkierbar (deshalb nicht string) -->
+      <fieldType name="stringlike" class="solr.TextField">
+          <analyzer>
+              <tokenizer class="solr.KeywordTokenizerFactory" />
+              <filter class="solr.LowerCaseFilterFactory" />
+              <filter class="solr.TrimFilterFactory" />
+          </analyzer>
+      </fieldType>
+
+      <!-- text_stemmed : Feldtyp fuer Text, gestemmed, tieferes boosting -->
+      <fieldType name="text_stemmed" class="solr.TextField" positionIncrementGap="100" >
+          <analyzer>
+              <tokenizer class="solr.WhitespaceTokenizerFactory" />
+              <!--          <filter class="solr.ICUFoldingFilterFactory" />
+                        <filter class="solr.LowerCaseFilterFactory" />
+                            <filter class="solr.KStemFilterFactory" /> -->
+              <!--       ev. koennen hier verschiedene Sprachstemmer (eng, fre, ita) sequentiell geschaltet werden??? -->
+              <filter class="solr.SnowballPorterFilterFactory" language="German2" />
+              <filter class="solr.RemoveDuplicatesTokenFilterFactory" />
+          </analyzer>
+      </fieldType>
+
+      <!-- text_substringed : Feldtyp fuer Text mit n-grams fuer wildcard-searches -->
+      <fieldType name="text_substringed" class="solr.TextField" positionIncrementGap="100" >
+          <analyzer type="index">
+              <tokenizer class="solr.WhitespaceTokenizerFactory" />
+              <!--          <filter class="solr.ICUFoldingFilterFactory" />
+                        <filter class="solr.ICUNormalizer2FilterFactory" name="nfkc" mode="decompose" />
+                        <filter class="solr.LowerCaseFilterFactory" />-->
+              <filter class="solr.EdgeNGramFilterFactory"
+                      minGramSize="3"
+                      maxGramSize="10"
+                      side="front" />
+              <filter class="solr.RemoveDuplicatesTokenFilterFactory" />
+          </analyzer>
+          <analyzer type="query">
+              <tokenizer class="solr.WhitespaceTokenizerFactory" />
+              <!--filter class="solr.ICUFoldingFilterFactory" />
+              <filter class="solr.LowerCaseFilterFactory" />-->
+          </analyzer>
+      </fieldType>
+
+      <!-- text_fonemed : Feldtyp fuer sound-alike-Text, Versuch, tiefes boosting -->
+      <fieldType name="text_fonemed" class="solr.TextField" positionIncrementGap="100" >
+          <analyzer>
+              <tokenizer class="solr.WhitespaceTokenizerFactory" />
+              <filter class="solr.WordDelimiterFilterFactory"
+                      generateWordParts="1"
+                      generateNumberParts="1"
+                      catenateWords="1"
+                      preserveOriginal="1"
+                      />
+              <filter class="solr.PhoneticFilterFactory"
+                      encoder="DoubleMetaphone"
+                      inject="false"
+                      />
+          </analyzer>
+      </fieldType>
+
+      <!-- text_spelled : Feldtyp fuer spellchecking-Fields des main index -->
+      <fieldType name="text_spelled" class="solr.TextField" positionIncrementGap="100">
+          <analyzer>
+              <tokenizer class="solr.StandardTokenizerFactory" />
+              <filter class="solr.PatternReplaceFilterFactory"
+                      pattern="\W"
+                      replacement=""
+                      replace="all"
+                      />
+              <filter class="solr.StopFilterFactory" words="stopspellwords.txt" ignoreCase="true" />
+              <filter class="solr.TrimFilterFactory" />
+              <filter class="solr.LengthFilterFactory" min="3" max="50" />
+          </analyzer>
+      </fieldType>
+
+
+      <!-- field type for sort strings -->
+      <!--
+      <fieldType name="alphaOnlySort" class="solr.TextField" sortMissingLast="true" omitNorms="true">
+         <analyzer>
+           <tokenizer class="solr.KeywordTokenizerFactory"/>
+           <filter class="solr.LowerCaseFilterFactory" />
+           <filter class="solr.TrimFilterFactory" />
+         </analyzer>
+       </fieldType>
+       -->
+      <!-- field type for sort strings -->
+      <fieldType name="alphaOnlySort" class="solr.TextField" sortMissingLast="true" omitNorms="true">
+          <analyzer>
+              <tokenizer class="solr.KeywordTokenizerFactory"/>
+              <filter class="solr.ICUCollationKeyFilterFactory"
+                      locale="de@collation=phonebook"
+                      strength="primary"
+                      />
+          </analyzer>
+      </fieldType>
+
+
+
+  </types>
+
+    <!-- =================
+          Field Definitions
+          =================
+     -->
+    <fields>
+
+        <!-- Core Fields
+             *********** -->
+        <field name="id" type="string" indexed="true" stored="true"/>
+        <field name="fullrecord" type="string" indexed="false" stored="true"/>
+        <field name="holdings" type="string" indexed="false" stored="true"/>
+
+        <field name="fulltext" type="text_untreated" indexed="true" stored="true" multiValued="true" termVectors="true" termPositions="true" termOffsets="true" />
+        <!-- used for loading correct record driver -->
+        <field name="recordtype" type="string" indexed="false" stored="true" required="true" />
+        <!-- why use the following three fields? -->
+        <!--
+       <field name="marc_error" type="string" indexed="false" stored="true" multiValued="true"/>
+       <field name="allfields" type="text_untreated" indexed="true" stored="false"/>
+       <field name="allfields_unstemmed" type="text_untreated" indexed="true" stored="false"/>
+        -->
+        <!--   <field name="fulltext_unstemmed" type="text_untreated" indexed="true" stored="false"/>
+           <field name="spelling" type="text_untreated" indexed="true" stored="true"/>
+           <field name="spellingShingle" type="text_untreated" indexed="true" stored="true" multiValued="true"/>
+        -->
+
+        <!-- Institutional Fields (and call numbers, maybe holdings later, information to access a physical or remote electronic resource)
+             ******************** -->
+        <field name="union" type="stdID" indexed="true" stored="true" multiValued="true" />
+        <field name="institution" type="stdID" indexed="true" stored="true" multiValued="true" />
+        <!-- following two fields will be empty at the moment -->
+        <field name="collection" type="string" indexed="true" stored="true" multiValued="true" />
+        <field name="isil" type="string" stored="true" indexed="true" multiValued="true" />
+        <field name="callnumber" type="stdID" indexed="true" stored="false" multiValued="true" />
+        <field name="itemid" type="stdID" indexed="true" stored="false" multiValued="true" />
+
+        <!-- Generic Fields
+             ************** -->
+        <field name="language" type="navFieldLangCode" indexed="true" stored="true" multiValued="true"/>
+        <field name="format" type="stdID" indexed="true" stored="true" multiValued="true"/>
+        <field name="author" type="text_untreated" indexed="true" stored="false" termVectors="true" multiValued="true" />
+        <field name="title" type="text_untreated" indexed="true" stored="true" multiValued="true"/>
+        <field name="title_short" type="text_untreated" indexed="true" stored="true" multiValued="true"/>
+        <field name="title_sub" type="text_untreated" indexed="true" stored="false" multiValued="true"/>
+        <field name="publishDate" type="int" indexed="true" stored="false" multiValued="true" />
+        <field name="thumbnail" type="string" indexed="false" stored="true"/>
+        <!-- vf-generic fields still missing, some for display, others for snippets/highlight and building alphabrowse, check later -->
+
+        <!-- Catalog Specific Fields
+             *********************** -->
+        <field name="ctrlnum" type="stdID" indexed="true" stored="false" multiValued="true" />
+        <field name="origcountry" type="stdID" indexed="true" stored="false" multiValued="true" />
+        <field name="gndnum" type="stdID" indexed="true" stored="false" multiValued="true" />
+        <field name="bibid" type="stdID" indexed="true" stored="false" multiValued="true"/>
+        <field name="title_alt" type="text_untreated" indexed="true" stored="false" multiValued="true"/>
+        <field name="authorfull" type="text_untreated" indexed="true" stored="false" multiValued="true" termVectors="true" />
+        <field name="author_additional" type="text_untreated" indexed="true" stored="false" multiValued="true" />
+        <field name="author2" type="text_untreated" indexed="true" stored="false" multiValued="true" />
+        <field name="author2_additional" type="text_untreated" indexed="true" stored="false" multiValued="true" />
+        <field name="series" type="text_untreated" indexed="true" stored="false" multiValued="true" />
+        <field name="journals" type="text_untreated" indexed="true" stored="false" multiValued="true" />
+        <field name="itemnote" type="text_untreated" indexed="true" stored="false" multiValued="true" />
+        <!--
+        <field name="author-letter" type="string" indexed="true" stored="true"/>
+        <field name="title_full" type="text_untreated" indexed="true" stored="true"/>
+        <field name="title_full_unstemmed" type="text_untreated" indexed="true" stored="true"/>
+        <field name="title_fullStr" type="string" indexed="true" stored="true"/>
+        <field name="title_auth" type="text_untreated" indexed="true" stored="true"/>
+        -->
+        <field name="add_fields" type="text_untreated" indexed="true" stored="false" multiValued="true" />
+        <field name="publplace" type="text_untreated" indexed="true" stored="false" multiValued="true" />
+
+        <!-- subject fields (generic field 'subfull', categories per vocabulary, classifications, special subject indexing, local subject indexing)
+             **************  -->
+        <field name="topic" type="text_untreated" indexed="true" stored="false" multiValued="true" termVectors="true" />
+        <dynamicField name="subpers_*" type="text_untreated" indexed="true" stored="false" multiValued="true" />
+        <dynamicField name="subtime_*" type="text_untreated" indexed="true" stored="false" multiValued="true" />
+        <dynamicField name="subtitle_*" type="text_untreated" indexed="true" stored="false" multiValued="true" />
+        <dynamicField name="subtop_*" type="text_untreated" indexed="true" stored="false" multiValued="true" />
+        <dynamicField name="subgeo_*" type="text_untreated" indexed="true" stored="false" multiValued="true" />
+        <dynamicField name="subform_*" type="text_untreated" indexed="true" stored="false" multiValued="true" />
+        <field name="subundef" type="text_untreated" indexed="true" stored="false" multiValued="true" />
+        <field name="subgnd_enriched" type="text_untreated" indexed="true" stored="false" multiValued="true" />
+        <!-- Special or local subject indexing (sources are fields 690/691) -->
+        <field name="submusic" type="text_untreated" indexed="true" stored="false" multiValued="true" termVectors="true" />
+        <dynamicField name="sublocal_*" type="text_untreated" indexed="true" stored="false" multiValued="true" />
+        <dynamicField name="subtopudc_*" type="text_untreated" indexed="true" stored="false" multiValued="true" />
+        <dynamicField name="subpersudc_*" type="text_untreated" indexed="true" stored="false" multiValued="true" />
+        <field name="stag" type="text_untreated" indexed="true" stored="true" multiValued="true" />
+        <field name="subnotudc" type="stringlike" indexed="true" stored="false" multiValued="true" />
+        <dynamicField name="classif_*" type="stringlike" indexed="true" stored="false" multiValued="true" />
+
+        <!-- Sort Fields
+             *********** -->
+        <field name="author_sort" type="alphaOnlySort" indexed="true" stored="false"/>
+        <field name="title_sort" type="alphaOnlySort" indexed="true" stored="false"/>
+        <field name="publishDateSort" type="string" indexed="true" stored="false"/>
+
+        <!-- Container & Hierarchy Fields
+             **************** -->
+        <field name="container_id" type="stdID" multiValued="true" indexed="true" />
+        <field name="hierarchytype" type="string" indexed="true" stored="true" multiValued="false" />
+        <field name="hierarchy_top_id" type="string" indexed="true" stored="true" multiValued="true" />
+        <field name="hierarchy_parent_title" type="string" indexed="true" stored="true" multiValued="true"/>
+        <field name="hierarchy_parent_id" type="stdID" indexed="true" multiValued="true" />
+        <field name="hierarchy_sequence" type="string" indexed="true" stored="true" multiValued="true"/>
+
+        <!-- all available Facet Fields
+             ************************** -->
+        <field name="navAuthor" type="navFieldAuth" indexed="true" stored="false" multiValued="true"/>
+        <field name="navBranchlib" type="string" multiValued="true" stored="false" />
+        <field name="navBranchlib2" type="string" multiValued="true" stored="false" />
+        <field name="navLanguage" type="navFieldLangCode" multiValued="true" stored="false" />
+        <field name="navMediatype" type="navFieldMediaType" multiValued="true" stored="false" />
+        <field name="navNetwork" type="stdID" multiValued="true" stored="false" />
+        <field name="navSubform" type="navFieldForm" multiValued="true" stored="false" />
+        <field name="navSubfull" type="navFieldCombined" multiValued="true" stored="false" />
+        <field name="navSubidsbb" type="navFieldCombined" multiValued="true" stored="false" />
+        <field name="navSubtime" type="navFieldTime" multiValued="true" stored="false" />
+        <field name="navDrsys" type="string" multiValued="true" indexed="true" stored="false" />
+        <dynamicField name="navSubtopudc_*" type="navFieldTopUDC" indexed="true" stored="false" multiValued="true" />
+        <dynamicField name="navSubpersudc_*" type="navFieldTopUDC" indexed="true" stored="false" multiValued="true" />
+        <field name="navYear" type="tint" stored="false" multiValued="true" />
+        <!--<field name="navYearUTC" type="tdate" stored="false" />-->
+        <field name="navPublplace" type="navFieldCombined" multiValued="true" indexed="true" stored="false" />
+        <dynamicField name="navRelator_*" type="navFieldAuth" multiValued="true" indexed="true" stored="false" />
+
+        <!-- processing fields / special cases
+            ********************************* -->
+        <!-- GH: 20120314: Vorlaeufig auf stdID setzen. Wert erhaelt im Document processing ein Format welches nicht mit dem von tdate
+        kompatibel ist
+        SEVERE: org.apache.solr.common.SolrException: ERROR: [doc=180690507] Error adding field 'time_processed'='2012-02-24T20:46:26.257+01:00'
+            at org.apache.solr.update.DocumentBuilder.toDocument(DocumentBuilder.java:302)
+         sollte wohl 2012-02-24T20:46:26Z sein
+        <field name="time_processed" type="tdate" stored="true" indexed="true" />-->
+        <field name="time_processed" type="stdID" stored="true" indexed="false" />
+        <field name="time_indexed" type="tdate" default="NOW/MINUTE" stored="true" indexed="true" />
+        <!-- mandatory field for schema version 1.5-->
+        <field name="_version_" type="long" indexed="true" stored="true"/>
+        <field name="spelltext" type="text_spelled" indexed="true" stored="false" multiValued="true" />
+        <field name="sfilter" type="string" indexed="true" stored="true" multiValued="true" />
+        <field name="group_id" type="string" indexed="true" stored="true" multiValued="true" />
+        <!-- Fallback-Feld zur Fehlervermeidung beim Indexierung, nicht vorhergesehenes wird nicht
+             indexiert, darf aber sein -->
+        <dynamicField name="*" type="text_untreated" indexed="false" stored="false" multiValued="true" />
+
+        <!-- =================
+             COPY INSTRUCTIONS
+             =================
+        -->
+        <!-- copy to generic fields -->
+        <copyField source="author*" dest="authorfull" />
+        <copyField source="sub*" dest="topic" />
+        <copyField source="stag" dest="topic" />
+
+        <!-- copy IDs to generic bibid-field -->
+        <copyField source="ctrlnum" dest="bibid" />
+        <copyField source="id" dest="bibid" />
+        <copyField source="gndnum" dest="bibid" />
+
+        <!-- COPY FIELDS FUER NAVIGATOREN / FACETTEN -->
+        <!-- copy fields to language and media type navigators -->
+        <copyField source="language" dest="navLanguage"/>
+        <copyField source="format" dest="navMediatype" />
+        <copyField source="publplace" dest="navPublplace" />
+        <copyField source="publishDate" dest="navYear" />
+
+        <!-- copy fields fuer Verbund, Zweigstellen und lokale Systemnummern -->
+        <copyField source="union" dest="navNetwork" />
+        <copyField source="institution" dest="navBranchlib" />
+        <copyField source="institution" dest="navBranchlib2" />
+
+        <!-- Subject Facette fuer View IDSBB -->
+        <copyField source="subtop_swd" dest="navSubidsbb" />
+        <copyField source="subtop_gnd" dest="navSubidsbb" />
+        <copyField source="subtop_idsbb" dest="navSubidsbb" />
+        <copyField source="subtop_mesh" dest="navSubidsbb" />
+        <copyField source="subpers_gnd" dest="navSubidsbb" />
+        <copyField source="subpers_swd" dest="navSubidsbb" />
+        <copyField source="subpers_idsbb" dest="navSubidsbb" />
+        <copyField source="subpers_mesh" dest="navSubidsbb" />
+        <copyField source="subtitle_gnd" dest="navSubidsbb" />
+        <copyField source="subtitle_swd" dest="navSubidsbb" />
+        <copyField source="subtitle_idsbb" dest="navSubidsbb" />
+        <copyField source="subtitle_mesh" dest="navSubidsbb" />
+        <copyField source="subgeo_gnd" dest="navSubidsbb" />
+        <copyField source="subgeo_swd" dest="navSubidsbb" />
+        <copyField source="subgeo_idsbb" dest="navSubidsbb" />
+        <copyField source="subgeo_mesh" dest="navSubidsbb" />
+        <copyField source="subtime_gnd" dest="navSubidsbb" />
+        <copyField source="subtime_swd" dest="navSubidsbb" />
+        <copyField source="subtime_idsbb" dest="navSubidsbb" />
+        <copyField source="subtime_mesh" dest="navSubidsbb" />
+
+        <!-- Topic Subject Facette fuer swissbib gruen (19.03.2012/osc) -->
+        <copyField source="subpers_*" dest="navSubfull" />
+        <copyField source="subtitle_*" dest="navSubfull" />
+        <copyField source="subtop_*" dest="navSubfull" />
+        <copyField source="subgeo_*" dest="navSubfull" />
+
+        <!-- Time Subject Facette für swissbib gruen (19.03.2012/osc) -->
+        <copyField source="subtime_*" dest="navSubtime" />
+
+        <!-- Form Facette, mit Reduktionsmechanismus -->
+        <copyField source="subform_ids*" dest="navSubform" />
+        <copyField source="subform_mesh" dest="navSubform" />
+        <copyField source="subform_gnd" dest="navSubform" />
+        <copyField source="subform_swd" dest="navSubform" />
+        <copyField source="subform_rero" dest="navSubform" />
+        <copyField source="subform_sbt" dest="navSubform" />
+
+        <!-- UDC Subject Facette (01.11.2011/osc) -->
+        <copyField source="subtopudc_*" dest="navSubtopudc_*" />
+        <copyField source="subpersudc_*" dest="navSubpersudc_*" />
+
+        <!-- Facette Rechtssystematik fuer Jus-Portal (04.03.2013/osc) -->
+        <copyField source="classif_drsys" dest="navDrsys" />
+
+        <!-- spelltext, not implemented yet (06.2012/osc)
+        <copyField source="title_long" dest="spelltext" />
+        <copyField source="sauthor" dest="spelltext" />
+        <copyField source="sinstitution" dest="spelltext" />
+        <copyField source="subtop" dest="spelltext" />
+        -->
+
+
+    </fields>
+
+
+    <!-- Field to use to determine and enforce document uniqueness.
+         Unless this field is marked with required="false", it will be a required field
+      -->
+    <uniqueKey>id</uniqueKey>
+
+    <!-- DEPRECATED: The defaultSearchField is consulted by various query parsers when
+     parsing a query string that isn't explicit about the field.  Machine (non-user)
+     generated queries are best made explicit, or they can use the "df" request parameter
+     which takes precedence over this.
+     Note: Un-commenting defaultSearchField will be insufficient if your request handler
+     in solrconfig.xml defines "df", which takes precedence. That would need to be removed.
+    <defaultSearchField>text</defaultSearchField> -->
+
+    <!-- DEPRECATED: The defaultOperator (AND|OR) is consulted by various query parsers
+     when parsing a query string to determine if a clause of the query should be marked as
+     required or optional, assuming the clause isn't already marked by some operator.
+     The default is OR, which is generally assumed so it is not a good idea to change it
+     globally here.  The "q.op" request parameter takes precedence over this.
+    <solrQueryParser defaultOperator="OR"/> -->
+
+    <!--
+    GH: in swissbib VuFind 4.1 we used still used these operators -> should be removed because marked as deprecated
+    -> tests necessary
+    <defaultSearchField>title</defaultSearchField>
+    <solrQueryParser defaultOperator="AND"/>
+    -->
+
+
+
+</schema>
