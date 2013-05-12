@@ -384,7 +384,7 @@ Schema fuer swissbib vufind
         <field name="origcountry" type="stdID" indexed="true" stored="false" multiValued="true" />
         <field name="gndnum" type="stdID" indexed="true" stored="false" multiValued="true" />
         <field name="bibid" type="stdID" indexed="true" stored="false" multiValued="true"/>
-        <field name="sfrbr" type="stdID" indexed="true" stored="false"  multiValued="true" />
+
         
         <field name="title_alt" type="text_untreated" indexed="true" stored="false" multiValued="true"/>
         <field name="authorfull" type="text_untreated" indexed="true" stored="false" multiValued="true" termVectors="true" />
