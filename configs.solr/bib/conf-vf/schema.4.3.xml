@@ -41,21 +41,24 @@ Schema fuer swissbib vufind
       <fieldType name="tint" class="solr.TrieIntField" precisionStep="8" omitNorms="true" positionIncrementGap="0"/>a
       <fieldType name="long" class="solr.TrieLongField" precisionStep="0" positionIncrementGap="0"/>
 
-      <!-- text field type for IDs of all sorts and colors, generic usage (20.03.2012/osc) -->
-      <fieldType name="stdID" class="solr.TextField" sortMissingLast="true" omitNorms="true">
+      <!-- Text Field for Normalized ISBN/ISSN Numbers - take first chunk of text
+           prior to whitespace, force to lowercase, strip non-ISBN/ISSN characters,
+           omit results that are empty after stripping. 
+           adapted for swissbib with filters from deprecated type stdID 13.05.2013/osc) -->
+      <fieldType name="isn" class="solr.TextField" positionIncrementGap="100">
           <analyzer>
-              <tokenizer class="solr.KeywordTokenizerFactory" />
-              <filter class="solr.LowerCaseFilterFactory" />
+              <tokenizer class="solr.PatternTokenizerFactory" pattern="^(\S*)\s*.*$" group="1"/>
+              <filter class="solr.LowerCaseFilterFactory"/>
               <filter class="solr.PatternReplaceFilterFactory"
                       pattern="^(\([a-z]+\))vtls0"
                       replacement="$10"
                       replace="all"
-                      />
+              />
               <filter class="solr.PatternReplaceFilterFactory"
                       pattern="[^\w]+"
                       replacement=""
                       replace="all"
-                      />
+              />
               <filter class="solr.TrimFilterFactory" />
               <filter class="solr.LengthFilterFactory" min="2" max="100" />
           </analyzer>
@@ -358,18 +361,18 @@ Schema fuer swissbib vufind
 
         <!-- Institutional Fields (and call numbers, maybe holdings later, information to access a physical or remote electronic resource)
              ******************** -->
-        <field name="union" type="stdID" indexed="true" stored="true" multiValued="true" />
-        <field name="institution" type="stdID" indexed="true" stored="true" multiValued="true" />
+        <field name="union" type="isn" indexed="true" stored="true" multiValued="true" />
+        <field name="institution" type="isn" indexed="true" stored="true" multiValued="true" />
         <!-- following two fields will be empty at the moment -->
         <field name="collection" type="string" indexed="true" stored="true" multiValued="true" />
         <field name="isil" type="string" stored="true" indexed="true" multiValued="true" />
-        <field name="callnumber" type="stdID" indexed="true" stored="false" multiValued="true" />
-        <field name="itemid" type="stdID" indexed="true" stored="false" multiValued="true" />
+        <field name="callnumber" type="isn" indexed="true" stored="false" multiValued="true" />
+        <field name="itemid" type="isn" indexed="true" stored="false" multiValued="true" />
 
         <!-- Generic Fields
              ************** -->
         <field name="language" type="navFieldLangCode" indexed="true" stored="true" multiValued="true"/>
-        <field name="format" type="stdID" indexed="true" stored="true" multiValued="true"/>
+        <field name="format" type="isn" indexed="true" stored="true" multiValued="true"/>
         <field name="author" type="text_untreated" indexed="true" stored="false" termVectors="true" multiValued="true" />
         <field name="title" type="text_untreated" indexed="true" stored="true" multiValued="true"/>
         <field name="title_short" type="text_untreated" indexed="true" stored="true" multiValued="true"/>
@@ -380,11 +383,13 @@ Schema fuer swissbib vufind
 
         <!-- Catalog Specific Fields
              *********************** -->
-        <field name="ctrlnum" type="stdID" indexed="true" stored="false" multiValued="true" />
-        <field name="origcountry" type="stdID" indexed="true" stored="false" multiValued="true" />
-        <field name="gndnum" type="stdID" indexed="true" stored="false" multiValued="true" />
-        <field name="bibid" type="stdID" indexed="true" stored="false" multiValued="true"/>
-
+        <field name="origcountry" type="isn" indexed="true" stored="false" multiValued="true" />
+        <field name="gndnum" type="isn" indexed="true" stored="false" multiValued="true" />
+        <field name="ctrlnum" type="isn" indexed="true" stored="false" multiValued="true" />
+        <field name="isbn" type="isn" indexed="true" stored="true" multiValued="true"/>
+        <field name="issn" type="isn" indexed="true" stored="true" multiValued="true"/>
+        <dynamicField name="*_isn_mv" type="isn" indexed="true" stored="true" multiValued="true"/>
+        <field name="sfrbr" type="isn" indexed="true" stored="false"  multiValued="true" />
         
         <field name="title_alt" type="text_untreated" indexed="true" stored="false" multiValued="true"/>
         <field name="authorfull" type="text_untreated" indexed="true" stored="false" multiValued="true" termVectors="true" />
@@ -432,11 +437,11 @@ Schema fuer swissbib vufind
 
         <!-- Container & Hierarchy Fields
              **************** -->
-        <field name="container_id" type="stdID" multiValued="true" indexed="true" />
+        <field name="container_id" type="isn" multiValued="true" indexed="true" />
         <field name="hierarchytype" type="string" indexed="true" stored="true" multiValued="false" />
         <field name="hierarchy_top_id" type="string" indexed="true" stored="true" multiValued="true" />
         <field name="hierarchy_parent_title" type="string" indexed="true" stored="true" multiValued="true"/>
-        <field name="hierarchy_parent_id" type="stdID" indexed="true" multiValued="true" />
+        <field name="hierarchy_parent_id" type="isn" indexed="true" multiValued="true" />
         <field name="hierarchy_sequence" type="string" indexed="true" stored="true" multiValued="true"/>
 
         <!-- all available Facet Fields
@@ -446,7 +451,7 @@ Schema fuer swissbib vufind
         <field name="navBranchlib2" type="string" multiValued="true" stored="false" />
         <field name="navLanguage" type="navFieldLangCode" multiValued="true" stored="false" />
         <field name="navMediatype" type="navFieldMediaType" multiValued="true" stored="false" />
-        <field name="navNetwork" type="stdID" multiValued="true" stored="false" />
+        <field name="navNetwork" type="isn" multiValued="true" stored="false" />
         <field name="navSubform" type="navFieldForm" multiValued="true" stored="false" />
         <field name="navSubfull" type="navFieldCombined" multiValued="true" stored="false" />
         <field name="navSubidsbb" type="navFieldCombined" multiValued="true" stored="false" />
@@ -461,13 +466,13 @@ Schema fuer swissbib vufind
 
         <!-- processing fields / special cases
             ********************************* -->
-        <!-- GH: 20120314: Vorlaeufig auf stdID setzen. Wert erhaelt im Document processing ein Format welches nicht mit dem von tdate
+        <!-- GH: 20120314: Vorlaeufig auf isn setzen. Wert erhaelt im Document processing ein Format welches nicht mit dem von tdate
         kompatibel ist
         SEVERE: org.apache.solr.common.SolrException: ERROR: [doc=180690507] Error adding field 'time_processed'='2012-02-24T20:46:26.257+01:00'
             at org.apache.solr.update.DocumentBuilder.toDocument(DocumentBuilder.java:302)
          sollte wohl 2012-02-24T20:46:26Z sein
         <field name="time_processed" type="tdate" stored="true" indexed="true" />-->
-        <field name="time_processed" type="stdID" stored="true" indexed="false" />
+        <field name="time_processed" type="isn" stored="true" indexed="false" />
         <field name="time_indexed" type="tdate" default="NOW/MINUTE" stored="true" indexed="true" />
         <!-- mandatory field for schema version 1.5-->
         <field name="_version_" type="long" indexed="true" stored="true"/>
@@ -486,11 +491,6 @@ Schema fuer swissbib vufind
         <copyField source="author*" dest="authorfull" />
         <copyField source="sub*" dest="topic" />
         <copyField source="stag" dest="topic" />
-
-        <!-- copy IDs to generic bibid-field -->
-        <copyField source="ctrlnum" dest="bibid" />
-        <copyField source="id" dest="bibid" />
-        <copyField source="gndnum" dest="bibid" />
 
         <!-- COPY FIELDS FUER NAVIGATOREN / FACETTEN -->
         <!-- copy fields to language and media type navigators -->
