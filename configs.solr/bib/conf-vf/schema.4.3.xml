@@ -468,14 +468,27 @@ Schema fuer swissbib vufind
         <field name="title_sort" type="alphaOnlySort" indexed="true" stored="false"/>
         <field name="publishDateSort" type="string" indexed="true" stored="false"/>
 
-        <!-- Container & Hierarchy Fields
-             **************** -->
+		<!-- Container fields (i.e. for describing journal containing an article)
+		     ****************
+		     extended by container_id, other fields are not used at the moment (22.05.2013 / osc) -->
         <field name="container_id" type="isn" multiValued="true" indexed="true" />
-        <field name="hierarchytype" type="string" indexed="true" stored="true" multiValued="false" />
-        <field name="hierarchy_top_id" type="string" indexed="true" stored="true" multiValued="true" />
-        <field name="hierarchy_parent_title" type="string" indexed="true" stored="true" multiValued="true"/>
-        <field name="hierarchy_parent_id" type="isn" indexed="true" multiValued="true" />
-        <field name="hierarchy_sequence" type="string" indexed="true" stored="true" multiValued="true"/>
+		<field name="container_title" type="text_untreated" indexed="true" stored="true"/>
+	    <field name="container_volume" type="text_untreated" indexed="true" stored="true"/>
+	    <field name="container_issue" type="text_untreated" indexed="true" stored="true"/>
+	    <field name="container_start_page" type="text_untreated" indexed="true" stored="true"/>
+	    <field name="container_reference" type="text_untreated" indexed="true" stored="true"/>
+
+  	    <!-- Hierarchy Fields
+  	         **************** -->
+	    <field name="hierarchytype" type="string" indexed="true" stored="true" multiValued="false"/>
+	    <field name="hierarchy_top_id" type="string" indexed="true" stored="true" multiValued="true"/>
+	    <field name="hierarchy_top_title" type="string" indexed="true" stored="true" multiValued="true"/>
+	    <field name="hierarchy_parent_id" type="string" indexed="true" stored="true" multiValued="true"/>
+	    <field name="hierarchy_parent_title" type="string" indexed="true" stored="true" multiValued="true"/>
+	    <field name="hierarchy_sequence" type="string" indexed="true" stored="true" multiValued="true"/>
+	    <field name="is_hierarchy_id" type="string" indexed="true" stored="true" multiValued="false"/>
+	    <field name="is_hierarchy_title" type="string" indexed="true" stored="true" multiValued="false"/>
+	    <field name="hierarchy_browse" type="navFieldCombined" indexed="true" stored="false" multiValued="true"/>
 
         <!-- all available Facet Fields
              ************************** -->
@@ -629,7 +642,5 @@ Schema fuer swissbib vufind
     <defaultSearchField>title</defaultSearchField>
     <solrQueryParser defaultOperator="AND"/>
     -->
-
-
 
 </schema>
