@@ -371,11 +371,6 @@ Schema fuer swissbib vufind
           =================
      -->
     <fields>
-        
-        <!-- mandatory field for schema version 1.5 
-             ************************************** -->
-        
-        <field name="_version_" type="long" indexed="true" stored="true"/>
 
         <!-- Core Fields
              *********** -->
@@ -392,7 +387,7 @@ Schema fuer swissbib vufind
        <field name="allfields" type="text_untreated" indexed="true" stored="false"/>
        <field name="allfields_unstemmed" type="text_untreated" indexed="true" stored="false"/>
         -->
-        <!--   <field name="fulltext_unstemmed" type="text_untreated" indexed="true" stored="false"/> -->
+        <!--   <field name="fulltext_unstemmed" type="text_untreated" indexed="true" stored="false"/>-->
         <field name="spelling" type="textSpell" indexed="true" stored="true" multiValued="true" />
         <field name="spellingShingle" type="textSpellShingle" indexed="true" stored="true" multiValued="true" />
         
@@ -427,6 +422,7 @@ Schema fuer swissbib vufind
         <field name="isbn" type="isn" indexed="true" stored="true" multiValued="true"/>
         <field name="issn" type="isn" indexed="true" stored="true" multiValued="true"/>
         <dynamicField name="*_isn_mv" type="isn" indexed="true" stored="true" multiValued="true"/>
+        <field name="sfrbr" type="isn" indexed="true" stored="false"  multiValued="true" />
         
         <field name="title_alt" type="text_untreated" indexed="true" stored="false" multiValued="true"/>
         <field name="authorfull" type="text_untreated" indexed="true" stored="false" multiValued="true" termVectors="true" />
@@ -445,8 +441,6 @@ Schema fuer swissbib vufind
         -->
         <field name="add_fields" type="text_untreated" indexed="true" stored="false" multiValued="true" />
         <field name="publplace" type="text_untreated" indexed="true" stored="false" multiValued="true" />
-        <field name="sfilter" type="string" indexed="true" stored="true" multiValued="true" />
-        <field name="group_id" type="string" indexed="true" stored="false" multiValued="true" />
 
         <!-- subject fields (generic field 'subfull', categories per vocabulary, classifications, special subject indexing, local subject indexing)
              **************  -->
@@ -524,8 +518,12 @@ Schema fuer swissbib vufind
             at org.apache.solr.update.DocumentBuilder.toDocument(DocumentBuilder.java:302)
          sollte wohl 2012-02-24T20:46:26Z sein
         <field name="time_processed" type="tdate" stored="true" indexed="true" />-->
-        <field name="time_processed" type="string" stored="true" indexed="false" />
+        <field name="time_processed" type="isn" stored="true" indexed="false" />
         <field name="time_indexed" type="tdate" default="NOW/MINUTE" stored="true" indexed="true" />
+        <!-- mandatory field for schema version 1.5-->
+        <field name="_version_" type="long" indexed="true" stored="true"/>
+        <field name="sfilter" type="string" indexed="true" stored="true" multiValued="true" />
+        <field name="group_id" type="string" indexed="true" stored="true" multiValued="true" />
         <!-- Fallback-Feld zur Fehlervermeidung beim Indexierung, nicht vorhergesehenes wird nicht
              indexiert, darf aber sein -->
         <dynamicField name="*" type="text_untreated" indexed="false" stored="false" multiValued="true" />
@@ -538,6 +536,9 @@ Schema fuer swissbib vufind
         <copyField source="author*" dest="authorfull" />
         <copyField source="sub*" dest="topic" />
         <copyField source="stag" dest="topic" />
+        
+        <!-- copy to hierarchy title: workaround, damit ist das Feld in allen Aufnahmen vorhanden, Hierarchie oder nicht (30.05.2013/osc-->
+        <copyField source="title_short" dest="is_hierarchy_title" />
 
         <!-- COPY FIELDS FUER NAVIGATOREN / FACETTEN -->
         <!-- copy fields to language and media type navigators -->
@@ -644,5 +645,7 @@ Schema fuer swissbib vufind
     <defaultSearchField>title</defaultSearchField>
     <solrQueryParser defaultOperator="AND"/>
     -->
+
+
 
 </schema>
