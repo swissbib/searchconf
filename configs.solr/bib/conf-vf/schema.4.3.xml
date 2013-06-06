@@ -425,6 +425,8 @@ Schema fuer swissbib vufind
         <field name="sfrbr" type="isn" indexed="true" stored="false"  multiValued="true" />
         
         <field name="title_alt" type="text_untreated" indexed="true" stored="false" multiValued="true"/>
+        <field name="title_old" type="text_untreated" indexed="true" stored="true" multiValued="true"/>
+        <field name="title_new" type="text_untreated" indexed="true" stored="true" multiValued="true"/>
         <field name="authorfull" type="text_untreated" indexed="true" stored="false" multiValued="true" termVectors="true" />
         <field name="author_additional" type="text_untreated" indexed="true" stored="false" multiValued="true" />
         <field name="author2" type="text_untreated" indexed="true" stored="false" multiValued="true" />
