@@ -203,13 +203,13 @@ Schema fuer swissbib vufind
           <analyzer type="index">
               <charFilter class="solr.MappingCharFilterFactory" mapping="mapping-chars.txt"/>
               <tokenizer class="solr.ICUTokenizerFactory"/>
-              <filter class="solr.WordDelimiterFilterFactory" splitOnCaseChange="0"
-                      splitOnNumerics="0"
-                      generateWordParts="1"
-                      generateNumberParts="1"
-                      catenateWords="1"
-                      catenateNumbers="0"
-                      />
+              <filter class="solr.WordDelimiterFilterFactory" 
+                      generateWordParts="1" 
+                      generateNumberParts="1" 
+                      catenateWords="1" 
+                      catenateNumbers="1" 
+                      catenateAll="0" 
+                      splitOnCaseChange="1"/>
               <filter class="solr.ICUFoldingFilterFactory"/>
               <filter class="solr.CJKWidthFilterFactory"/>
               <filter class="solr.CJKBigramFilterFactory"/>
@@ -219,13 +219,13 @@ Schema fuer swissbib vufind
           <analyzer type="query">
               <charFilter class="solr.MappingCharFilterFactory" mapping="mapping-chars.txt"/>
               <tokenizer class="solr.ICUTokenizerFactory"/>
-              <filter class="solr.WordDelimiterFilterFactory" splitOnCaseChange="0"
-                      splitOnNumerics="0"
-                      generateWordParts="1"
-                      generateNumberParts="1"
-                      catenateWords="1"
-                      catenateNumbers="0"
-                      />
+              <filter class="solr.WordDelimiterFilterFactory" 
+                      generateWordParts="1" 
+                      generateNumberParts="1" 
+                      catenateWords="0" 
+                      catenateNumbers="0" 
+                      catenateAll="0" 
+                      splitOnCaseChange="1"/>
               <filter class="solr.ICUFoldingFilterFactory"/>
               <filter class="solr.CJKWidthFilterFactory"/>
               <filter class="solr.CJKBigramFilterFactory"/>
@@ -275,23 +275,6 @@ Schema fuer swissbib vufind
           </analyzer>
       </fieldType>
 
-      <!-- text_fonemed : Feldtyp fuer sound-alike-Text, Versuch, tiefes boosting -->
-      <fieldType name="text_fonemed" class="solr.TextField" positionIncrementGap="100" >
-          <analyzer>
-              <tokenizer class="solr.WhitespaceTokenizerFactory" />
-              <filter class="solr.WordDelimiterFilterFactory"
-                      generateWordParts="1"
-                      generateNumberParts="1"
-                      catenateWords="1"
-                      preserveOriginal="1"
-                      />
-              <filter class="solr.PhoneticFilterFactory"
-                      encoder="DoubleMetaphone"
-                      inject="false"
-                      />
-          </analyzer>
-      </fieldType>
-      
       <!-- Basic Text Field for use with Spell Correction 
            enhanced with chain elements of old type text_spelled (14.05.2013 / osc) -->
       <fieldType name="textSpell" class="solr.TextField" positionIncrementGap="100">
@@ -638,8 +621,8 @@ Schema fuer swissbib vufind
      when parsing a query string to determine if a clause of the query should be marked as
      required or optional, assuming the clause isn't already marked by some operator.
      The default is OR, which is generally assumed so it is not a good idea to change it
-     globally here.  The "q.op" request parameter takes precedence over this.
-    <solrQueryParser defaultOperator="OR"/> -->
+     globally here.  The "q.op" request parameter takes precedence over this. -->
+    <solrQueryParser defaultOperator="AND"/>
 
     <!--
     GH: in swissbib VuFind 4.1 we used still used these operators -> should be removed because marked as deprecated
