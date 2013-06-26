@@ -417,6 +417,7 @@ Schema fuer swissbib vufind
         <field name="series" type="text_untreated" indexed="true" stored="false" multiValued="true" />
         <field name="journals" type="text_untreated" indexed="true" stored="false" multiValued="true" />
         <field name="itemnote" type="text_untreated" indexed="true" stored="false" multiValued="true" />
+        <dynamicField name="*_txt_mv" type="text_untreated" indexed="true" stored="false" multiValued="true"/>
         <!--
         <field name="author-letter" type="string" indexed="true" stored="true"/>
         <field name="title_full" type="text_untreated" indexed="true" stored="true"/>
