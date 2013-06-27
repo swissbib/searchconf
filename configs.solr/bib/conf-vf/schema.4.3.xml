@@ -416,7 +416,6 @@ Schema fuer swissbib vufind
         <field name="author2_additional" type="text_untreated" indexed="true" stored="false" multiValued="true" />
         <field name="series" type="text_untreated" indexed="true" stored="false" multiValued="true" />
         <field name="journals" type="text_untreated" indexed="true" stored="false" multiValued="true" />
-        <field name="itemnote" type="text_untreated" indexed="true" stored="false" multiValued="true" />
         <dynamicField name="*_txt_mv" type="text_untreated" indexed="true" stored="false" multiValued="true"/>
         <!--
         <field name="author-letter" type="string" indexed="true" stored="true"/>
@@ -425,7 +424,6 @@ Schema fuer swissbib vufind
         <field name="title_fullStr" type="string" indexed="true" stored="true"/>
         <field name="title_auth" type="text_untreated" indexed="true" stored="true"/>
         -->
-        <field name="add_fields" type="text_untreated" indexed="true" stored="false" multiValued="true" />
         <field name="publplace" type="text_untreated" indexed="true" stored="false" multiValued="true" />
 
         <!-- subject fields (generic field 'subfull', categories per vocabulary, classifications, special subject indexing, local subject indexing)
