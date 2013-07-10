@@ -621,7 +621,7 @@ Schema fuer swissbib vufind
      required or optional, assuming the clause isn't already marked by some operator.
      The default is OR, which is generally assumed so it is not a good idea to change it
      globally here.  The "q.op" request parameter takes precedence over this. -->
-    <solrQueryParser defaultOperator="AND"/>
+    <!--<solrQueryParser defaultOperator="AND"/> -->
 
     <!--
     GH: in swissbib VuFind 4.1 we used still used these operators -> should be removed because marked as deprecated
