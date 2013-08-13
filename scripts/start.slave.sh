@@ -69,6 +69,9 @@ function startSolr ()
 }
 
 
+#example
+#./start.slave.sh -mhttp://sb-s15.swissbib.unibas.ch:8080/solr/sb-biblio/replication -p'99:00:00'
+
 setTimestamp
 
 while getopts :m:p: OPTION;
