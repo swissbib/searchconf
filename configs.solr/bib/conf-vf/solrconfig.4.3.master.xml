@@ -1,0 +1,707 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one or more
+ contributor license agreements.  See the NOTICE file distributed with
+ this work for additional information regarding copyright ownership.
+ The ASF licenses this file to You under the Apache License, Version 2.0
+ (the "License"); you may not use this file except in compliance with
+ the License.  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+
+<!-- 
+     For more details about configurations options that may appear in
+     this file, see http://wiki.apache.org/solr/SolrConfigXml.
+
+      Adaptations
+      ===========
+      v 0.8 VF, hip, 2013-05-09
+      v 0.9 VF, osc, 2013-07-02
+
+-->
+
+<config>
+
+    <luceneMatchVersion>LUCENE_43</luceneMatchVersion>
+
+
+    <lib dir="${solr.lib.swissbib.dir}/contrib/analysis-extras/lib" />
+    <lib dir="${solr.lib.swissbib.dir}/contrib/analysis-extras/lucene-libs" />
+    <lib dir="${solr.lib.swissbib.dir}/contrib/clustering/lib" />
+    <!-- brauchen wir dataimporthandler?-->
+    <lib dir="${solr.lib.swissbib.dir}/contrib/dataimporthandler/lib" />
+    <lib dir="${solr.lib.swissbib.dir}/contrib/extraction/lib" />
+    <lib dir="${solr.lib.swissbib.dir}/contrib/langid/lib" />
+    <lib dir="${solr.lib.swissbib.dir}/contrib/uima/lib" />
+    <lib dir="${solr.lib.swissbib.dir}/contrib/uima/lucene-libs" />
+    <lib dir="${solr.lib.swissbib.dir}/contrib/velocity/lib" />
+    <lib dir="${solr.lib.swissbib.dir}/dist/"
+         regex="solr-.*\.jar" />
+
+    <dataDir>${solr.data.dir:}</dataDir>
+
+    <directoryFactory name="DirectoryFactory"
+                      class="${solr.directoryFactory:solr.NRTCachingDirectoryFactory}"/>
+
+    <codecFactory class="solr.SchemaCodecFactory"/>
+
+    <schemaFactory class="ClassicIndexSchemaFactory"/>
+
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+       Index Config - These settings control low-level behavior of indexing
+       Most example settings here show the default value, but are commented
+       out, to more easily see where customizations have been made.
+       
+       Note: This replaces <indexDefaults> and <mainIndex> from older versions
+       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <indexConfig>
+        <lockType>${solr.lock.type:native}</lockType>
+    </indexConfig>
+
+    <jmx />
+
+    <!-- The default high-performance update handler -->
+    <updateHandler class="solr.DirectUpdateHandler2">
+        <updateLog>
+            <str name="dir">${solr.ulog.dir:}</str>
+        </updateLog>
+
+        <autoCommit>
+        <!--beim initial loading sind bei uns die Paeckchen i.d.R, nicht groesser als 350.000 Dokumente -->
+            <maxDocs>350000</maxDocs>
+            <maxTime>1200000</maxTime>
+            <openSearcher>false</openSearcher>
+        </autoCommit>
+    </updateHandler>
+
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        Query section - these settings control query time things like caches
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+    <query>
+        <maxBooleanClauses>1024</maxBooleanClauses>
+        <filterCache class="solr.FastLRUCache"
+                     size="512"
+                     initialSize="512"
+                     autowarmCount="95%"/>
+
+            <!--in 4.1 solr.FastLRUCache ?? -->
+        <queryResultCache class="solr.LRUCache"
+                         size="512"
+                         initialSize="512"
+                         autowarmCount="95%"/>
+
+            <!--in 4.1 solr.FastLRUCache ?? -->
+        <documentCache class="solr.LRUCache"
+                       size="512"
+                       initialSize="512"
+                       autowarmCount="95%"/>
+    
+        <enableLazyFieldLoading>true</enableLazyFieldLoading>
+
+        <queryResultWindowSize>20</queryResultWindowSize>
+
+        <queryResultMaxDocsCached>200</queryResultMaxDocsCached>
+
+        <listener event="newSearcher"
+                  class="solr.QuerySenderListener">
+            <arr name="queries">
+        <!--
+           <lst><str name="q">solr</str><str name="sort">price asc</str></lst>
+           <lst><str name="q">rocks</str><str name="sort">weight asc</str></lst>
+          -->
+            </arr>
+        </listener>
+
+        <listener event="firstSearcher" class="solr.QuerySenderListener">
+            <arr name="queries">
+                <lst>
+                    <str name="q">title:"der gang nach canossa"</str>
+                </lst>
+            </arr>
+        </listener>
+
+        <useColdSearcher>false</useColdSearcher>
+
+        <maxWarmingSearchers>2</maxWarmingSearchers>
+
+    </query>
+
+    <requestDispatcher handleSelect="true" >
+    <!--Make sure your system has some authentication before enabling remote streaming!  -->
+        <requestParsers enableRemoteStreaming="true"
+                        multipartUploadLimitInKB="2048000"
+                        formdataUploadLimitInKB="2048"/>
+
+    <!-- Set HTTP caching related parameters (for proxy caches and clients).
+
+         To get the behaviour of Solr 1.2 (ie: no caching related headers)
+         use the never304="true" option and do not specify a value for
+         <cacheControl>
+    -->
+    <!-- <httpCaching never304="true"> -->
+        <httpCaching lastModifiedFrom="openTime"
+                     etagSeed="Solr">
+       <!-- lastModFrom="openTime" is the default, the Last-Modified value
+            (and validation against If-Modified-Since requests) will all be
+            relative to when the current Searcher was opened.
+            You can change it to lastModFrom="dirLastMod" if you want the
+            value to exactly corrispond to when the physical index was last
+            modified.
+
+            etagSeed="..." is an option you can change to force the ETag
+            header (and validation against If-None-Match requests) to be
+            differnet even if the index has not changed (ie: when making
+            significant changes to your config file)
+
+            lastModifiedFrom and etagSeed are both ignored if you use the
+            never304="true" option.
+       -->
+       <!-- If you include a <cacheControl> directive, it will be used to
+            generate a Cache-Control header, as well as an Expires header
+            if the value contains "max-age="
+
+            By default, no Cache-Control header is generated.
+
+            You can use the <cacheControl> option even if you have set
+            never304="true"
+       -->
+       <!-- <cacheControl>max-age=30, public</cacheControl> -->
+        </httpCaching>
+    </requestDispatcher>
+
+    <!-- requestHandler plugins... incoming queries will be dispatched to the
+         correct handler based on the path or the qt (query type) param.
+         Names starting with a '/' are accessed with the a path equal to the
+         registered name.  Names without a leading '/' are accessed with:
+         http://host/app/select?qt=name
+         If no qt is defined, the requestHandler that declares default="true"
+         will be used.
+    -->
+
+    <requestHandler name="standard" class="solr.StandardRequestHandler" default="true">
+    <!-- default values for query parameters -->
+        <lst name="defaults">
+            <str name="echoParams">explicit</str>
+           <!--
+           <int name="rows">10</int>
+           <str name="fl">*</str>
+           <str name="version">2.1</str>
+            -->
+            <str name="spellcheck.extendedResults">true</str>
+            <str name="spellcheck.onlyMorePopular">true</str>
+            <str name="spellcheck.count">20</str>
+        </lst>
+        <arr name="last-components">
+            <str>spellcheck</str>
+        </arr>
+    </requestHandler>
+
+  <!-- the following handler will be used for eligible dismax searches defined
+     in web/conf/searchspecs.yaml.  Searches relying on advanced features
+     incompatible with dismax will be sent to the standard handler instead.
+     You can use this handler definition to set global Dismax settings
+     (i.e. mm / bf).  If you need different settings for different types of
+     searches (i.e. Title vs. Author), you can also configure individual
+     settings in the searchspecs.yaml file.
+  -->
+    <requestHandler name="dismax" class="solr.SearchHandler">
+        <lst name="defaults">
+            <str name="defType">dismax</str>
+            <!-- str name="fl">a*,b*,c*,d*,e*,first_indexed,format,fullrecord,g*,h*,i*,l*,o*,p*,r*,s*,t*,u*,*_date*,*_isn*,*_str*,*_txt*</str -->
+            <str name="echoParams">explicit</str>
+            <str name="spellcheck.extendedResults">true</str>
+            <str name="spellcheck.onlyMorePopular">true</str>
+            <str name="spellcheck.count">20</str>
+        </lst>
+        <arr name="last-components">
+            <str>spellcheck</str>
+        </arr>
+    </requestHandler>
+
+    <requestHandler name="morelikethis" class="solr.MoreLikeThisHandler">
+        <lst name="defaults">
+            <str name="mlt.fl">title,title_short,topic,language,author,publishDate</str>
+            <str name="mlt.qf">
+                title^75
+                title_short^100
+                topic^300
+                language^30
+                author^75
+                publishDate
+            </str>
+            <int name="mlt.mintf">1</int>
+            <int name="mlt.mindf">1</int>
+            <str name="mlt.boost">true</str>
+            <int name="mlt.count">5</int>
+            <int name="rows">5</int>
+        </lst>
+    </requestHandler>
+
+  <!-- browse handler
+       ==============
+       deactivated, class missing, not in use (osc / 02.07.2013)
+   -->
+   <!--
+  <requestHandler name="/browse" class="au.gov.nla.solr.handler.BrowseRequestHandler">
+    <str name="authIndexPath">${solr.solr.home:./solr}/authority/index</str>
+    <str name="bibIndexPath">${solr.solr.home:./solr}/biblio/index</str>
+-->
+    <!-- These definitions should match the field names used in the authority index. -->
+    <!--
+    <str name="preferredHeadingField">heading</str>
+    <str name="useInsteadHeadingField">use_for</str>
+    <str name="seeAlsoHeadingField">see_also</str>
+    <str name="scopeNoteField">scope_note</str>
+
+
+    <str name="sources">topic,author,title,lcc,dewey,hierarchy</str>
+
+    <lst name="topic">
+      <str name="DBpath">${solr.solr.home:./solr}/alphabetical_browse/topic_browse.db</str>
+      <str name="field">topic_browse</str>
+    </lst>
+
+    <lst name="author">
+      <str name="DBpath">${solr.solr.home:./solr}/alphabetical_browse/author_browse.db</str>
+      <str name="field">author_browse</str>
+    </lst>
+
+    <lst name="title">
+      <str name="DBpath">${solr.solr.home:./solr}/alphabetical_browse/title_browse.db</str>
+      <str name="field">title_fullStr</str>
+    </lst>
+
+    <lst name="lcc">
+      <str name="DBpath">${solr.solr.home:./solr}/alphabetical_browse/lcc_browse.db</str>
+      <str name="field">callnumber-a</str>
+    </lst>
+
+    <lst name="dewey">
+      <str name="DBpath">${solr.solr.home:./solr}/alphabetical_browse/dewey_browse.db</str>
+      <str name="field">dewey-raw</str>
+      <str name="ignoreDiacritics">yes</str>
+    </lst>
+
+    <lst name="hierarchy">
+      <str name="DBpath">${solr.solr.home:./solr}/alphabetical_browse/hierarchy_browse.db</str>
+      <str name="field">hierarchy_browse</str>
+    </lst>
+  </requestHandler>
+  -->
+
+    <searchComponent name="spellcheck" class="org.apache.solr.handler.component.SpellCheckComponent">
+        <lst name="spellchecker">
+            <str name="name">default</str>
+            <str name="field">spellingShingle</str>
+            <str name="accuracy">0.75</str>
+            <str name="spellcheckIndexDir">./spellShingle</str>
+            <str name="queryAnalyzerFieldType">textSpellShingle</str>
+            <str name="buildOnOptimize">true</str>
+        </lst>
+        <lst name="spellchecker">
+            <str name="name">basicSpell</str>
+            <str name="field">spelling</str>
+            <str name="accuracy">0.75</str>
+            <str name="spellcheckIndexDir">./spellchecker</str>
+            <str name="queryAnalyzerFieldType">textSpell</str>
+            <str name="buildOnOptimize">true</str>
+        </lst>
+    </searchComponent>
+
+    <queryConverter name="queryConverter" class="org.apache.solr.spelling.SpellingQueryConverter" />
+
+    <!-- Search component for extracting terms (useful for sitemap generation) -->
+    <searchComponent name="term"
+                     class="org.apache.solr.handler.component.TermsComponent">
+    </searchComponent>
+
+  <!--
+
+   Search components are registered to SolrCore and used by Search Handlers
+
+   By default, the following components are avaliable:
+
+   <searchComponent name="query"     class="org.apache.solr.handler.component.QueryComponent" />
+   <searchComponent name="facet"     class="org.apache.solr.handler.component.FacetComponent" />
+   <searchComponent name="mlt"       class="org.apache.solr.handler.component.MoreLikeThisComponent" />
+   <searchComponent name="highlight" class="org.apache.solr.handler.component.HighlightComponent" />
+   <searchComponent name="stats"     class="org.apache.solr.handler.component.StatsComponent" />
+   <searchComponent name="debug"     class="org.apache.solr.handler.component.DebugComponent" />
+
+   If you register a searchComponent to one of the standard names, that will be used instead.
+
+   -->
+
+    <requestHandler name="/search"
+                    class="org.apache.solr.handler.component.SearchHandler">
+        <lst name="defaults">
+            <str name="echoParams">explicit</str>
+        </lst>
+    <!--
+    By default, this will register the following components:
+
+    <arr name="components">
+      <str>query</str>
+      <str>facet</str>
+      <str>mlt</str>
+      <str>highlight</str>
+      <str>debug</str>
+    </arr>
+
+    To insert handlers before or after the 'standard' components, use:
+
+    <arr name="first-components">
+      <str>first</str>
+    </arr>
+
+    <arr name="last-components">
+      <str>last</str>
+    </arr>
+
+    -->
+        <arr name="last-components">
+            <str>spellcheck</str>
+            <str>elevator</str>
+        </arr>
+    </requestHandler>
+
+    <!-- Request handler to extract terms (useful for sitemap generation) -->
+    <requestHandler name="/term" class="org.apache.solr.handler.component.SearchHandler">
+        <arr name="components">
+            <str>term</str>
+        </arr>
+    </requestHandler>
+
+    <searchComponent name="elevator"
+                     class="org.apache.solr.handler.component.QueryElevationComponent" >
+    <!-- pick a fieldType to analyze queries -->
+        <str name="queryFieldType">string</str>
+        <str name="config-file">elevate.xml</str>
+    </searchComponent>
+
+    <requestHandler name="/elevate"
+                    class="org.apache.solr.handler.component.SearchHandler"
+                    startup="lazy">
+        <lst name="defaults">
+            <str name="echoParams">explicit</str>
+        </lst>
+        <arr name="last-components">
+            <str>elevator</str>
+        </arr>
+    </requestHandler>
+
+  <!-- realtime get handler, guaranteed to return the latest stored fields of
+       any document, without the need to commit or open a new searcher.  The
+       current implementation relies on the updateLog feature being enabled. -->
+    <requestHandler name="/get" class="solr.RealTimeGetHandler">
+        <lst name="defaults">
+            <str name="omitHeader">true</str>
+            <str name="wt">json</str>
+            <str name="indent">true</str>
+        </lst>
+    </requestHandler>
+
+    <requestHandler name="/update" class="solr.UpdateRequestHandler">
+    <!-- See below for information on defining 
+         updateRequestProcessorChains that can be used by name 
+         on each Update Request
+      -->
+    <!--
+       <lst name="defaults">
+         <str name="update.chain">dedupe</str>
+       </lst>
+       -->
+    </requestHandler>
+
+  <!-- for back compat with clients using /update/json and /update/csv -->  
+  <requestHandler name="/update/json" class="solr.JsonUpdateRequestHandler">
+        <lst name="defaults">
+         <str name="stream.contentType">application/json</str>
+       </lst>
+  </requestHandler>
+  <requestHandler name="/update/csv" class="solr.CSVRequestHandler">
+        <lst name="defaults">
+         <str name="stream.contentType">application/csv</str>
+       </lst>
+  </requestHandler>
+
+  <!-- Solr Cell Update Request Handler
+
+       http://wiki.apache.org/solr/ExtractingRequestHandler 
+
+    -->
+  <requestHandler name="/update/extract" 
+                  startup="lazy"
+                  class="solr.extraction.ExtractingRequestHandler" >
+    <lst name="defaults">
+      <str name="lowernames">true</str>
+      <str name="uprefix">ignored_</str>
+
+      <!-- capture link hrefs but ignore div attributes -->
+      <str name="captureAttr">true</str>
+      <str name="fmap.a">links</str>
+      <str name="fmap.div">ignored_</str>
+    </lst>
+  </requestHandler>
+
+
+  <requestHandler name="/analysis/field"
+                  startup="lazy"
+                  class="solr.FieldAnalysisRequestHandler" />
+
+
+  <requestHandler name="/analysis/document"
+                  class="solr.DocumentAnalysisRequestHandler" 
+                  startup="lazy" />
+
+  <!-- Admin Handlers
+
+       Admin Handlers - This will register all the standard admin
+       RequestHandlers.  
+    -->
+  <requestHandler name="/admin/" 
+                  class="solr.admin.AdminHandlers" />
+
+  <!-- ping/healthcheck -->
+  <requestHandler name="/admin/ping" class="solr.PingRequestHandler">
+    <lst name="invariants">
+      <str name="q">solrpingquery</str>
+    </lst>
+    <lst name="defaults">
+      <str name="echoParams">all</str>
+    </lst>
+    <!-- An optional feature of the PingRequestHandler is to configure the 
+         handler with a "healthcheckFile" which can be used to enable/disable 
+         the PingRequestHandler.
+         relative paths are resolved against the data dir 
+      -->
+    <!-- <str name="healthcheckFile">server-enabled.txt</str> -->
+  </requestHandler>
+
+  <!-- Echo the request contents back to the client -->
+  <requestHandler name="/debug/dump" class="solr.DumpRequestHandler" >
+    <lst name="defaults">
+     <str name="echoParams">explicit</str> 
+     <str name="echoHandler">true</str>
+    </lst>
+  </requestHandler>
+  
+  <!-- Solr Replication
+
+       The SolrReplicationHandler supports replicating indexes from a
+       "master" used for indexing and "slaves" used for queries.
+
+       http://wiki.apache.org/solr/SolrReplication 
+
+       It is also necessary for SolrCloud to function (in Cloud mode, the
+       replication handler is used to bulk transfer segments when nodes 
+       are added or need to recover).
+
+       https://wiki.apache.org/solr/SolrCloud/
+    -->
+
+    <requestHandler name="/replication" class="solr.ReplicationHandler" >
+        <lst name="master">
+            <str name="replicateAfter">commit</str>
+            <str name="replicateAfter">optimize</str>
+            <str name="replicateAfter">startup</str>
+            <str name="confFiles">
+                ${swissbib.replication.files}
+
+            </str>
+        </lst>
+    </requestHandler>
+
+
+
+  <!-- Term Vector Component
+
+       http://wiki.apache.org/solr/TermVectorComponent
+    -->
+    <searchComponent name="tvComponent"
+                     class="solr.TermVectorComponent"/>
+
+  <!-- A request handler for demonstrating the term vector component
+
+       This is purely as an example.
+
+       In reality you will likely want to add the component to your 
+       already specified request handlers. 
+    -->
+    <requestHandler name="/tvrh" class="solr.SearchHandler" startup="lazy">
+        <lst name="defaults">
+            <str name="df">text</str>
+            <bool name="tv">true</bool>
+        </lst>
+        <arr name="last-components">
+            <str>tvComponent</str>
+        </arr>
+    </requestHandler>
+
+  <!-- Terms Component
+
+       http://wiki.apache.org/solr/TermsComponent
+
+       A component to return terms and document frequency of those
+       terms
+    -->
+  <searchComponent name="terms" class="solr.TermsComponent"/>
+
+  <!-- A request handler for demonstrating the terms component -->
+  <requestHandler name="/terms" class="solr.SearchHandler" startup="lazy">
+     <lst name="defaults">
+      <bool name="terms">true</bool>
+      <bool name="distrib">false</bool>
+    </lst>     
+    <arr name="components">
+      <str>terms</str>
+    </arr>
+  </requestHandler>
+
+  <!-- Highlighting Component
+       ======================
+       http://wiki.apache.org/solr/HighlightingParameters
+    -->
+    <searchComponent class="solr.HighlightComponent"
+                     name="highlight">
+        <highlighting>
+            <!-- Configure the standard fragmenter -->
+            <!-- This could most likely be commented out in the "default" case -->
+            <fragmenter name="gap"
+                        default="true"
+                        class="solr.highlight.GapFragmenter">
+                <lst name="defaults">
+                    <int name="hl.fragsize">100</int>
+                </lst>
+            </fragmenter>
+
+      <!-- A regular-expression-based fragmenter 
+           (for sentence extraction) 
+        -->
+            <fragmenter name="regex"
+                        class="solr.highlight.RegexFragmenter">
+                <lst name="defaults">
+                    <!-- slightly smaller fragsizes work better because of slop -->
+                    <int name="hl.fragsize">70</int>
+                    <!-- allow 50% slop on fragment sizes -->
+                    <float name="hl.regex.slop">0.5</float>
+                    <!-- a basic sentence pattern -->
+                    <str name="hl.regex.pattern">[-\w ,/\n\&quot;&apos;]{20,200}</str>
+                </lst>
+            </fragmenter>
+
+            <!-- Configure the standard formatter -->
+            <formatter name="html"
+                       default="true"
+                       class="solr.highlight.HtmlFormatter">
+                <lst name="defaults">
+                    <str name="hl.simple.pre"><![CDATA[<em>]]></str>
+                    <str name="hl.simple.post"><![CDATA[</em>]]></str>
+                </lst>
+            </formatter>
+
+            <!-- Configure the standard encoder -->
+            <encoder name="html"
+                     class="solr.highlight.HtmlEncoder" />
+
+            <!-- Configure the standard fragListBuilder -->
+            <fragListBuilder name="simple"
+                             class="solr.highlight.SimpleFragListBuilder"/>
+      
+            <!-- Configure the single fragListBuilder -->
+            <fragListBuilder name="single"
+                             class="solr.highlight.SingleFragListBuilder"/>
+      
+            <!-- Configure the weighted fragListBuilder -->
+            <fragListBuilder name="weighted"
+                             default="true"
+                             class="solr.highlight.WeightedFragListBuilder"/>
+      
+            <!-- default tag FragmentsBuilder -->
+            <fragmentsBuilder name="default"
+                              default="true"
+                              class="solr.highlight.ScoreOrderFragmentsBuilder">
+            <!--
+            <lst name="defaults">
+            <str name="hl.multiValuedSeparatorChar">/</str>
+            </lst>
+            -->
+            </fragmentsBuilder>
+
+        <!-- multi-colored tag FragmentsBuilder -->
+        <fragmentsBuilder name="colored"
+                         class="solr.highlight.ScoreOrderFragmentsBuilder">
+            <lst name="defaults">
+              <str name="hl.tag.pre"><![CDATA[
+                   <b style="background:yellow">,<b style="background:lawgreen">,
+                   <b style="background:aquamarine">,<b style="background:magenta">,
+                   <b style="background:palegreen">,<b style="background:coral">,
+                   <b style="background:wheat">,<b style="background:khaki">,
+                   <b style="background:lime">,<b style="background:deepskyblue">]]></str>
+              <str name="hl.tag.post"><![CDATA[</b>]]></str>
+            </lst>
+        </fragmentsBuilder>
+      
+        <boundaryScanner name="default"
+                         default="true"
+                         class="solr.highlight.SimpleBoundaryScanner">
+            <lst name="defaults">
+                <str name="hl.bs.maxScan">10</str>
+                <str name="hl.bs.chars">.,!? &#9;&#10;&#13;</str>
+            </lst>
+        </boundaryScanner>
+      
+        <boundaryScanner name="breakIterator"
+                       class="solr.highlight.BreakIteratorBoundaryScanner">
+        <lst name="defaults">
+          <!-- type should be one of CHARACTER, WORD(default), LINE and SENTENCE -->
+          <str name="hl.bs.type">WORD</str>
+          <!-- language and country are used when constructing Locale object.  -->
+          <!-- And the Locale object will be used when getting instance of BreakIterator -->
+          <str name="hl.bs.language">en</str>
+          <str name="hl.bs.country">US</str>
+        </lst>
+        </boundaryScanner>
+    </highlighting>
+</searchComponent>
+
+
+    <queryResponseWriter name="json"
+                         class="solr.JSONResponseWriter">
+     <!-- For the purposes of the tutorial, JSON responses are written as
+      plain text so that they are easy to read in *any* browser.
+      If you expect a MIME type of "application/json" just remove this override.
+     -->
+        <str name="content-type">text/plain; charset=UTF-8</str>
+    </queryResponseWriter>
+
+    <!--
+     Custom response writers can be declared as needed...
+    -->
+    <queryResponseWriter name="velocity"
+                         class="solr.VelocityResponseWriter"
+                         startup="lazy"/>
+
+    <!-- XSLT response writer transforms the XML output by any xslt file found
+       in Solr's conf/xslt directory.  Changes to xslt files are checked for
+       every xsltCacheLifetimeSeconds.
+    -->
+    <queryResponseWriter name="xslt"
+                         class="solr.XSLTResponseWriter">
+        <int name="xsltCacheLifetimeSeconds">5</int>
+    </queryResponseWriter>
+
+    <!-- Legacy config for the admin interface -->
+    <admin>
+        <defaultQuery>swissbib</defaultQuery>
+    </admin>
+
+</config>
