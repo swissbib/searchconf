@@ -217,14 +217,33 @@
             <str name="defType">dismax</str>
             <!-- str name="fl">a*,b*,c*,d*,e*,first_indexed,format,fullrecord,g*,h*,i*,l*,o*,p*,r*,s*,t*,u*,*_date*,*_isn*,*_str*,*_txt*</str -->
             <str name="echoParams">explicit</str>
-            <str name="spellcheck.extendedResults">true</str>
+          <!--  <str name="spellcheck.extendedResults">true</str>
             <str name="spellcheck.onlyMorePopular">true</str>
-            <str name="spellcheck.count">20</str>
+            <str name="spellcheck.count">20</str> -->
+
+            <!--
+            Spellchecking
+            -->
+
+            <str name="spellcheck.extendedResults">true</str>
+            <str name="spellcheck.count">10</str>
+            <str name="spellcheck.alternativeTermCount">5</str>
+            <str name="spellcheck.maxResultsForSuggest">5</str>
+            <str name="spellcheck.collate">true</str>
+            <str name="spellcheck.collateExtendedResults">true</str>
+            <str name="spellcheck.maxCollationTries">10</str>
+            <str name="spellcheck.maxCollations">5</str>
+
+
+
         </lst>
         <arr name="last-components">
             <str>spellcheck</str>
         </arr>
     </requestHandler>
+
+
+
 
     <requestHandler name="morelikethis" class="solr.MoreLikeThisHandler">
         <lst name="defaults">
@@ -298,6 +317,40 @@
   -->
 
     <searchComponent name="spellcheck" class="org.apache.solr.handler.component.SpellCheckComponent">
+
+	
+
+	<lst name="spellchecker">
+		<str name="name">default</str>
+		<str name="field">spellingShingle</str>
+		<str name="classname">solr.DirectSolrSpellChecker</str>
+		<str name="distanceMeasure">internal</str>	
+		<float name="accuracy">0.5</float>
+		<int name="maxEdits">2</int>
+		<int name="minPrefix">1</int>
+		<int name="maxInspections">5</int>
+		<int name="minQueryLength">3</int>
+		<float name="maxQueryFrequency">0.01</float>
+	</lst>
+
+	<lst name="spellchecker">
+		<str name="name">basicSpell</str>
+		<str name="field">spelling</str>
+		<str name="classname">solr.DirectSolrSpellChecker</str>
+		<str name="distanceMeasure">internal</str>	
+		<float name="accuracy">0.5</float>
+		<int name="maxEdits">2</int>
+		<int name="minPrefix">1</int>
+		<int name="maxInspections">5</int>
+		<int name="minQueryLength">3</int>
+		<float name="maxQueryFrequency">0.01</float>
+	</lst>
+
+
+    </searchComponent>
+
+<!--
+    <searchComponent name="spellcheck" class="org.apache.solr.handler.component.SpellCheckComponent">
         <lst name="spellchecker">
             <str name="name">default</str>
             <str name="field">spellingShingle</str>
@@ -315,6 +368,10 @@
             <str name="buildOnOptimize">true</str>
         </lst>
     </searchComponent>
+-->
+
+
+
 
     <queryConverter name="queryConverter" class="org.apache.solr.spelling.SpellingQueryConverter" />
 
@@ -508,7 +565,7 @@
        https://wiki.apache.org/solr/SolrCloud/
     -->
 
-
+<!--
   <requestHandler name="/replication" class="solr.ReplicationHandler" >
 
       <lst name="slave">
@@ -518,7 +575,7 @@
 
 
   </requestHandler>
-
+-->
 
 
 
