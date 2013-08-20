@@ -1,11 +1,15 @@
 #!/bin/bash
 
 
+#example
+#./start-slave.sh -mhttp://sb-s15.swissbib.unibas.ch:8080/solr/sb-biblio/replication -p00:59:00"
+
+
 LOGFILE=./START.SOLR.log
 
 function usage()
 {
- printf "usage: $0 -m <URL master Server e.g. http://sb-s15.swissbib.unibas.ch:8080/solr/sb-biblio/replication> -p <polling intervall recommended 59:00:00 or 79:00:00 or 99:00:00 >\n"
+ printf "usage: $0 -m <URL master Server e.g. http://sb-s15.swissbib.unibas.ch:8080/solr/sb-biblio/replication> -p <polling intervall recommended 00:59:00 or 00:79:00 or 00:99:00 >\n"
 }
 
 
