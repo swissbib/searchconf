@@ -565,7 +565,7 @@
        https://wiki.apache.org/solr/SolrCloud/
     -->
 
-<!--
+
   <requestHandler name="/replication" class="solr.ReplicationHandler" >
 
       <lst name="slave">
@@ -575,7 +575,7 @@
 
 
   </requestHandler>
--->
+
 
 
 

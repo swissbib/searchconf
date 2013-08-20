@@ -2,7 +2,7 @@
 
 
 #example
-#./start-slave.sh -mhttp://sb-s15.swissbib.unibas.ch:8080/solr/sb-biblio/replication -p00:59:00"
+#./start.slave.sh -mhttp://sb-s15.swissbib.unibas.ch:8080/solr/sb-biblio/replication -p00:59:00
 
 
 LOGFILE=./START.SOLR.log
