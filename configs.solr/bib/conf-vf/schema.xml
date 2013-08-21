@@ -393,7 +393,7 @@ SWISSBIB SOLR-SCHEMA
 
         <!--  special fields
             **************** -->
-        <field name="time_processed" type="tdate" stored="true" indexed="false" />
+        <field name="time_processed" type="tdate" stored="true" indexed="true" />
         <field name="time_indexed" type="tdate" default="NOW/MINUTE" stored="true" indexed="true" />
         <!-- mandatory field for schema version 1.5-->
         <field name="_version_" type="long" indexed="true" stored="true"/>
