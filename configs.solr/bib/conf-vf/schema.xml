@@ -32,33 +32,10 @@ SWISSBIB SOLR-SCHEMA
       <fieldType name="tint" class="solr.TrieIntField" precisionStep="8" omitNorms="true" positionIncrementGap="0"/>a
       <fieldType name="long" class="solr.TrieLongField" precisionStep="0" positionIncrementGap="0"/>
 
-      <!-- Text Field for Normalized ISBN/ISSN Numbers - take first chunk of text
-           prior to whitespace, force to lowercase, strip non-ISBN/ISSN characters,
-           omit results that are empty after stripping. 
-           adapted for swissbib with filters from deprecated type stdID 13.05.2013/osc) -->
-      <fieldType name="isn" class="solr.TextField" positionIncrementGap="100">
-          <analyzer>
-              <tokenizer class="solr.PatternTokenizerFactory" pattern="^(\S*)\s*.*$" group="1"/>
-              <filter class="solr.LowerCaseFilterFactory"/>
-              <filter class="solr.PatternReplaceFilterFactory"
-                      pattern="^(\([a-z]+\))vtls0"
-                      replacement="$10"
-                      replace="all"
-              />
-              <filter class="solr.PatternReplaceFilterFactory"
-                      pattern="[^\w]+"
-                      replacement=""
-                      replace="all"
-              />
-              <filter class="solr.TrimFilterFactory" />
-              <filter class="solr.LengthFilterFactory" min="2" max="100" />
-          </analyzer>
-      </fieldType>
-
       <!-- field types for navigators / facets
            ===================================
       -->
-      <!-- used for: Navigator author -->
+      <!-- subject and name entries -->
       <fieldType name="navFieldCombined" class="solr.TextField">
           <analyzer>
               <tokenizer class="solr.KeywordTokenizerFactory" />
@@ -73,7 +50,7 @@ SWISSBIB SOLR-SCHEMA
           </analyzer>
       </fieldType>
 
-      <!-- used for: Navigator language (specific to correct some values) -->
+      <!-- Navigator language (specific to correct some values) -->
       <fieldType name="navFieldLangCode" class="solr.TextField">
           <analyzer>
               <tokenizer class="solr.KeywordTokenizerFactory" />
@@ -165,6 +142,29 @@ SWISSBIB SOLR-SCHEMA
               <filter class="solr.CJKWidthFilterFactory"/>
               <filter class="solr.CJKBigramFilterFactory"/>
               <filter class="solr.RemoveDuplicatesTokenFilterFactory"/>
+          </analyzer>
+      </fieldType>
+      
+      <!-- Text Field for Normalized ISBN/ISSN Numbers - take first chunk of text
+           prior to whitespace, force to lowercase, strip non-ISBN/ISSN characters,
+           omit results that are empty after stripping. 
+           adapted for swissbib with filters from deprecated type stdID 13.05.2013/osc) -->
+      <fieldType name="isn" class="solr.TextField" positionIncrementGap="100">
+          <analyzer>
+              <tokenizer class="solr.PatternTokenizerFactory" pattern="^(\S*)\s*.*$" group="1"/>
+              <filter class="solr.LowerCaseFilterFactory"/>
+              <filter class="solr.PatternReplaceFilterFactory"
+                  pattern="^(\([a-z]+\))vtls0"
+                  replacement="$10"
+                  replace="all"
+              />
+              <filter class="solr.PatternReplaceFilterFactory"
+                  pattern="[^\w]+"
+                  replacement=""
+                  replace="all"
+              />
+              <filter class="solr.TrimFilterFactory" />
+              <filter class="solr.LengthFilterFactory" min="2" max="100" />
           </analyzer>
       </fieldType>
 
@@ -390,23 +390,13 @@ SWISSBIB SOLR-SCHEMA
         <field name="navSubtime" type="navFieldCombined" multiValued="true" stored="false" />
         <field name="navDrsys" type="string" multiValued="true" indexed="true" stored="false" />
         <field name="navYear" type="tint" stored="false" multiValued="true" />
-        <!--<field name="navYearUTC" type="tdate" stored="false" />-->
-        <field name="navPublplace" type="navFieldCombined" multiValued="true" indexed="true" stored="false" />
 
-        <!-- processing fields / special cases
-            ********************************* -->
-        <!-- GH: 20120314: Vorlaeufig auf isn setzen. Wert erhaelt im Document processing ein Format welches nicht mit dem von tdate
-        kompatibel ist
-        SEVERE: org.apache.solr.common.SolrException: ERROR: [doc=180690507] Error adding field 'time_processed'='2012-02-24T20:46:26.257+01:00'
-            at org.apache.solr.update.DocumentBuilder.toDocument(DocumentBuilder.java:302)
-         sollte wohl 2012-02-24T20:46:26Z sein
-        <field name="time_processed" type="tdate" stored="true" indexed="true" />-->
-        <field name="time_processed" type="isn" stored="true" indexed="false" />
+        <!--  special fields
+            **************** -->
+        <field name="time_processed" type="tdate" stored="true" indexed="false" />
         <field name="time_indexed" type="tdate" default="NOW/MINUTE" stored="true" indexed="true" />
         <!-- mandatory field for schema version 1.5-->
         <field name="_version_" type="long" indexed="true" stored="true"/>
-        <field name="sfilter" type="string" indexed="true" stored="true" multiValued="true" />
-        <field name="group_id" type="string" indexed="true" stored="true" multiValued="true" />
         <!-- Fallback-Feld zur Fehlervermeidung beim Indexierung, nicht vorhergesehenes wird nicht
              indexiert, darf aber sein -->
         <dynamicField name="*" type="text_untreated" indexed="false" stored="false" multiValued="true" />
@@ -423,7 +413,6 @@ SWISSBIB SOLR-SCHEMA
         <!-- copy fields to language and media type navigators -->
         <copyField source="language" dest="navLanguage"/>
         <copyField source="format" dest="navMediatype" />
-        <copyField source="publplace" dest="navPublplace" />
         <copyField source="publishDate" dest="navYear" />
 
         <!-- copy fields fuer Verbund, Zweigstellen und lokale Systemnummern -->
@@ -487,7 +476,6 @@ SWISSBIB SOLR-SCHEMA
 
     </fields>
 
-
     <!-- Field to use to determine and enforce document uniqueness.
          Unless this field is marked with required="false", it will be a required field
       -->
@@ -507,14 +495,5 @@ SWISSBIB SOLR-SCHEMA
      The default is OR, which is generally assumed so it is not a good idea to change it
      globally here.  The "q.op" request parameter takes precedence over this. -->
     <!--<solrQueryParser defaultOperator="AND"/> -->
-
-    <!--
-    GH: in swissbib VuFind 4.1 we used still used these operators -> should be removed because marked as deprecated
-    -> tests necessary
-    <defaultSearchField>title</defaultSearchField>
-    <solrQueryParser defaultOperator="AND"/>
-    -->
-
-
 
 </schema>
