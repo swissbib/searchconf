@@ -1,3 +1,0 @@
-Dokumentation zum Schema ist im swissbib-wiki (www.swissbib.org) zu finden.
-Die Dokumentation zum vufind-Schema fehlt noch (29.01.2013 / osc)
-oliver.schihin@unibas.ch
