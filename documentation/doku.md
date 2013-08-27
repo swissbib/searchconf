@@ -1,1 +1,1 @@
-Dokumentation zum Schema ist v.a. swissbib-wiki (www.swissbib.org) zu finden.
+Dokumentation zum Schema ist im swissbib-wiki (www.swissbib.org) zu finden.
