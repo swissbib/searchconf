@@ -59,10 +59,6 @@ SWISSBIB SOLR-SCHEMA
                       pattern="([^a-z])"
                       replacement=""
                       replace="all" />
-              <filter class="solr.PatternReplaceFilterFactory"
-                      pattern="fer|xxx"
-                      replacement="und"
-                      replace="all" />
               <filter class="solr.LengthFilterFactory" min="3" max="3" />
           </analyzer>
       </fieldType>
@@ -385,8 +381,7 @@ SWISSBIB SOLR-SCHEMA
         <field name="navMediatype" type="navFieldMediaType" multiValued="true" stored="false" />
         <field name="navNetwork" type="isn" multiValued="true" stored="false" />
         <field name="navSubform" type="navFieldForm" multiValued="true" stored="false" />
-        <field name="navSubfull" type="navFieldCombined" multiValued="true" stored="false" />
-        <field name="navSubidsbb" type="navFieldCombined" multiValued="true" stored="false" />
+        <dynamicField name="navSub_*" type="navFieldCombined" multiValued="true" stored="false" />
         <field name="navSubtime" type="navFieldCombined" multiValued="true" stored="false" />
         <field name="navDrsys" type="string" multiValued="true" indexed="true" stored="false" />
         <field name="navYear" type="tint" stored="false" multiValued="true" />
@@ -420,28 +415,31 @@ SWISSBIB SOLR-SCHEMA
         <copyField source="institution" dest="navBranchlib" />
         <copyField source="institution" dest="navBranchlib2" />
 
-        <!-- Subject Facette fuer View IDSBB -->
-        <copyField source="subtop_gnd" dest="navSubidsbb" />
-        <copyField source="subtop_idsbb" dest="navSubidsbb" />
-        <copyField source="subtop_mesh" dest="navSubidsbb" />
-        <copyField source="subpers_gnd" dest="navSubidsbb" />
-        <copyField source="subpers_idsbb" dest="navSubidsbb" />
-        <copyField source="subpers_mesh" dest="navSubidsbb" />
-        <copyField source="subtitle_gnd" dest="navSubidsbb" />
-        <copyField source="subtitle_idsbb" dest="navSubidsbb" />
-        <copyField source="subtitle_mesh" dest="navSubidsbb" />
-        <copyField source="subgeo_gnd" dest="navSubidsbb" />
-        <copyField source="subgeo_idsbb" dest="navSubidsbb" />
-        <copyField source="subgeo_mesh" dest="navSubidsbb" />
-        <copyField source="subtime_gnd" dest="navSubidsbb" />
-        <copyField source="subtime_idsbb" dest="navSubidsbb" />
-        <copyField source="subtime_mesh" dest="navSubidsbb" />
+        <!-- Facetten fuer View orange (BaBe) -->
+        <copyField source="subtop_gnd" dest="navSub_orange" />
+        <copyField source="subtop_idsbb" dest="navSub_orange" />
+        <copyField source="subtop_mesh" dest="navSub_orange" />
+        <copyField source="subpers_gnd" dest="navSub_orange" />
+        <copyField source="subpers_idsbb" dest="navSub_orange" />
+        <copyField source="subpers_mesh" dest="navSub_orange" />
+        <copyField source="subtitle_gnd" dest="navSub_orange" />
+        <copyField source="subtitle_idsbb" dest="navSub_orange" />
+        <copyField source="subtitle_mesh" dest="navSub_orange" />
+        <copyField source="subgeo_gnd" dest="navSub_orange" />
+        <copyField source="subgeo_idsbb" dest="navSub_orange" />
+        <copyField source="subgeo_mesh" dest="navSub_orange" />
+        <copyField source="subtime_gnd" dest="navSub_orange" />
+        <copyField source="subtime_idsbb" dest="navSub_orange" />
+        <copyField source="subtime_mesh" dest="navSub_orange" />
+        
+        <copyField source="navAuthor_IDSBB" dest="navAuthor_orange" />
+        <copyField source="navAuthor_SNL" dest="navAuthor_orange" />
 
         <!-- Topic Subject Facette fuer swissbib gruen (19.03.2012/osc) -->
-        <copyField source="subpers_*" dest="navSubfull" />
-        <copyField source="subtitle_*" dest="navSubfull" />
-        <copyField source="subtop_*" dest="navSubfull" />
-        <copyField source="subgeo_*" dest="navSubfull" />
+        <copyField source="subpers_*" dest="navSub_green" />
+        <copyField source="subtitle_*" dest="navSub_green" />
+        <copyField source="subtop_*" dest="navSub_green" />
+        <copyField source="subgeo_*" dest="navSub_green" />
 
         <!-- Time Subject Facette für swissbib gruen (19.03.2012/osc) -->
         <copyField source="subtime_*" dest="navSubtime" />
