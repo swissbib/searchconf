@@ -50,19 +50,6 @@ SWISSBIB SOLR-SCHEMA
           </analyzer>
       </fieldType>
 
-      <!-- Navigator language (specific to correct some values) -->
-      <fieldType name="navFieldLangCode" class="solr.TextField">
-          <analyzer>
-              <tokenizer class="solr.KeywordTokenizerFactory" />
-              <filter class="solr.LowerCaseFilterFactory" />
-              <filter class="solr.PatternReplaceFilterFactory"
-                      pattern="([^a-z])"
-                      replacement=""
-                      replace="all" />
-              <filter class="solr.LengthFilterFactory" min="3" max="3" />
-          </analyzer>
-      </fieldType>
-
       <!-- used for: Navigator mediatype (reduce to simpler values -->
       <fieldType name="navFieldMediaType" class="solr.TextField">
           <analyzer>
@@ -304,7 +291,7 @@ SWISSBIB SOLR-SCHEMA
 
         <!-- Generic Fields
              ************** -->
-        <field name="language" type="navFieldLangCode" indexed="true" stored="true" multiValued="true"/>
+        <field name="language" type="string" indexed="true" stored="true" multiValued="true"/>
         <field name="format" type="isn" indexed="true" stored="true" multiValued="true"/>
         <field name="author" type="text_untreated" indexed="true" stored="false" termVectors="true" multiValued="true" />
         <field name="title" type="text_untreated" indexed="true" stored="true" multiValued="true"/>
@@ -372,12 +359,11 @@ SWISSBIB SOLR-SCHEMA
 	    <field name="is_hierarchy_title" type="string" indexed="true" stored="true" multiValued="false"/>
 	    <field name="hierarchy_browse" type="navFieldCombined" indexed="true" stored="false" multiValued="true"/>
 
-        <!-- all available Facet Fields
-             ************************** -->
+        <!-- specific Facet Fields
+             ********************* -->
         <dynamicField name="navAuthor_*" type="navFieldCombined" indexed="true" stored="false" multiValued="true" />
         <field name="navBranchlib" type="string" multiValued="true" stored="false" />
         <field name="navBranchlib2" type="string" multiValued="true" stored="false" />
-        <field name="navLanguage" type="navFieldLangCode" multiValued="true" stored="false" />
         <field name="navMediatype" type="navFieldMediaType" multiValued="true" stored="false" />
         <field name="navNetwork" type="isn" multiValued="true" stored="false" />
         <field name="navSubform" type="navFieldForm" multiValued="true" stored="false" />
@@ -405,8 +391,7 @@ SWISSBIB SOLR-SCHEMA
         <copyField source="sub*" dest="topic" />
 
         <!-- COPY FIELDS FUER NAVIGATOREN / FACETTEN -->
-        <!-- copy fields to language and media type navigators -->
-        <copyField source="language" dest="navLanguage"/>
+        <!-- copy fields to date and media type navigators -->
         <copyField source="format" dest="navMediatype" />
         <copyField source="publishDate" dest="navYear" />
 
