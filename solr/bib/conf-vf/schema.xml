@@ -316,6 +316,7 @@ SWISSBIB SOLR-SCHEMA
         <field name="author2" type="text_untreated" indexed="true" stored="false" multiValued="true" />
         <field name="series" type="text_untreated" indexed="true" stored="false" multiValued="true" />
         <field name="journals" type="text_untreated" indexed="true" stored="false" multiValued="true" />
+        <dynamicField name="*_str_mv" type="string" indexed="true" stored="true" multiValued="true"/>
         <dynamicField name="*_txt_mv" type="text_untreated" indexed="true" stored="false" multiValued="true"/>
         <!--
         <field name="author-letter" type="string" indexed="true" stored="true"/>
