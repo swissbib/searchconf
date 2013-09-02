@@ -151,7 +151,7 @@ SWISSBIB SOLR-SCHEMA
           </analyzer>
       </fieldType>
 
-      <!-- stringlike : Feldtyp fuer Klassifikationen und Codes, lowercase und trunkierbar (deshalb nicht string) -->
+      <!-- stringlike : Feldtyp fuer Klassifikationen und Codes, lowercase und trunkierbar -->
       <fieldType name="stringlike" class="solr.TextField">
           <analyzer>
               <tokenizer class="solr.KeywordTokenizerFactory" />
@@ -291,7 +291,7 @@ SWISSBIB SOLR-SCHEMA
 
         <!-- Generic Fields
              ************** -->
-        <field name="language" type="string" indexed="true" stored="true" multiValued="true"/>
+        <field name="language" type="stringlike" indexed="true" stored="true" multiValued="true"/>
         <field name="format" type="isn" indexed="true" stored="true" multiValued="true"/>
         <field name="author" type="text_untreated" indexed="true" stored="false" termVectors="true" multiValued="true" />
         <field name="title" type="text_untreated" indexed="true" stored="true" multiValued="true"/>
