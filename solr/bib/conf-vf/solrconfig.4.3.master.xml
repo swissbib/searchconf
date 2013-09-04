@@ -204,45 +204,42 @@
         </arr>
     </requestHandler>
 
-  <!-- the following handler will be used for eligible dismax searches defined
-     in web/conf/searchspecs.yaml.  Searches relying on advanced features
-     incompatible with dismax will be sent to the standard handler instead.
-     You can use this handler definition to set global Dismax settings
-     (i.e. mm / bf).  If you need different settings for different types of
-     searches (i.e. Title vs. Author), you can also configure individual
-     settings in the searchspecs.yaml file.
-  -->
+    <!-- the following handler will be used for eligible dismax searches defined
+       in web/conf/searchspecs.yaml.  Searches relying on advanced features
+       incompatible with dismax will be sent to the standard handler instead.
+       You can use this handler definition to set global Dismax settings
+       (i.e. mm / bf).  If you need different settings for different types of
+       searches (i.e. Title vs. Author), you can also configure individual
+       settings in the searchspecs.yaml file.
+    -->
     <requestHandler name="dismax" class="solr.SearchHandler">
         <lst name="defaults">
             <str name="defType">dismax</str>
             <!-- str name="fl">a*,b*,c*,d*,e*,first_indexed,format,fullrecord,g*,h*,i*,l*,o*,p*,r*,s*,t*,u*,*_date*,*_isn*,*_str*,*_txt*</str -->
             <str name="echoParams">explicit</str>
+            <!--  <str name="spellcheck.extendedResults">true</str>
+              <str name="spellcheck.onlyMorePopular">true</str>
+              <str name="spellcheck.count">20</str> -->
+
+            <!--
+            Spellchecking
+            -->
+
             <str name="spellcheck.extendedResults">true</str>
-            <str name="spellcheck.onlyMorePopular">true</str>
-            <str name="spellcheck.count">20</str>
+            <str name="spellcheck.count">10</str>
+            <str name="spellcheck.alternativeTermCount">5</str>
+            <str name="spellcheck.maxResultsForSuggest">5</str>
+            <str name="spellcheck.collate">true</str>
+            <str name="spellcheck.collateExtendedResults">true</str>
+            <str name="spellcheck.maxCollationTries">10</str>
+            <str name="spellcheck.maxCollations">5</str>
+
+
+
         </lst>
         <arr name="last-components">
             <str>spellcheck</str>
         </arr>
-    </requestHandler>
-
-    <requestHandler name="morelikethis" class="solr.MoreLikeThisHandler">
-        <lst name="defaults">
-            <str name="mlt.fl">title,title_short,topic,language,author,publishDate</str>
-            <str name="mlt.qf">
-                title^75
-                title_short^100
-                topic^300
-                language^30
-                author^75
-                publishDate
-            </str>
-            <int name="mlt.mintf">1</int>
-            <int name="mlt.mindf">1</int>
-            <str name="mlt.boost">true</str>
-            <int name="mlt.count">5</int>
-            <int name="rows">5</int>
-        </lst>
     </requestHandler>
 
   <!-- browse handler
@@ -298,22 +295,36 @@
   -->
 
     <searchComponent name="spellcheck" class="org.apache.solr.handler.component.SpellCheckComponent">
+
+
+
         <lst name="spellchecker">
             <str name="name">default</str>
             <str name="field">spellingShingle</str>
-            <str name="accuracy">0.75</str>
-            <str name="spellcheckIndexDir">./spellShingle</str>
-            <str name="queryAnalyzerFieldType">textSpellShingle</str>
-            <str name="buildOnOptimize">true</str>
+            <str name="classname">solr.DirectSolrSpellChecker</str>
+            <str name="distanceMeasure">internal</str>
+            <float name="accuracy">0.5</float>
+            <int name="maxEdits">2</int>
+            <int name="minPrefix">1</int>
+            <int name="maxInspections">5</int>
+            <int name="minQueryLength">3</int>
+            <float name="maxQueryFrequency">0.01</float>
         </lst>
+
         <lst name="spellchecker">
             <str name="name">basicSpell</str>
             <str name="field">spelling</str>
-            <str name="accuracy">0.75</str>
-            <str name="spellcheckIndexDir">./spellchecker</str>
-            <str name="queryAnalyzerFieldType">textSpell</str>
-            <str name="buildOnOptimize">true</str>
+            <str name="classname">solr.DirectSolrSpellChecker</str>
+            <str name="distanceMeasure">internal</str>
+            <float name="accuracy">0.5</float>
+            <int name="maxEdits">2</int>
+            <int name="minPrefix">1</int>
+            <int name="maxInspections">5</int>
+            <int name="minQueryLength">3</int>
+            <float name="maxQueryFrequency">0.01</float>
         </lst>
+
+
     </searchComponent>
 
     <queryConverter name="queryConverter" class="org.apache.solr.spelling.SpellingQueryConverter" />
