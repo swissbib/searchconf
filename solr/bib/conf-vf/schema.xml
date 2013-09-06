@@ -159,6 +159,20 @@ SWISSBIB SOLR-SCHEMA
               <filter class="solr.TrimFilterFactory" />
           </analyzer>
       </fieldType>
+      
+      <!-- callnum : Feldtyp fuer Signaturen. Ev. spaeter wieder mit stringlike zusammenfuehren -->
+	  <fieldType name="callnum" class="solr.TextField">
+          <analyzer>
+              <tokenizer class="solr.KeywordTokenizerFactory" />
+              <filter class="solr.LowerCaseFilterFactory" />
+              <filter class="solr.PatternReplaceFilterFactory"
+                      pattern="\u0020"
+                      replacement=""
+                      replace="all"
+                      />
+              <filter class="solr.TrimFilterFactory" />
+          </analyzer>
+      </fieldType>
 
       <!-- text_stemmed : Feldtyp fuer Text, gestemmed, tieferes boosting -->
       <fieldType name="text_stemmed" class="solr.TextField" positionIncrementGap="100" >
@@ -287,7 +301,7 @@ SWISSBIB SOLR-SCHEMA
         <!-- following two fields will be empty at the moment -->
         <field name="collection" type="string" indexed="true" stored="true" multiValued="true" />
         <field name="isil" type="string" stored="true" indexed="true" multiValued="true" />
-        <field name="callnumber" type="isn" indexed="true" stored="false" multiValued="true" />
+        <field name="callnumber" type="callnum" indexed="true" stored="false" multiValued="true" />
 
         <!-- Generic Fields
              ************** -->
