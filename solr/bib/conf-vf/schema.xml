@@ -279,6 +279,7 @@ SWISSBIB SOLR-SCHEMA
         <field name="id" type="string" indexed="true" stored="true"/>
         <field name="fullrecord" type="string" indexed="false" stored="true"/>
         <field name="holdings" type="string" indexed="false" stored="true"/>
+        <field name="freshness" type="tdate" indexed="true" stored="false"/>
 
         <field name="fulltext" type="text_untreated" indexed="true" stored="true" multiValued="true" termVectors="true" termPositions="true" termOffsets="true" />
         <!-- used for loading correct record driver -->
