@@ -340,7 +340,6 @@ SWISSBIB SOLR-SCHEMA
         <field name="title_fullStr" type="string" indexed="true" stored="true"/>
         <field name="title_auth" type="text_untreated" indexed="true" stored="true"/>
         -->
-        <field name="publplace" type="text_untreated" indexed="true" stored="false" multiValued="true" />
 
         <!-- subject fields (generic field 'subfull', categories per vocabulary, classifications, special subject indexing, local subject indexing)
              **************  -->
