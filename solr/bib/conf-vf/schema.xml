@@ -157,6 +157,7 @@ SWISSBIB SOLR-SCHEMA
               <tokenizer class="solr.KeywordTokenizerFactory" />
               <filter class="solr.LowerCaseFilterFactory" />
               <filter class="solr.TrimFilterFactory" />
+              <filter class="solr.LengthFilterFactory" min="2" max="100" />
           </analyzer>
       </fieldType>
       
