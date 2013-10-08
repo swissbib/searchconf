@@ -50,18 +50,6 @@ SWISSBIB SOLR-SCHEMA
           </analyzer>
       </fieldType>
 
-      <!-- used for: Navigator mediatype (reduce to simpler values -->
-      <fieldType name="navFieldMediaType" class="solr.TextField">
-          <analyzer>
-              <tokenizer class="solr.KeywordTokenizerFactory" />
-              <filter class="solr.SynonymFilterFactory"
-                      synonyms="mediatypesynonyms.txt"
-                      ignoreCase="true"
-                      expand="false"
-                      tokenizerFactory="solr.KeywordTokenizerFactory"/>
-          </analyzer>
-      </fieldType>
-
       <!-- used for: Navigator form (Formschlagworte)-->
       <fieldType name="navFieldForm" class="solr.TextField">
           <analyzer>
@@ -380,7 +368,6 @@ SWISSBIB SOLR-SCHEMA
         <dynamicField name="navAuthor_*" type="navFieldCombined" indexed="true" stored="false" multiValued="true" />
         <field name="navBranchlib" type="string" multiValued="true" stored="false" />
         <field name="navBranchlib2" type="string" multiValued="true" stored="false" />
-        <field name="navMediatype" type="navFieldMediaType" multiValued="true" stored="false" />
         <field name="navNetwork" type="isn" multiValued="true" stored="false" />
         <field name="navSubform" type="navFieldForm" multiValued="true" stored="false" />
         <dynamicField name="navSub_*" type="navFieldCombined" multiValued="true" stored="false" />
@@ -407,8 +394,7 @@ SWISSBIB SOLR-SCHEMA
         <copyField source="sub*" dest="topic" />
 
         <!-- COPY FIELDS FUER NAVIGATOREN / FACETTEN -->
-        <!-- copy fields to date and media type navigators -->
-        <copyField source="format" dest="navMediatype" />
+        <!-- copy fields to date navigator -->
         <copyField source="publishDate" dest="navYear" />
 
         <!-- copy fields fuer Verbund, Zweigstellen und lokale Systemnummern -->
