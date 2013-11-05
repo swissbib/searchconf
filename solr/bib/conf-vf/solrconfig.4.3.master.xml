@@ -221,9 +221,7 @@
               <str name="spellcheck.onlyMorePopular">true</str>
               <str name="spellcheck.count">20</str> -->
 
-            <!--
-            Spellchecking
-            -->
+            <!-- Spellchecking -->
 
             <str name="spellcheck.extendedResults">true</str>
             <str name="spellcheck.count">10</str>
@@ -233,13 +231,6 @@
             <str name="spellcheck.collateExtendedResults">true</str>
             <str name="spellcheck.maxCollationTries">10</str>
             <str name="spellcheck.maxCollations">5</str>
-
-			<!--
-			boosting on freshness
-			-->
-			<str name="bf">recip(abs(ms(NOW/DAY,freshness)),3.16e-10,100,100)</str>
-
-
 
         </lst>
         <arr name="last-components">
@@ -257,9 +248,7 @@
               <str name="spellcheck.onlyMorePopular">true</str>
               <str name="spellcheck.count">20</str> -->
 
-            <!--
-            Spellchecking
-            -->
+            <!-- Spellchecking -->
 
             <str name="spellcheck.extendedResults">true</str>
             <str name="spellcheck.count">10</str>
@@ -270,7 +259,6 @@
             <str name="spellcheck.maxCollationTries">10</str>
             <str name="spellcheck.maxCollations">5</str>
 
-            <str name="bf">recip(abs(ms(NOW/DAY,freshness)),3.16e-10,100,100)</str>
         </lst>
         <arr name="last-components">
             <str>spellcheck</str>
