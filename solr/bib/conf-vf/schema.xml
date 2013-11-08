@@ -286,8 +286,8 @@ SWISSBIB SOLR-SCHEMA
 
         <!-- Institutional Fields (and call numbers, maybe holdings later, information to access a physical or remote electronic resource)
              ******************** -->
-        <field name="union" type="isn" indexed="true" stored="true" multiValued="true" />
-        <field name="institution" type="isn" indexed="true" stored="true" multiValued="true" />
+        <field name="union" type="string" indexed="true" stored="true" multiValued="true" />
+        <field name="institution" type="string" indexed="true" stored="true" multiValued="true" />
         <!-- following two fields will be empty at the moment -->
         <field name="collection" type="string" indexed="true" stored="true" multiValued="true" />
         <field name="isil" type="string" stored="true" indexed="true" multiValued="true" />
@@ -397,11 +397,6 @@ SWISSBIB SOLR-SCHEMA
         <!-- COPY FIELDS FUER NAVIGATOREN / FACETTEN -->
         <!-- copy fields to date navigator -->
         <copyField source="publishDate" dest="navYear" />
-
-        <!-- copy fields fuer Verbund, Zweigstellen und lokale Systemnummern -->
-        <copyField source="union" dest="navNetwork" />
-        <copyField source="institution" dest="navBranchlib" />
-        <copyField source="institution" dest="navBranchlib2" />
 
         <!-- Facetten fuer View orange (BaBe) -->
         <copyField source="subtop_gnd" dest="navSub_orange" />
