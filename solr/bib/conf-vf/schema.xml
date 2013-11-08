@@ -343,6 +343,7 @@ SWISSBIB SOLR-SCHEMA
         <field name="subgnd_enriched" type="text_untreated" indexed="true" stored="false" multiValued="true" />
         <!-- Special or local subject indexing (sources are fields 690/691) -->
         <field name="sublocal" type="text_untreated" indexed="true" stored="false" multiValued="true" />
+        <field name="submusic" type="text_untreated" indexed="true" stored="false" multiValued="true" />
         <dynamicField name="classif_*" type="stringlike" indexed="true" stored="false" multiValued="true" />
 
         <!-- Sort Fields
