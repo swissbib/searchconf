@@ -315,9 +315,7 @@ SWISSBIB SOLR-SCHEMA
         <field name="title_alt" type="text_untreated" indexed="true" stored="false" multiValued="true"/>
         <field name="title_old" type="text_untreated" indexed="true" stored="true" multiValued="true"/>
         <field name="title_new" type="text_untreated" indexed="true" stored="true" multiValued="true"/>
-        <field name="authorfull" type="text_untreated" indexed="true" stored="false" multiValued="true" termVectors="true" />
         <field name="author_additional" type="text_untreated" indexed="true" stored="false" multiValued="true" />
-        <field name="author2" type="text_untreated" indexed="true" stored="false" multiValued="true" />
         <field name="series" type="text_untreated" indexed="true" stored="false" multiValued="true" />
         <field name="journals" type="text_untreated" indexed="true" stored="false" multiValued="true" />
         <dynamicField name="*_str_mv" type="string" indexed="true" stored="true" multiValued="true"/>
@@ -391,7 +389,6 @@ SWISSBIB SOLR-SCHEMA
              =================
         -->
         <!-- copy to generic fields -->
-        <copyField source="author*" dest="authorfull" />
         <copyField source="sub*" dest="topic" />
 
         <!-- COPY FIELDS FUER NAVIGATOREN / FACETTEN -->
@@ -440,14 +437,14 @@ SWISSBIB SOLR-SCHEMA
         <!-- copy fields for spelling -->
         <!-- ** Basic, single word spelling -->
         <copyField source="author" dest="spelling" />
-        <copyField source="authors" dest="spelling" />
+        <copyField source="author_additional" dest="spelling" />
         <copyField source="title_short" dest="spelling"/>
         <copyField source="title_alt" dest="spelling" />
         <copyField source="sub*" dest="spelling"/>
         
         <!-- ** Complex, Shingle spelling -->
         <copyField source="author" dest="spellingShingle" />
-        <copyField source="author2" dest="spellingShingle" />
+        <copyField source="author_additional" dest="spellingShingle" />
         <copyField source="title_short" dest="spellingShingle" />
         <copyField source="title_alt" dest="spellingShingle" />
         <copyField source="sub*" dest="spellingShingle"/>
