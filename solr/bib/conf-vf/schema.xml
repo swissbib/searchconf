@@ -370,7 +370,6 @@ SWISSBIB SOLR-SCHEMA
         <dynamicField name="navSub_*" type="navFieldCombined" multiValued="true" stored="false" />
         <field name="navSubtime" type="navFieldCombined" multiValued="true" stored="false" />
         <field name="navDrsys" type="string" multiValued="true" indexed="true" stored="false" />
-        <field name="navYear" type="tint" stored="false" multiValued="true" />
 
         <!--  special fields
             **************** -->
@@ -390,9 +389,6 @@ SWISSBIB SOLR-SCHEMA
         <copyField source="sub*" dest="topic" />
 
         <!-- COPY FIELDS FUER NAVIGATOREN / FACETTEN -->
-        <!-- copy fields to date navigator -->
-        <copyField source="publishDate" dest="navYear" />
-
         <!-- Facetten fuer View orange (BaBe) -->
         <copyField source="subtop_gnd" dest="navSub_orange" />
         <copyField source="subtop_idsbb" dest="navSub_orange" />
