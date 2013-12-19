@@ -292,6 +292,7 @@ SWISSBIB SOLR-SCHEMA
         <field name="collection" type="string" indexed="true" stored="true" multiValued="true" />
         <field name="isil" type="string" stored="true" indexed="true" multiValued="true" />
         <field name="callnumber" type="callnum" indexed="true" stored="false" multiValued="true" />
+        <field name="itemid" type="callnum" indexed="true" stored="false" multiValued="true" />
 
         <!-- Generic Fields
              ************** -->
@@ -365,9 +366,6 @@ SWISSBIB SOLR-SCHEMA
         <!-- specific Facet Fields
              ********************* -->
         <dynamicField name="navAuthor_*" type="navFieldCombined" indexed="true" stored="false" multiValued="true" />
-        <field name="navBranchlib" type="string" multiValued="true" stored="false" />
-        <field name="navBranchlib2" type="string" multiValued="true" stored="false" />
-        <field name="navNetwork" type="isn" multiValued="true" stored="false" />
         <field name="navSubform" type="navFieldForm" multiValued="true" stored="false" />
         <dynamicField name="navSub_*" type="navFieldCombined" multiValued="true" stored="false" />
         <field name="navSubtime" type="navFieldCombined" multiValued="true" stored="false" />
