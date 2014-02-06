@@ -427,6 +427,7 @@ SWISSBIB SOLR-SCHEMA
 
         <!-- Facette Rechtssystematik fuer Jus-Portal (04.03.2013/osc) -->
         <copyField source="classif_drsys" dest="navDrsys" />
+        <copyField source="subgeo_*" dest="navSub_geofull" />
 
         <!-- copy fields for spelling -->
         <!-- ** Basic, single word spelling -->
