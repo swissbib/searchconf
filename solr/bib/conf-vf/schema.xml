@@ -68,7 +68,7 @@ SWISSBIB SOLR-SCHEMA
                       replacement="Ausstellung"
                       />
               <filter class="solr.PatternReplaceFilterFactory"
-                      pattern="\u003C|\u003E|\[|\]|Formschlagwort|Sondersammlungen"
+                      pattern="\u003C|\u003E|\[|\]|\u0028|\u0029|Formschlagwort|Sondersammlungen"
                       replacement=""
                       />
               <filter class="solr.TrimFilterFactory" />
