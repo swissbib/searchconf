@@ -361,6 +361,7 @@ SWISSBIB SOLR-SCHEMA
 	    <field name="hierarchy_sequence" type="string" indexed="true" stored="true" multiValued="true"/>
 	    <field name="is_hierarchy_id" type="string" indexed="true" stored="true" multiValued="false"/>
 	    <field name="is_hierarchy_title" type="string" indexed="true" stored="true" multiValued="false"/>
+            <field name="title_in_hierarchy" type="string" indexed="true" stored="true" multiValued="true" />
 	    <field name="hierarchy_browse" type="navFieldCombined" indexed="true" stored="false" multiValued="true"/>
 
         <!-- specific Facet Fields
