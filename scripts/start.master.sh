@@ -1,6 +1,6 @@
 #!/bin/bash
 
-LOGFILE=./START.SOLR.log
+LOGFILE=/usr/local/swissbib/solr.versions/tomcat/solrlogs/solr.app.log
 
 function setTimestamp()
 {
@@ -22,7 +22,7 @@ function startSolr ()
 
     ulimit -v unlimited
 
-    JAVA_OPTS="$JAVA_OPTS -Xms8000m -Xmx12000m   -Dswissbib.replication.files=${FILES_TO_REPLICATE}  -Dsolr.data.dir=${SOLR_INDEX_40}   -Dsolr.solr.home=${SOLR_HOME} -Dsolr.lib.swissbib.dir=${SOLR_LIBDIR} "
+    JAVA_OPTS="$JAVA_OPTS -Xms8000m -Xmx12000m   -Dswissbib.replication.files=${FILES_TO_REPLICATE}  -Dsolr.data.dir=${SOLR_INDEX_40}   -Dsolr.solr.home=${SOLR_HOME} -Dsolr.lib.swissbib.dir=${SOLR_LIBDIR} -Dsolr.log.path=$LOGFILE "
     #JAVA_OPTS="$JAVA_OPTS -Xms8000m -Xmx12000m   -Dsolr.data.dir=${SOLR_INDEX_40}   -Dsolr.solr.home=${SOLR_HOME} -Dsolr.lib.swissbib.dir=${SOLR_LIBDIR} "
     export JAVA_OPTS=${JAVA_OPTS}
     echo "starting Master solr server with JAVA_OPTS:"

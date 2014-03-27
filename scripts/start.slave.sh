@@ -1,19 +1,24 @@
 #!/bin/bash
 
+
 #example
 #./start.slave.sh -mhttp://sb-s15.swissbib.unibas.ch:8080/solr/sb-biblio/replication -p00:59:00
 
-LOGFILE=./START.SOLR.log
+
+LOGFILE=/usr/local/swissbib/solr.versions/tomcat/solrlogs/solr.app.log
 
 function usage()
 {
  printf "usage: $0 -m <URL master Server e.g. http://sb-s15.swissbib.unibas.ch:8080/solr/sb-biblio/replication> -p <polling intervall recommended 00:59:00 or 00:79:00 or 00:99:00 >\n"
 }
 
+
 function setTimestamp()
 {
     CURRENT_TIMESTAMP=`date +%Y%m%d%H%M%S`
 }
+
+
 
 function preChecks()
 {
@@ -28,23 +33,31 @@ function preChecks()
     #[ ! -n "$MASTERURL" ] && echo "MASTERURL  is not set" >>$LOGFILE && exit 9
     #[ ! -n "$POLLINGTIME" ] && echo "pollingtime not set" >>$LOGFILE && exit 9
 
+
 }
+
+
+
 
 function startSolr ()
 {
 
+
     printf "\n\n" >> $LOGFILE
     printf "in startSolr ...\n" >> $LOGFILE
 
+
     #actually we are using the solr.xml configuration for solr cores
-    #this is depricated since 4.3 / 4.4 -> more investigation necessary
+    #this is a depricated since 4.3 / 4.4 -> more investigation necessary
     #SOLR_INDEX_40=${SOLR_INDEX}/4.3
 
     #echo "SOLR Index: "${SOLR_INDEX_40}
 
+
     ulimit -v unlimited
 
-    JAVA_OPTS="$JAVA_OPTS -Xms8000m -Xmx12000m   -Dswissbib.master.url=${MASTERURL} -Dswissbib.poll.intervall=${POLLINGTIME}  -Dsolr.data.dir=${SOLR_INDEX_40}   -Dsolr.solr.home=${SOLR_HOME} -Dsolr.lib.swissbib.dir=${SOLR_LIBDIR} "
+
+    JAVA_OPTS="$JAVA_OPTS -Xms8000m -Xmx12000m   -Dswissbib.master.url=${MASTERURL} -Dswissbib.poll.intervall=${POLLINGTIME}  -Dsolr.data.dir=${SOLR_INDEX_40}   -Dsolr.solr.home=${SOLR_HOME} -Dsolr.lib.swissbib.dir=${SOLR_LIBDIR} -Dsolr.log.path=$LOGFILE "
     export JAVA_OPTS=${JAVA_OPTS}
     echo "starting Slave solr server with JAVA_OPTS:"
     echo ${JAVA_OPTS}
@@ -56,7 +69,12 @@ function startSolr ()
 
     ${SOLR_TOMCAT}/bin/catalina.sh start -server
 
+
 }
+
+
+#example
+#./start.slave.sh -mhttp://sb-s15.swissbib.unibas.ch:8080/solr/sb-biblio/replication -p'99:00:00'
 
 setTimestamp
 
@@ -71,6 +89,8 @@ do
     *) printf "unknown option -%c\n" $OPTION; usage; exit;;
   esac
 done
+
+
 
 preChecks
 startSolr
