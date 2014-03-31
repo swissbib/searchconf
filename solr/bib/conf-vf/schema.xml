@@ -370,6 +370,10 @@ SWISSBIB SOLR-SCHEMA
         <field name="navSubform" type="navFieldForm" multiValued="true" stored="false" />
         <dynamicField name="navSub_*" type="navFieldCombined" multiValued="true" stored="false" />
         <field name="navSubtime" type="navFieldCombined" multiValued="true" stored="false" />
+        <field name="navDrsysGen" type="string" multiValued="true" indexed="true" stored="false" />
+        <field name="navDrsysD" type="string" multiValued="true" indexed="true" stored="false" />
+        <field name="navDrsysE" type="string" multiValued="true" indexed="true" stored="false" />
+        <field name="navDrsysF" type="string" multiValued="true" indexed="true" stored="false" />
         <field name="navDrsys" type="string" multiValued="true" indexed="true" stored="false" />
 
         <!--  special fields
@@ -426,8 +430,14 @@ SWISSBIB SOLR-SCHEMA
         <copyField source="subform_rero" dest="navSubform" />
         <copyField source="subform_sbt" dest="navSubform" />
 
-        <!-- Facette Rechtssystematik fuer Jus-Portal (04.03.2013/osc) -->
-        <copyField source="classif_drsys" dest="navDrsys" />
+        <!-- Facette Rechtssystematik fuer Jus-Portal (31.03.2013/tvi) -->
+        <copyField source="classif_drsys_gen" dest="navDrsys" />
+        <copyField source="classif_drsys_D" dest="navDrsys" />
+        <copyField source="classif_drsys_F" dest="navDrsys" />
+        <copyField source="classif_drsys_gen" dest="navDrsysGen" />
+        <copyField source="classif_drsys_D" dest="navDrsysD" />
+        <copyField source="classif_drsys_E" dest="navDrsysE" />
+        <copyField source="classif_drsys_F" dest="navDrsysF" />
         <copyField source="subgeo_*" dest="navSub_geofull" />
 
         <!-- copy fields for spelling -->
