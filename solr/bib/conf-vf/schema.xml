@@ -370,10 +370,7 @@ SWISSBIB SOLR-SCHEMA
         <field name="navSubform" type="navFieldForm" multiValued="true" stored="false" />
         <dynamicField name="navSub_*" type="navFieldCombined" multiValued="true" stored="false" />
         <field name="navSubtime" type="navFieldCombined" multiValued="true" stored="false" />
-        <field name="navDrsysGen" type="string" multiValued="true" indexed="true" stored="false" />
-        <field name="navDrsysD" type="string" multiValued="true" indexed="true" stored="false" />
-        <field name="navDrsysE" type="string" multiValued="true" indexed="true" stored="false" />
-        <field name="navDrsysF" type="string" multiValued="true" indexed="true" stored="false" />
+        <dynamicField name="navDrsys_*" type="string" multiValued="true" indexed="true" stored="false" />
         <field name="navDrsys" type="string" multiValued="true" indexed="true" stored="false" />
 
         <!--  special fields
@@ -434,10 +431,10 @@ SWISSBIB SOLR-SCHEMA
         <copyField source="classif_drsys_gen" dest="navDrsys" />
         <copyField source="classif_drsys_D" dest="navDrsys" />
         <copyField source="classif_drsys_F" dest="navDrsys" />
-        <copyField source="classif_drsys_gen" dest="navDrsysGen" />
-        <copyField source="classif_drsys_D" dest="navDrsysD" />
-        <copyField source="classif_drsys_E" dest="navDrsysE" />
-        <copyField source="classif_drsys_F" dest="navDrsysF" />
+        <copyField source="classif_drsys_gen" dest="navDrsys_Gen" />
+        <copyField source="classif_drsys_D" dest="navDrsys_D" />
+        <copyField source="classif_drsys_E" dest="navDrsys_E" />
+        <copyField source="classif_drsys_F" dest="navDrsys_F" />
         <copyField source="subgeo_*" dest="navSub_geofull" />
 
         <!-- copy fields for spelling -->
