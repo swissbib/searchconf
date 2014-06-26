@@ -72,22 +72,30 @@
        The examples below can be used to load some solr-contribs along 
        with their external dependencies.
     -->
-  <lib dir="../../../contrib/extraction/lib" regex=".*\.jar" />
-  <lib dir="../../../dist/" regex="solr-cell-\d.*\.jar" />
+    <lib dir="${solr.lib.swissbib.dir:}/contrib/analysis-extras/lucene-libs" regex=".*\.jar" />
+    <lib dir="${solr.lib.swissbib.dir:}/contrib/analysis-extras/lib" regex=".*\.jar" />
+    <lib dir="${solr.lib.swissbib.dir:}/dist/" regex="solr-analysis-extras-\d.*\.jar" />
 
-  <lib dir="../../../contrib/clustering/lib/" regex=".*\.jar" />
-  <lib dir="../../../dist/" regex="solr-clustering-\d.*\.jar" />
 
-  <lib dir="../../../contrib/langid/lib/" regex=".*\.jar" />
-  <lib dir="../../../dist/" regex="solr-langid-\d.*\.jar" />
 
-  <lib dir="../../../contrib/velocity/lib" regex=".*\.jar" />
-  <lib dir="../../../dist/" regex="solr-velocity-\d.*\.jar" />
+    <lib dir="${solr.lib.swissbib.dir:}/contrib/extraction/lib" regex=".*\.jar" />
+    <lib dir="${solr.lib.swissbib.dir:}/dist/" regex="solr-cell-\d.*\.jar" />
 
-  <!-- an exact 'path' can be used instead of a 'dir' to specify a 
-       specific jar file.  This will cause a serious error to be logged 
-       if it can't be loaded.
-    -->
+    <lib dir="${solr.lib.swissbib.dir:}/contrib/clustering/lib/" regex=".*\.jar" />
+    <lib dir="${solr.lib.swissbib.dir:}/dist/" regex="solr-clustering-\d.*\.jar" />
+
+    <lib dir="${solr.lib.swissbib.dir:}/contrib/langid/lib/" regex=".*\.jar" />
+    <lib dir="${solr.lib.swissbib.dir:}/dist/" regex="solr-langid-\d.*\.jar" />
+
+    <lib dir="${solr.lib.swissbib.dir:}/contrib/velocity/lib" regex=".*\.jar" />
+    <lib dir="${solr.lib.swissbib.dir:}/dist/" regex="solr-velocity-\d.*\.jar" />
+    <!-- <lib dir="${solr.lib.swissbib.dir}/dist/" regex="solr-.*\.jar" /> -->
+
+
+    <!-- an exact 'path' can be used instead of a 'dir' to specify a
+         specific jar file.  This will cause a serious error to be logged
+         if it can't be loaded.
+      -->
   <!--
      <lib path="../a-jar-that-does-not-exist.jar" /> 
   -->
@@ -1213,7 +1221,9 @@
 
        https://wiki.apache.org/solr/SolrCloud/
     -->
-  <requestHandler name="/replication" class="solr.ReplicationHandler" > 
+  <!--
+  <requestHandler name="/replication" class="solr.ReplicationHandler" >
+   -->
     <!--
        To enable simple master/slave replication, uncomment one of the 
        sections below, depending on whether this solr instance should be
@@ -1233,7 +1243,9 @@
          <str name="pollInterval">00:00:60</str>
        </lst>
     -->
+    <!--
   </requestHandler>
+  -->
 
   <!-- Search Components
 
