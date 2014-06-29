@@ -129,16 +129,74 @@
 
     <listener event="newSearcher" class="solr.QuerySenderListener">
       <arr name="queries">
-        <!--
-           <lst><str name="q">solr</str><str name="sort">price asc</str></lst>
-           <lst><str name="q">rocks</str><str name="sort">weight asc</str></lst>
-          -->
+        
+           <lst>
+             <str name="sort">price asc</str>
+             <str name="hl.fragsize">250</str>
+             <str name="spellcheck">false</str>
+             <str name="facet">true</str>
+             <str name="facet.mincount">1</str>
+             <str name="facet.limit">100</str>
+             <str name="qf">title_short^1000+title_alt^200+title_sub^200+title_old^200+title_new^200+author^750+author_additional^100+author_additional_dsv11_txt_mv^100+title_additional_dsv11_txt_mv^100+series^200+journals^200+topic^500+addfields_txt_mv^50+publplace_txt_mv^25+publplace_dsv11_txt_mv^25+fulltext+callnumber^1000+ctrlnum^1000+publishDate+isbn+issn+id</str>
+             <str name="hl.simple.pre">{{{{START_HILITE}}}}</str>
+             <str name="hl.fl">fulltext</str>
+             <str name="wt">xml</str>
+             <str name="hl">true</str>
+             <str name="rows">20</str>
+             <str name="pf">title_short^1000</str>
+             <str name="fl">*,score</str>
+             <str name="start">0</str>
+             <str name="facet.sort">count</str>
+             <str name="q">first query</str>
+             <!--<str name="bf">recip%28abs%28ms%28NOW/DAY,freshness%29%29,3.16e-10,100,100%29</str> -->
+             <str name="q.op">AND</str>
+             <str name="hl.simple.post">{{{{END_HILITE}}}}</str>
+             <str name="facet.field">union</str>
+             <str name="facet.field">navAuthor_full</str>
+             <str name="facet.field">format</str>
+             <str name="facet.field">language</str>
+             <str name="facet.field">navSub_green</str>
+             <str name="facet.field">navSubform</str>
+             <str name="qt">edismax</str>
+             <str name="ps">2</str>
+           
+           </lst>
       </arr>
     </listener>
     <listener event="firstSearcher" class="solr.QuerySenderListener">
       <arr name="queries">
         <lst>
-          <str name="q">static firstSearcher warming in solrconfig.xml</str>
+          <lst>
+            <str name="sort">price asc</str>
+            <str name="hl.fragsize">250</str>
+            <str name="spellcheck">false</str>
+            <str name="facet">true</str>
+            <str name="facet.mincount">1</str>
+            <str name="facet.limit">100</str>
+            <str name="qf">title_short^1000+title_alt^200+title_sub^200+title_old^200+title_new^200+author^750+author_additional^100+author_additional_dsv11_txt_mv^100+title_additional_dsv11_txt_mv^100+series^200+journals^200+topic^500+addfields_txt_mv^50+publplace_txt_mv^25+publplace_dsv11_txt_mv^25+fulltext+callnumber^1000+ctrlnum^1000+publishDate+isbn+issn+id</str>
+            <str name="hl.simple.pre">{{{{START_HILITE}}}}</str>
+            <str name="hl.fl">fulltext</str>
+            <str name="wt">xml</str>
+            <str name="hl">true</str>
+            <str name="rows">20</str>
+            <str name="pf">title_short^1000</str>
+            <str name="fl">*,score</str>
+            <str name="start">0</str>
+            <str name="facet.sort">count</str>
+            <str name="q">first query</str>
+            <!--<str name="bf">recip%28abs%28ms%28NOW/DAY,freshness%29%29,3.16e-10,100,100%29</str> -->
+            <str name="q.op">AND</str>
+            <str name="hl.simple.post">{{{{END_HILITE}}}}</str>
+            <str name="facet.field">union</str>
+            <str name="facet.field">navAuthor_full</str>
+            <str name="facet.field">format</str>
+            <str name="facet.field">language</str>
+            <str name="facet.field">navSub_green</str>
+            <str name="facet.field">navSubform</str>
+            <str name="qt">edismax</str>
+            <str name="ps">2</str>
+            
+          </lst>
         </lst>
       </arr>
     </listener>
