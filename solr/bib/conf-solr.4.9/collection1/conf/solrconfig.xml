@@ -225,15 +225,28 @@
     <httpCaching never304="true" />
   </requestDispatcher>
 
-  <!--
-  <requestHandler name="/select" class="solr.SearchHandler">
-     <lst name="defaults">
-       <str name="echoParams">explicit</str>
-       <int name="rows">10</int>
-       <str name="df">text</str>
-     </lst>
-    </requestHandler>
-  -->
+  
+  <!-- 
+  Wir erleben hier einen verzweifelten Versuch von SOLR REST kompatibel zu werden und gleichzeitig den Parameter Balast 
+  von Jahren noch durchzuziehen
+  - wie bei RequestDispatcher bereits erwähnt ist das eigentlich deprecated und nur aus Kompatibilitätsgründen vorhandene Attribut
+  handleSelect=true erforderlich um einen /select RequestHandler mit einem qt Parameter überstehen zu können.
+  So die Doku. Das funktioniert aber nicht. Entfernt man den standardmässig ausgelieferten /select RequestHandler nicht, wird ein qt Parameter 
+  nicht berücksichtigt...
+  Das von SOLR anvisierte Ziel, eindeutige Ressourcen wie /edismax ansteuern zu können wird in der Doku gleichzeitig in Frage gestellt, da man von Namen
+  wie /edismax abrät..
+  VuFind verlässt sich aber darauf, alle Abfragen mit /select ansteuern zu können. Zum Beispiel für die Vollansicht darf jedoch kein edismax Parser verwednet werden
+  (es werden nicht die erforderlichen parameter gesetzt z.B. qf)
+  "Lösung" des ganzen Schrott:
+  - setze handleSelect="true
+  - lösche den requestHandler name=/select
+  - definiere den requestHandler name="standard" (sonst funktioniert VuFind nicht mehr...)
+  "
+  -->  
+  <requestHandler name="standard" class="solr.StandardRequestHandler" default="true"/>
+  
+  
+  
   
   <requestHandler name="dismax" class="solr.SearchHandler">
     <lst name="defaults">
