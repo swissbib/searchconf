@@ -208,7 +208,14 @@
   </query>
 
 
-  <requestDispatcher handleSelect="false" >
+  <!-- GH
+    set handleSelect=true (and disable the /select RequestHandler otherwise qt parameters aren't processed
+    (the standard procedure for VuFind)
+    if handleSelect=false the qt - parameter is ignored
+    (and no VuFind request is running)
+    compare documentation in Solr Reference Guide "Request Dispatcher in SolrConfig" p. 294 (version 4.9)
+  -->
+  <requestDispatcher handleSelect="true" >
 
     <requestParsers enableRemoteStreaming="true" 
                     multipartUploadLimitInKB="2048000"
@@ -218,17 +225,15 @@
     <httpCaching never304="true" />
   </requestDispatcher>
 
+  <!--
   <requestHandler name="/select" class="solr.SearchHandler">
-    <!-- default values for query parameters can be specified, these
-         will be overridden by parameters in the request
-      -->
      <lst name="defaults">
        <str name="echoParams">explicit</str>
        <int name="rows">10</int>
        <str name="df">text</str>
      </lst>
     </requestHandler>
-  
+  -->
   
   <requestHandler name="dismax" class="solr.SearchHandler">
     <lst name="defaults">
@@ -407,40 +412,34 @@
 
   <searchComponent name="spellcheck" class="solr.SpellCheckComponent">
 
-    <str name="queryAnalyzerFieldType">text_general</str>
 
     <lst name="spellchecker">
       <str name="name">default</str>
-      <str name="field">text</str>
+      <str name="field">spellingShingle</str>
       <str name="classname">solr.DirectSolrSpellChecker</str>
-      <!-- the spellcheck distance measure used, the default is the internal levenshtein -->
       <str name="distanceMeasure">internal</str>
-      <!-- minimum accuracy needed to be considered a valid spellcheck suggestion -->
       <float name="accuracy">0.5</float>
-      <!-- the maximum #edits we consider when enumerating terms: can be 1 or 2 -->
       <int name="maxEdits">2</int>
-      <!-- the minimum shared prefix when enumerating terms -->
       <int name="minPrefix">1</int>
-      <!-- maximum number of inspections per result. -->
       <int name="maxInspections">5</int>
-      <!-- minimum length of a query term to be considered for correction -->
-      <int name="minQueryLength">4</int>
-      <!-- maximum threshold of documents a query term can appear to be considered for correction -->
+      <int name="minQueryLength">3</int>
       <float name="maxQueryFrequency">0.01</float>
-      <!-- uncomment this to require suggestions to occur in 1% of the documents
-      	<float name="thresholdTokenFrequency">.01</float>
-      -->
     </lst>
     
     <lst name="spellchecker">
-      <str name="name">wordbreak</str>
-      <str name="classname">solr.WordBreakSolrSpellChecker</str>      
-      <str name="field">name</str>
-      <str name="combineWords">true</str>
-      <str name="breakWords">true</str>
-      <int name="maxChanges">10</int>
+      <str name="name">basicSpell</str>
+      <str name="field">spelling</str>
+      <str name="classname">solr.DirectSolrSpellChecker</str>
+      <str name="distanceMeasure">internal</str>
+      <float name="accuracy">0.5</float>
+      <int name="maxEdits">2</int>
+      <int name="minPrefix">1</int>
+      <int name="maxInspections">5</int>
+      <int name="minQueryLength">3</int>
+      <float name="maxQueryFrequency">0.01</float>
     </lst>
-
+    
+    
   </searchComponent>
   
 
