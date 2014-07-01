@@ -286,6 +286,8 @@
       
       <!-- Spellchecking -->
       
+
+      
       <str name="spellcheck.extendedResults">true</str>
       <str name="spellcheck.count">10</str>
       <str name="spellcheck.alternativeTermCount">5</str>
@@ -293,8 +295,9 @@
       <str name="spellcheck.collate">true</str>
       <str name="spellcheck.collateExtendedResults">true</str>
       <str name="spellcheck.maxCollationTries">10</str>
-      <str name="spellcheck.maxCollations">5</str>
-      
+      <str name="spellcheck.maxCollations">8</str>
+        <str name="spellcheck.accuracy">0.5</str>
+
     </lst>
     <arr name="last-components">
       <str>spellcheck</str>
@@ -425,33 +428,43 @@
 
   <searchComponent name="spellcheck" class="solr.SpellCheckComponent">
 
+        <!--<str name="queryAnalyzerFieldType">textSpellShingle</str> -->
 
-    <lst name="spellchecker">
-      <str name="name">default</str>
-      <str name="field">spellingShingle</str>
-      <str name="classname">solr.DirectSolrSpellChecker</str>
-      <str name="distanceMeasure">internal</str>
-      <float name="accuracy">0.5</float>
-      <int name="maxEdits">2</int>
-      <int name="minPrefix">1</int>
-      <int name="maxInspections">5</int>
-      <int name="minQueryLength">3</int>
-      <float name="maxQueryFrequency">0.01</float>
-    </lst>
-    
-    <lst name="spellchecker">
-      <str name="name">basicSpell</str>
-      <str name="field">spelling</str>
-      <str name="classname">solr.DirectSolrSpellChecker</str>
-      <str name="distanceMeasure">internal</str>
-      <float name="accuracy">0.5</float>
-      <int name="maxEdits">2</int>
-      <int name="minPrefix">1</int>
-      <int name="maxInspections">5</int>
-      <int name="minQueryLength">3</int>
-      <float name="maxQueryFrequency">0.01</float>
-    </lst>
-    
+
+      <lst name="spellchecker">
+          <str name="name">default</str>
+          <str name="field">title</str>
+          <str name="classname">solr.DirectSolrSpellChecker</str>
+          <str name="distanceMeasure">internal</str>
+          <float name="accuracy">0.5</float>
+          <int name="maxEdits">2</int>
+          <int name="minPrefix">1</int>
+          <int name="maxInspections">8</int>
+          <int name="minQueryLength">3</int>
+          <float name="maxQueryFrequency">0.01</float>
+          <str name="combineWords">true</str>
+
+      </lst>
+
+
+
+
+      <lst name="spellchecker">
+          <str name="name">basicSpell</str>
+          <str name="field">author</str>
+          <str name="classname">solr.DirectSolrSpellChecker</str>
+          <str name="distanceMeasure">internal</str>
+          <float name="accuracy">0.5</float>
+          <int name="maxEdits">2</int>
+          <int name="minPrefix">1</int>
+          <int name="maxInspections">5</int>
+          <int name="minQueryLength">3</int>
+          <float name="maxQueryFrequency">0.01</float>
+          <str name="combineWords">true</str>
+      </lst>
+
+
+
     
   </searchComponent>
   
