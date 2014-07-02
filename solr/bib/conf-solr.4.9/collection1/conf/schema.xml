@@ -314,6 +314,8 @@ SWISSBIB SOLR-SCHEMA
         <field name="ctrlnum" type="isn" indexed="true" stored="false" multiValued="true" />
         <field name="isbn" type="isn" indexed="true" stored="true" multiValued="true"/>
         <field name="issn" type="isn" indexed="true" stored="true" multiValued="true"/>
+
+        <!-- I guess it's not necessary to store FRBR-id.  todo: Clarify ramifications for grouping -->
         <field name="groupid_isn_mv" type="isn" indexed="true" stored="true" />
         
         <dynamicField name="*_isn_mv" type="isn" indexed="true" stored="true" multiValued="true"/>

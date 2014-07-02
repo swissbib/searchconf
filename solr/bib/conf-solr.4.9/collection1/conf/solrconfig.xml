@@ -75,11 +75,17 @@
     </updateLog>
  
 
-    <autoCommit> 
+    <autoCommit>
+        <!--
+        with default configuration the final Index was a little bit smaller (1G)
+        and time to create the complete index (intial load) was probably faster (I don't have exact values)
+        more evaluation necessary
        <maxDocs>350000</maxDocs>
-       
-       <maxTime>${solr.autoCommit.maxTime:1200000}</maxTime> 
-       <openSearcher>false</openSearcher> 
+       <maxTime>${solr.autoCommit.maxTime:1200000}</maxTime>
+       -->
+        <maxTime>${solr.autoCommit.maxTime:15000}</maxTime>
+
+        <openSearcher>false</openSearcher>
      </autoCommit>
 
 
