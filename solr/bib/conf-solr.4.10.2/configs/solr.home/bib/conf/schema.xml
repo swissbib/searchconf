@@ -313,7 +313,6 @@ SWISSBIB SOLR-SCHEMA
              *********************** -->
         <field name="ctrlnum" type="isn" indexed="true" stored="false" multiValued="true" />
         <field name="isbn" type="isn" indexed="true" stored="true" multiValued="true"/>
-        <field name="isbn_variation" type="isn" indexed="true" stored="false" multiValued="true"/>
 
         <field name="issn" type="isn" indexed="true" stored="true" multiValued="true"/>
 
