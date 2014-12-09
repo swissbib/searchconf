@@ -44,10 +44,13 @@ function startSolr ()
 
     printf "\n\n" >> $LOGFILE
     printf "in startSolr ...\n" >> $LOGFILE
+    export SOLR_INDEX = ${SOLR_INDEX_BASE}/solrIndexBiblio
+    echo "SOLR Index: "${SOLR_INDEX}
 
     ulimit -v unlimited
 
-    JAVA_OPTS="$JAVA_OPTS -Xms12000m -Xmx16000m   -Dswissbib.master.url=${MASTERURL} -Dswissbib.poll.intervall=${POLLINGTIME}  -Dsolr.data.dir=${SOLR_INDEX_40}   -Dsolr.solr.home=${SOLR_HOME} -Dsolr.lib.swissbib.dir=${SOLR_LIBDIR} -Dsolr.log.path=$LOGFILE "
+    JAVA_OPTS="$JAVA_OPTS -Xms12000m -Xmx16000m   -Dswissbib.master.url=${MASTERURL} -Dswissbib.poll.intervall=${POLLINGTIME}  \
+         -Dsolr.data.dir=${SOLR_INDEX}   -Dsolr.solr.home=${SOLR_HOME} -Dsolr.lib.swissbib.dir=${SOLR_CORE} -Dsolr.log.path=$LOGFILE "
     export JAVA_OPTS=${JAVA_OPTS}
     echo "starting Slave solr server with JAVA_OPTS:"
     echo ${JAVA_OPTS}
