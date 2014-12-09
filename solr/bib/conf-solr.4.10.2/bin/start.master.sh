@@ -1,6 +1,10 @@
 #!/bin/bash
 
-LOGFILE=/usr/local/swissbib/solr/tomcat/solrlogs/solr.app.log
+# GHI 9.12.2014
+# - FILES_TO_REPLICATE weren't used so I removed the property in the script and the use of this property in solrconfig
+# - a little bit clean-up
+
+LOGFILE=${SOLR_TOMCAT}/solrlogs/solr.app.log
 
 function setTimestamp()
 {
@@ -15,16 +19,12 @@ function startSolr ()
 
     export SOLR_INDEX = ${SOLR_INDEX_BASE}/solrIndexBiblio
 
-    #actually we are using the solr.xml configuration for solr cores
-    #this is depricated since 4.3 / 4.4 -> more investigation necessary
-    #SOLR_INDEX_40=${SOLR_INDEX}/4.3
 
     echo "SOLR Index: "${SOLR_INDEX}
 
     ulimit -v unlimited
 
-    JAVA_OPTS="$JAVA_OPTS -Xms8000m -Xmx12000m   -Dswissbib.replication.files=${FILES_TO_REPLICATE}  -Dsolr.data.dir=${SOLR_INDEX}   -Dsolr.solr.home=${SOLR_HOME} -Dsolr.lib.swissbib.dir=${SOLR_CORE} -Dsolr.log.path=$LOGFILE "
-    #JAVA_OPTS="$JAVA_OPTS -Xms4000m -Xmx6000m   -Dsolr.data.dir=${SOLR_INDEX:}   -Dsolr.solr.home=${SOLR_HOME:} -Dsolr.lib.swissbib.dir=${SOLR_CORE:} "
+    JAVA_OPTS="$JAVA_OPTS -Xms8000m -Xmx12000m    -Dsolr.data.dir=${SOLR_INDEX}   -Dsolr.solr.home=${SOLR_HOME} -Dsolr.lib.swissbib.dir=${SOLR_CORE} -Dsolr.log.path=$LOGFILE "
     export JAVA_OPTS=${JAVA_OPTS}
     echo "starting Master solr server with JAVA_OPTS:"
     echo ${JAVA_OPTS}
@@ -38,8 +38,6 @@ function startSolr ()
 
 
 }
-
-#FILES_TO_REPLICATE="schema.xml,solrconfig.4.3.slave.xml,dr_sys_synonyms.txt,timesynonyms.txt,formsynonyms.txt,stopspellwords.txt"
 
 setTimestamp
 
