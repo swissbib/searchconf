@@ -291,6 +291,8 @@ SWISSBIB SOLR-SCHEMA
              ******************** -->
         <field name="union" type="string" indexed="true" stored="true" multiValued="true" />
         <field name="institution" type="string" indexed="true" stored="true" multiValued="true" />
+        <field name="mylibrary" type="string" indexed="true" stored="false" multiValued="true" />
+
         <!-- following two fields will be empty at the moment -->
         <field name="collection" type="string" indexed="true" stored="true" multiValued="true" />
         <field name="isil" type="string" stored="true" indexed="true" multiValued="true" />
@@ -463,6 +465,10 @@ SWISSBIB SOLR-SCHEMA
         <copyField source="series" dest="spellingShingle"/>
         <copyField source="journals" dest="spellingShingle"/>
         <!--<copyField source="add_fields" dest="spellingShingle"/>-->
+
+        <!-- copy field for dedicated index mylibrary - also nown as favorites -->
+        <copyField source="institution" dest="mylibrary" />
+
 
     </fields>
 
