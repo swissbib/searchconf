@@ -7,7 +7,7 @@
 #./start.slave.sh -mhttp://sb-s15.swissbib.unibas.ch:8080/solr/sb-biblio/replication -p00:59:00
 
 
-LOGFILE=/usr/local/swissbib/solr.versions/tomcat/solrlogs/solr.app.log
+LOGFILE=${SOLR_TOMCAT}/solrlogs/solr.app.log
 
 function usage()
 {
@@ -44,7 +44,7 @@ function startSolr ()
 
     printf "\n\n" >> $LOGFILE
     printf "in startSolr ...\n" >> $LOGFILE
-    export SOLR_INDEX = ${SOLR_INDEX_BASE}/solrIndexBiblio
+    export SOLR_INDEX=${SOLR_INDEX_BASE}/solrIndexBiblio
     echo "SOLR Index: "${SOLR_INDEX}
 
     ulimit -v unlimited
