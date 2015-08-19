@@ -40,7 +40,7 @@ SWISSBIB SOLR-SCHEMA
           <analyzer>
               <tokenizer class="solr.KeywordTokenizerFactory" />
               <filter class="solr.PatternReplaceFilterFactory"
-                  pattern="[Ss]\.[Nn]\.|[Aa]nonym|[\[\]*]|\[.*\]|
+                  pattern="[Ss]\.[Nn]\.|[\[\]*]|\[.*\]|
                            \u0022|\u003C|\u003E|\u003F|^\d{4}-\d{4}$|, \d{4}-\d{4}|
                            Formschlagwort|Aufsatzsammlung"
                   replacement=""
@@ -156,6 +156,11 @@ SWISSBIB SOLR-SCHEMA
               <filter class="solr.LowerCaseFilterFactory" />
               <filter class="solr.PatternReplaceFilterFactory"
                       pattern="\u0020"
+                      replacement=""
+                      replace="all"
+                      />
+              <filter class="solr.PatternReplaceFilterFactory"
+                      pattern="\u005f"
                       replacement=""
                       replace="all"
                       />
@@ -297,7 +302,6 @@ SWISSBIB SOLR-SCHEMA
         <field name="collection" type="string" indexed="true" stored="true" multiValued="true" />
         <field name="isil" type="string" stored="true" indexed="true" multiValued="true" />
         <field name="callnumber" type="callnum" indexed="true" stored="false" multiValued="true" />
-        <field name="itemid" type="callnum" indexed="true" stored="false" multiValued="true" />
 
         <!-- Generic Fields
              ************** -->
