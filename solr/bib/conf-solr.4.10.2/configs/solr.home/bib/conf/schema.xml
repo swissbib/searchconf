@@ -85,7 +85,7 @@ SWISSBIB SOLR-SCHEMA
       <fieldType name="text_untreated" class="solr.TextField" positionIncrementGap="100">
           <analyzer type="index">
               <charFilter class="solr.MappingCharFilterFactory" mapping="mapping-chars.txt"/>
-              <tokenizer class="solr.ICUTokenizerFactory"/>
+              <tokenizer class="solr.ICUTokenizerFactory" rulefiles="Latn:Latin-break-only-on-whitespace.rbbi"/>
               <filter class="solr.WordDelimiterFilterFactory" 
                       generateWordParts="1" 
                       generateNumberParts="1" 
@@ -101,12 +101,12 @@ SWISSBIB SOLR-SCHEMA
           </analyzer>
           <analyzer type="query">
               <charFilter class="solr.MappingCharFilterFactory" mapping="mapping-chars.txt"/>
-              <tokenizer class="solr.ICUTokenizerFactory"/>
+              <tokenizer class="solr.ICUTokenizerFactory" rulefiles="Latn:Latin-break-only-on-whitespace.rbbi"/>
               <filter class="solr.WordDelimiterFilterFactory" 
                       generateWordParts="1" 
                       generateNumberParts="1" 
-                      catenateWords="0" 
-                      catenateNumbers="0" 
+                      catenateWords="1"
+                      catenateNumbers="1"
                       catenateAll="0" 
                       splitOnCaseChange="1"/>
               <filter class="solr.ICUFoldingFilterFactory"/>
