@@ -108,7 +108,7 @@ SWISSBIB SOLR-SCHEMA
                       catenateWords="1"
                       catenateNumbers="1"
                       catenateAll="0" 
-                      splitOnCaseChange="1"/>
+                      splitOnCaseChange="0"/>
               <filter class="solr.ICUFoldingFilterFactory"/>
               <filter class="solr.CJKWidthFilterFactory"/>
               <filter class="solr.CJKBigramFilterFactory"/>
