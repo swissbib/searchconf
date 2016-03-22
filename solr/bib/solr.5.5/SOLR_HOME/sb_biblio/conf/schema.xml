@@ -1,0 +1,501 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+
+ Licensed to the Apache Software Foundation (ASF) under one or more
+ contributor license agreements.  See the NOTICE file distributed with
+ this work for additional information regarding copyright ownership.
+ The ASF licenses this file to You under the Apache License, Version 2.0
+ (the "License"); you may not use this file except in compliance with
+ the License.  You may obtain a copy of the License at
+ 
+     http://www.apache.org/licenses/LICENSE-2.0
+     
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+<!--
+====================
+SWISSBIB SOLR-SCHEMA
+====================
+-->
+
+<schema name="swissbib vufind bibliographic schema" version="1.6">
+
+  <types>
+
+      <fieldType name="string" class="solr.StrField" sortMissingLast="true" omitNorms="true"/>
+      <fieldType name="int" class="solr.TrieIntField" precisionStep="0" omitNorms="true" positionIncrementGap="0"/>
+      <fieldType name="tdate" class="solr.TrieDateField" omitNorms="true" precisionStep="6" positionIncrementGap="0"/>
+      <fieldType name="tint" class="solr.TrieIntField" precisionStep="8" omitNorms="true" positionIncrementGap="0"/>a
+      <fieldType name="long" class="solr.TrieLongField" precisionStep="0" positionIncrementGap="0"/>
+
+      <!-- field types for navigators / facets
+           ===================================
+      -->
+      <!-- subject and name entries -->
+      <fieldType name="navFieldCombined" class="solr.TextField">
+          <analyzer>
+              <tokenizer class="solr.KeywordTokenizerFactory" />
+              <filter class="solr.PatternReplaceFilterFactory"
+                  pattern="[Ss]\.[Nn]\.|[Aa]nonym|[\[\]*]|\[.*\]|
+                           \u0022|\u003C|\u003E|\u003F|^\d{4}-\d{4}$|, \d{4}-\d{4}|
+                           Formschlagwort|Aufsatzsammlung"
+                  replacement=""
+                  replace="all" />
+              <filter class="solr.TrimFilterFactory" />
+              <filter class="solr.LengthFilterFactory" min="2" max="100" />
+          </analyzer>
+      </fieldType>
+
+      <!-- used for: Navigator form (Formschlagworte)-->
+      <fieldType name="navFieldForm" class="solr.TextField">
+          <analyzer>
+              <tokenizer class="solr.KeywordTokenizerFactory" />
+              <!-- PatternReplacements / osc -->
+              <filter class="solr.PatternReplaceFilterFactory"
+                      pattern="^[0A] Gesamtdarstell.*$"
+                      replacement="Gesamtdarstellung"
+                      />
+              <filter class="solr.PatternReplaceFilterFactory"
+                      pattern="^Kongress \(.*\)"
+                      replacement="Kongressbericht"
+                      />
+              <filter class="solr.PatternReplaceFilterFactory"
+                      pattern="^Ausstellung \(.*\)"
+                      replacement="Ausstellung"
+                      />
+              <filter class="solr.PatternReplaceFilterFactory"
+                      pattern="\u003C|\u003E|\[|\]|\u0028|\u0029|Formschlagwort|Sondersammlungen"
+                      replacement=""
+                      />
+              <filter class="solr.TrimFilterFactory" />
+              <!-- SynonymFilter erarbeitet mit Fachferenten Basel, Version 1.0 fertig (12.2011/osc)-->
+              <filter class="solr.SynonymFilterFactory" synonyms="formsynonyms.txt" ignoreCase="true" expand="false" tokenizerFactory="solr.KeywordTokenizerFactory"/>
+              <filter class="solr.LengthFilterFactory" min="2" max="60" />
+          </analyzer>
+      </fieldType>
+
+      <!-- field types for search fields
+           =============================
+      -->
+      <!-- text_untreated : Feldtyp fuer Text, nur leicht behandelt, hohes Boosting fuer exact match -->
+      <fieldType name="text_untreated" class="solr.TextField" positionIncrementGap="100">
+          <analyzer type="index">
+              <charFilter class="solr.MappingCharFilterFactory" mapping="mapping-chars.txt"/>
+              <tokenizer class="solr.ICUTokenizerFactory"/>
+              <filter class="solr.WordDelimiterFilterFactory" 
+                      generateWordParts="1" 
+                      generateNumberParts="1" 
+                      catenateWords="1" 
+                      catenateNumbers="1" 
+                      catenateAll="0" 
+                      splitOnCaseChange="1"/>
+              <filter class="solr.ICUFoldingFilterFactory"/>
+              <filter class="solr.CJKWidthFilterFactory"/>
+              <filter class="solr.CJKBigramFilterFactory"/>
+              <filter class="solr.ReversedWildcardFilterFactory" />
+              <filter class="solr.RemoveDuplicatesTokenFilterFactory"/>
+          </analyzer>
+          <analyzer type="query">
+              <charFilter class="solr.MappingCharFilterFactory" mapping="mapping-chars.txt"/>
+              <tokenizer class="solr.ICUTokenizerFactory"/>
+              <filter class="solr.WordDelimiterFilterFactory" 
+                      generateWordParts="1" 
+                      generateNumberParts="1" 
+                      catenateWords="0" 
+                      catenateNumbers="0" 
+                      catenateAll="0" 
+                      splitOnCaseChange="1"/>
+              <filter class="solr.ICUFoldingFilterFactory"/>
+              <filter class="solr.CJKWidthFilterFactory"/>
+              <filter class="solr.CJKBigramFilterFactory"/>
+              <filter class="solr.RemoveDuplicatesTokenFilterFactory"/>
+          </analyzer>
+      </fieldType>
+      
+      <!-- Text Field for Normalized ISBN/ISSN Numbers - take first chunk of text
+           prior to whitespace, force to lowercase, strip non-ISBN/ISSN characters,
+           omit results that are empty after stripping. 
+           adapted for swissbib with filters from deprecated type stdID 13.05.2013/osc) -->
+      <fieldType name="isn" class="solr.TextField" positionIncrementGap="100">
+          <analyzer>
+              <tokenizer class="solr.PatternTokenizerFactory" pattern="^(\S*)\s*.*$" group="1"/>
+              <filter class="solr.LowerCaseFilterFactory"/>
+              <filter class="solr.PatternReplaceFilterFactory"
+                  pattern="^(\([a-z]+\))vtls0"
+                  replacement="$10"
+                  replace="all"
+              />
+              <filter class="solr.PatternReplaceFilterFactory"
+                  pattern="[^\w]+"
+                  replacement=""
+                  replace="all"
+              />
+              <filter class="solr.TrimFilterFactory" />
+              <filter class="solr.LengthFilterFactory" min="2" max="100" />
+          </analyzer>
+      </fieldType>
+
+      <!-- stringlike : Feldtyp fuer Klassifikationen und Codes, lowercase und trunkierbar -->
+      <fieldType name="stringlike" class="solr.TextField">
+          <analyzer>
+              <tokenizer class="solr.KeywordTokenizerFactory" />
+              <filter class="solr.LowerCaseFilterFactory" />
+              <filter class="solr.TrimFilterFactory" />
+              <filter class="solr.LengthFilterFactory" min="2" max="100" />
+          </analyzer>
+      </fieldType>
+      
+      <!-- callnum : Feldtyp fuer Signaturen. Ev. spaeter wieder mit stringlike zusammenfuehren -->
+	  <fieldType name="callnum" class="solr.TextField">
+          <analyzer>
+              <tokenizer class="solr.KeywordTokenizerFactory" />
+              <filter class="solr.LowerCaseFilterFactory" />
+              <filter class="solr.PatternReplaceFilterFactory"
+                      pattern="\u0020"
+                      replacement=""
+                      replace="all"
+                      />
+              <filter class="solr.TrimFilterFactory" />
+          </analyzer>
+      </fieldType>
+
+      <!-- text_stemmed : Feldtyp fuer Text, gestemmed, tieferes boosting -->
+      <fieldType name="text_stemmed" class="solr.TextField" positionIncrementGap="100" >
+          <analyzer>
+              <tokenizer class="solr.WhitespaceTokenizerFactory" />
+              <!--          <filter class="solr.ICUFoldingFilterFactory" />
+                        <filter class="solr.LowerCaseFilterFactory" />
+                            <filter class="solr.KStemFilterFactory" /> -->
+              <!--       ev. koennen hier verschiedene Sprachstemmer (eng, fre, ita) sequentiell geschaltet werden??? -->
+              <filter class="solr.SnowballPorterFilterFactory" language="German2" />
+              <filter class="solr.RemoveDuplicatesTokenFilterFactory" />
+          </analyzer>
+      </fieldType>
+
+      <!-- text_substringed : Feldtyp fuer Text mit n-grams fuer wildcard-searches -->
+      <!--
+      with Solr 4 we used the sidefront attribute which was removed with Solr5
+      compare: http://stackoverflow.com/questions/28807427/edgengramfilterfactory-change-in-solr5
+      side=front is now default - how to reverse this? which filter?
+      -->
+      <fieldType name="text_substringed" class="solr.TextField" positionIncrementGap="100" >
+          <analyzer type="index">
+              <tokenizer class="solr.WhitespaceTokenizerFactory" />
+              <!--          <filter class="solr.ICUFoldingFilterFactory" />
+                        <filter class="solr.ICUNormalizer2FilterFactory" name="nfkc" mode="decompose" />
+                        <filter class="solr.LowerCaseFilterFactory" />-->
+              <filter class="solr.EdgeNGramFilterFactory"
+                      minGramSize="3"
+                      maxGramSize="10"
+                      />
+              <filter class="solr.RemoveDuplicatesTokenFilterFactory" />
+          </analyzer>
+          <analyzer type="query">
+              <tokenizer class="solr.WhitespaceTokenizerFactory" />
+              <!--filter class="solr.ICUFoldingFilterFactory" />
+              <filter class="solr.LowerCaseFilterFactory" />-->
+          </analyzer>
+      </fieldType>
+
+      <!-- Basic Text Field for use with Spell Correction 
+           enhanced with chain elements of old type text_spelled (14.05.2013 / osc) -->
+      <fieldType name="textSpell" class="solr.TextField" positionIncrementGap="100">
+          <analyzer>
+              <tokenizer class="solr.ICUTokenizerFactory"/>
+              <filter class="solr.WordDelimiterFilterFactory" 
+                      generateWordParts="1" 
+                      generateNumberParts="1" 
+                      catenateWords="0" 
+                      catenateNumbers="0" 
+                      catenateAll="0" 
+              />
+              <filter class="solr.ICUFoldingFilterFactory"/>
+              <filter class="solr.StopFilterFactory" words="stopspellwords.txt" ignoreCase="true" />
+              <filter class="solr.TrimFilterFactory" />
+              <filter class="solr.LengthFilterFactory" min="3" max="50" />
+              <filter class="solr.RemoveDuplicatesTokenFilterFactory"/>
+          </analyzer>
+      </fieldType>
+      
+      <fieldType name="textSpellShingle" class="solr.TextField" positionIncrementGap="100">
+          <analyzer type="index">
+              <tokenizer class="solr.ICUTokenizerFactory"/>
+              <filter class="solr.ICUFoldingFilterFactory"/>
+              <filter class="solr.StopFilterFactory"
+                      words="stopspellwords.txt"
+                      ignoreCase="true" 
+              />
+              <filter class="solr.ShingleFilterFactory" 
+                      maxShingleSize="2" 
+                      outputUnigrams="false"
+              />
+              <filter class="solr.RemoveDuplicatesTokenFilterFactory"/>
+          </analyzer>
+          <analyzer type="query">
+              <tokenizer class="solr.ICUTokenizerFactory"/>
+              <filter class="solr.ICUFoldingFilterFactory"/>
+              <filter class="solr.StopFilterFactory" 
+                      words="stopspellwords.txt"
+                      ignoreCase="true" 
+              />
+              <filter class="solr.ShingleFilterFactory" 
+                      maxShingleSize="2" 
+                      outputUnigrams="false"
+              />
+              <filter class="solr.RemoveDuplicatesTokenFilterFactory"/>
+          </analyzer>
+      </fieldType>
+
+      <!-- field type for sort strings -->
+      <!-- old alpha sort
+      <fieldType name="alphaOnlySort" docValues="true" class="solr.StrField"/>
+      -->
+      <!--
+      <fieldType name="alphaOnlySort" docValues="true" class="solr.ICUCollationField"
+                 locale="de"
+                 strength="primary" />
+        -->
+      <fieldType name="alphaOnlySort"  class="solr.ICUCollationField"
+                 locale="de"
+                 strength="primary" />
+
+
+  </types>
+
+    <!-- =================
+          Field Definitions
+          =================
+     -->
+    <fields>
+
+        <!-- Core Fields
+             *********** -->
+        <field name="id" type="string" indexed="true" stored="true"/>
+        <field name="fullrecord" type="string" indexed="false" stored="true"/>
+        <field name="holdings" type="string" indexed="false" stored="true"/>
+        <field name="freshness" type="tdate" indexed="true" stored="false"/>
+
+        <field name="fulltext" type="text_untreated" indexed="true" stored="true" multiValued="true" termVectors="true" termPositions="true" termOffsets="true" />
+        <!-- used for loading correct record driver -->
+        <field name="recordtype" type="string" indexed="false" stored="true" required="true" />
+        <!-- why use the following three fields? -->
+        <!--
+       <field name="marc_error" type="string" indexed="false" stored="true" multiValued="true"/>
+       <field name="allfields" type="text_untreated" indexed="true" stored="false"/>
+       <field name="allfields_unstemmed" type="text_untreated" indexed="true" stored="false"/>
+        -->
+        <!--   <field name="fulltext_unstemmed" type="text_untreated" indexed="true" stored="false"/>-->
+        <field name="spelling" type="textSpell" indexed="true" stored="true" multiValued="true" />
+        <field name="spellingShingle" type="textSpellShingle" indexed="true" stored="true" multiValued="true" />
+        
+
+        <!-- Institutional Fields (and call numbers, maybe holdings later, information to access a physical or remote electronic resource)
+             ******************** -->
+        <field name="union" type="string" indexed="true" stored="true" multiValued="true" />
+        <field name="institution" type="string" indexed="true" stored="true" multiValued="true" />
+        <field name="mylibrary" type="string" indexed="true" stored="false" multiValued="true" />
+
+        <!-- following two fields will be empty at the moment -->
+        <field name="collection" type="string" indexed="true" stored="true" multiValued="true" />
+        <field name="isil" type="string" stored="true" indexed="true" multiValued="true" />
+        <field name="callnumber" type="callnum" indexed="true" stored="false" multiValued="true" />
+        <field name="itemid" type="callnum" indexed="true" stored="false" multiValued="true" />
+
+        <!-- Generic Fields
+             ************** -->
+        <field name="language" type="stringlike" indexed="true" stored="true" multiValued="true"/>
+        <field name="format" type="string" indexed="true" stored="true" multiValued="true"/>
+        <field name="author" type="text_untreated" indexed="true" stored="false" termVectors="true" multiValued="true" />
+        <field name="title" type="text_untreated" indexed="true" stored="true" multiValued="true"/>
+        <field name="title_short" type="text_untreated" indexed="true" stored="true" multiValued="true"/>
+        <field name="title_sub" type="text_untreated" indexed="true" stored="false" multiValued="true"/>
+        <field name="publishDate" type="int" indexed="true" stored="false" multiValued="true" />
+        <field name="thumbnail" type="string" indexed="false" stored="true"/>
+        <!-- vf-generic fields still missing, some for display, others for snippets/highlight and building alphabrowse, check later -->
+
+        <!-- Catalog Specific Fields
+             *********************** -->
+        <field name="ctrlnum" type="isn" indexed="true" stored="false" multiValued="true" />
+        <field name="isbn" type="isn" indexed="true" stored="true" multiValued="true"/>
+
+        <field name="issn" type="isn" indexed="true" stored="true" multiValued="true"/>
+
+        <!-- I guess it's not necessary to store FRBR-id.  todo: Clarify ramifications for grouping -->
+        <field name="groupid_isn_mv" type="isn" indexed="true" stored="true" />
+        
+        <dynamicField name="*_isn_mv" type="isn" indexed="true" stored="true" multiValued="true"/>
+        
+        <field name="title_alt" type="text_untreated" indexed="true" stored="false" multiValued="true"/>
+        <field name="title_old" type="text_untreated" indexed="true" stored="true" multiValued="true"/>
+        <field name="title_new" type="text_untreated" indexed="true" stored="true" multiValued="true"/>
+        <field name="author_additional" type="text_untreated" indexed="true" stored="false" multiValued="true" />
+        <field name="series" type="text_untreated" indexed="true" stored="false" multiValued="true" />
+        <field name="journals" type="text_untreated" indexed="true" stored="false" multiValued="true" />
+        <field name="localcode" type="stringlike" indexed="true" stored="false" multiValued="true" />
+        <dynamicField name="*_str_mv" type="string" indexed="true" stored="true" multiValued="true"/>
+        <dynamicField name="*_txt_mv" type="text_untreated" indexed="true" stored="false" multiValued="true"/>
+        <!--
+        <field name="author-letter" type="string" indexed="true" stored="true"/>
+        <field name="title_full" type="text_untreated" indexed="true" stored="true"/>
+        <field name="title_full_unstemmed" type="text_untreated" indexed="true" stored="true"/>
+        <field name="title_fullStr" type="string" indexed="true" stored="true"/>
+        <field name="title_auth" type="text_untreated" indexed="true" stored="true"/>
+        -->
+
+        <!-- subject fields (generic field 'subfull', categories per vocabulary, classifications, special subject indexing, local subject indexing)
+             **************  -->
+        <field name="topic" type="text_untreated" indexed="true" stored="false" multiValued="true" termVectors="true" />
+        <dynamicField name="subpers_*" type="text_untreated" indexed="true" stored="false" multiValued="true" />
+        <dynamicField name="subtime_*" type="text_untreated" indexed="true" stored="false" multiValued="true" />
+        <dynamicField name="subtitle_*" type="text_untreated" indexed="true" stored="false" multiValued="true" />
+        <dynamicField name="subtop_*" type="text_untreated" indexed="true" stored="false" multiValued="true" />
+        <dynamicField name="subgeo_*" type="text_untreated" indexed="true" stored="false" multiValued="true" />
+        <dynamicField name="subform_*" type="text_untreated" indexed="true" stored="false" multiValued="true" />
+        <field name="subundef" type="text_untreated" indexed="true" stored="false" multiValued="true" />
+        <field name="subgnd_enriched" type="text_untreated" indexed="true" stored="false" multiValued="true" />
+        <!-- Special or local subject indexing (sources are fields 690/691) -->
+        <field name="sublocal" type="text_untreated" indexed="true" stored="false" multiValued="true" />
+        <field name="submusic" type="text_untreated" indexed="true" stored="false" multiValued="true" />
+        <dynamicField name="classif_*" type="stringlike" indexed="true" stored="false" multiValued="true" />
+
+        <!-- Sort Fields
+             *********** -->
+        <field name="author_sort" type="alphaOnlySort" indexed="true" stored="false"/>
+        <field name="title_sort" type="alphaOnlySort" indexed="true" stored="false"/>
+        <field name="publishDateSort" type="string" indexed="true" stored="false"/>
+
+  	    <!-- Hierarchy Fields
+  	         **************** -->
+	    <field name="hierarchytype" type="string" indexed="true" stored="true" multiValued="false"/>
+	    <field name="hierarchy_top_id" type="string" indexed="true" stored="true" multiValued="true"/>
+	    <field name="hierarchy_top_title" type="string" indexed="true" stored="true" multiValued="true"/>
+	    <field name="hierarchy_parent_id" type="string" indexed="true" stored="true" multiValued="true"/>
+	    <field name="hierarchy_parent_title" type="string" indexed="true" stored="true" multiValued="true"/>
+	    <field name="hierarchy_sequence" type="string" indexed="true" stored="true" multiValued="true"/>
+	    <field name="is_hierarchy_id" type="string" indexed="true" stored="true" multiValued="false"/>
+	    <field name="is_hierarchy_title" type="string" indexed="true" stored="true" multiValued="false"/>
+            <field name="title_in_hierarchy" type="string" indexed="true" stored="true" multiValued="true" />
+	    <field name="hierarchy_browse" type="navFieldCombined" indexed="true" stored="false" multiValued="true"/>
+
+        <!-- specific Facet Fields
+             ********************* -->
+        <dynamicField name="navAuthor_*" type="navFieldCombined" indexed="true" stored="false" multiValued="true" />
+        <field name="navSubform" type="navFieldForm" multiValued="true" stored="false" />
+        <dynamicField name="navSub_*" type="navFieldCombined" multiValued="true" stored="false" />
+        <field name="navSubtime" type="navFieldCombined" multiValued="true" stored="false" />
+        <dynamicField name="navDrsys_*" type="string" multiValued="true" indexed="true" stored="false" />
+        <field name="navDrsys" type="string" multiValued="true" indexed="true" stored="false" />
+
+        <!--  special fields
+            **************** -->
+        <field name="time_processed" type="tdate" stored="true" indexed="true" />
+        <field name="time_indexed" type="tdate" default="NOW/MINUTE" stored="true" indexed="true" />
+        <!-- mandatory field for schema version 1.5-->
+        <field name="_version_" type="long" indexed="true" stored="true"/>
+        <!-- Fallback-Feld zur Fehlervermeidung beim Indexierung, nicht vorhergesehenes wird nicht
+             indexiert, darf aber sein -->
+        <dynamicField name="*" type="text_untreated" indexed="false" stored="false" multiValued="true" />
+
+        <!-- =================
+             COPY INSTRUCTIONS
+             =================
+        -->
+        <!-- copy to generic fields -->
+        <copyField source="sub*" dest="topic" />
+
+        <!-- COPY FIELDS FUER NAVIGATOREN / FACETTEN -->
+        <!-- Facetten fuer View orange (BaBe) -->
+        <copyField source="subtop_gnd" dest="navSub_orange" />
+        <copyField source="subtop_idsbb" dest="navSub_orange" />
+        <copyField source="subtop_mesh" dest="navSub_orange" />
+        <copyField source="subpers_gnd" dest="navSub_orange" />
+        <copyField source="subpers_idsbb" dest="navSub_orange" />
+        <copyField source="subpers_mesh" dest="navSub_orange" />
+        <copyField source="subtitle_gnd" dest="navSub_orange" />
+        <copyField source="subtitle_idsbb" dest="navSub_orange" />
+        <copyField source="subtitle_mesh" dest="navSub_orange" />
+        <copyField source="subgeo_gnd" dest="navSub_orange" />
+        <copyField source="subgeo_idsbb" dest="navSub_orange" />
+        <copyField source="subgeo_mesh" dest="navSub_orange" />
+        <copyField source="subtime_gnd" dest="navSub_orange" />
+        <copyField source="subtime_idsbb" dest="navSub_orange" />
+        <copyField source="subtime_mesh" dest="navSub_orange" />
+        
+        <copyField source="navAuthor_IDSBB" dest="navAuthor_orange" />
+        <copyField source="navAuthor_SNL" dest="navAuthor_orange" />
+
+        <!-- Topic Subject Facette fuer swissbib gruen (19.03.2012/osc) -->
+        <copyField source="subpers_*" dest="navSub_green" />
+        <copyField source="subtitle_*" dest="navSub_green" />
+        <copyField source="subtop_*" dest="navSub_green" />
+        <copyField source="subgeo_*" dest="navSub_green" />
+
+        <!-- Time Subject Facette für swissbib gruen (19.03.2012/osc) -->
+        <copyField source="subtime_*" dest="navSubtime" />
+
+        <!-- Form Facette, mit Reduktionsmechanismus -->
+        <copyField source="subform_ids*" dest="navSubform" />
+        <copyField source="subform_mesh" dest="navSubform" />
+        <copyField source="subform_gnd" dest="navSubform" />
+        <copyField source="subform_rero" dest="navSubform" />
+        <copyField source="subform_sbt" dest="navSubform" />
+
+        <!-- Facette Rechtssystematik fuer Jus-Portal (31.03.2013/tvi) -->
+        <copyField source="classif_drsys_gen" dest="navDrsys" />
+        <copyField source="classif_drsys_D" dest="navDrsys" />
+        <copyField source="classif_drsys_F" dest="navDrsys" />
+        <copyField source="classif_drsys_gen" dest="navDrsys_Gen" />
+        <copyField source="classif_drsys_D" dest="navDrsys_D" />
+        <copyField source="classif_drsys_E" dest="navDrsys_E" />
+        <copyField source="classif_drsys_F" dest="navDrsys_F" />
+        <copyField source="subgeo_*" dest="navSub_geofull" />
+
+        <!-- copy fields for spelling -->
+        <!-- ** Basic, single word spelling -->
+        <copyField source="author" dest="spelling" />
+        <copyField source="author_additional" dest="spelling" />
+        <copyField source="title_short" dest="spelling"/>
+        <copyField source="title_alt" dest="spelling" />
+        <copyField source="sub*" dest="spelling"/>
+        
+        <!-- ** Complex, Shingle spelling -->
+        <copyField source="author" dest="spellingShingle" />
+        <copyField source="author_additional" dest="spellingShingle" />
+        <copyField source="title_short" dest="spellingShingle" />
+        <copyField source="title_alt" dest="spellingShingle" />
+        <copyField source="sub*" dest="spellingShingle"/>
+        <copyField source="series" dest="spellingShingle"/>
+        <copyField source="journals" dest="spellingShingle"/>
+        <!--<copyField source="add_fields" dest="spellingShingle"/>-->
+
+        <!-- copy field for dedicated index mylibrary - also nown as favorites -->
+        <copyField source="institution" dest="mylibrary" />
+
+
+    </fields>
+
+    <!-- Field to use to determine and enforce document uniqueness.
+         Unless this field is marked with required="false", it will be a required field
+      -->
+    <uniqueKey>id</uniqueKey>
+
+    <!-- DEPRECATED: The defaultSearchField is consulted by various query parsers when
+     parsing a query string that isn't explicit about the field.  Machine (non-user)
+     generated queries are best made explicit, or they can use the "df" request parameter
+     which takes precedence over this.
+     Note: Un-commenting defaultSearchField will be insufficient if your request handler
+     in solrconfig.xml defines "df", which takes precedence. That would need to be removed.
+    <defaultSearchField>text</defaultSearchField> -->
+
+    <!-- DEPRECATED: The defaultOperator (AND|OR) is consulted by various query parsers
+     when parsing a query string to determine if a clause of the query should be marked as
+     required or optional, assuming the clause isn't already marked by some operator.
+     The default is OR, which is generally assumed so it is not a good idea to change it
+     globally here.  The "q.op" request parameter takes precedence over this. -->
+    <!--<solrQueryParser defaultOperator="AND"/> -->
+
+</schema>
