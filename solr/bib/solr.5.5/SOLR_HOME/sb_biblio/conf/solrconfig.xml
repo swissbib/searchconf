@@ -531,8 +531,6 @@
     <str name="config-file">elevate.xml</str>
   </searchComponent>
 
-       http://wiki.apache.org/solr/HighlightingParameters
-    -->
   <searchComponent class="solr.HighlightComponent" name="highlight">
       <highlighting>
           <!-- Configure the standard fragmenter -->
