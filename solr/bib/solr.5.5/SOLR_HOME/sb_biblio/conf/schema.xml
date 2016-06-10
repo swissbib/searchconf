@@ -40,7 +40,7 @@ SWISSBIB SOLR-SCHEMA
           <analyzer>
               <tokenizer class="solr.KeywordTokenizerFactory" />
               <filter class="solr.PatternReplaceFilterFactory"
-                  pattern="[Ss]\.[Nn]\.|[Aa]nonym|[\[\]*]|\[.*\]|
+                      pattern="[Ss]\.[Nn]\.|[\[\]*]|\[.*\]|
                            \u0022|\u003C|\u003E|\u003F|^\d{4}-\d{4}$|, \d{4}-\d{4}|
                            Formschlagwort|Aufsatzsammlung"
                   replacement=""
@@ -85,7 +85,7 @@ SWISSBIB SOLR-SCHEMA
       <fieldType name="text_untreated" class="solr.TextField" positionIncrementGap="100">
           <analyzer type="index">
               <charFilter class="solr.MappingCharFilterFactory" mapping="mapping-chars.txt"/>
-              <tokenizer class="solr.ICUTokenizerFactory"/>
+              <tokenizer class="solr.ICUTokenizerFactory" rulefiles="Latn:Latin-break-only-on-whitespace.rbbi"/>
               <filter class="solr.WordDelimiterFilterFactory" 
                       generateWordParts="1" 
                       generateNumberParts="1" 
@@ -101,14 +101,14 @@ SWISSBIB SOLR-SCHEMA
           </analyzer>
           <analyzer type="query">
               <charFilter class="solr.MappingCharFilterFactory" mapping="mapping-chars.txt"/>
-              <tokenizer class="solr.ICUTokenizerFactory"/>
+              <tokenizer class="solr.ICUTokenizerFactory" rulefiles="Latn:Latin-break-only-on-whitespace.rbbi"/>
               <filter class="solr.WordDelimiterFilterFactory" 
                       generateWordParts="1" 
                       generateNumberParts="1" 
-                      catenateWords="0" 
-                      catenateNumbers="0" 
+                      catenateWords="1"
+                      catenateNumbers="1"
                       catenateAll="0" 
-                      splitOnCaseChange="1"/>
+                      splitOnCaseChange="0"/>
               <filter class="solr.ICUFoldingFilterFactory"/>
               <filter class="solr.CJKWidthFilterFactory"/>
               <filter class="solr.CJKBigramFilterFactory"/>
@@ -159,6 +159,11 @@ SWISSBIB SOLR-SCHEMA
                       replacement=""
                       replace="all"
                       />
+              <filter class="solr.PatternReplaceFilterFactory"
+                      pattern="\u005f"
+                      replacement=""
+                      replace="all"
+              />
               <filter class="solr.TrimFilterFactory" />
           </analyzer>
       </fieldType>
@@ -303,7 +308,6 @@ SWISSBIB SOLR-SCHEMA
         <field name="collection" type="string" indexed="true" stored="true" multiValued="true" />
         <field name="isil" type="string" stored="true" indexed="true" multiValued="true" />
         <field name="callnumber" type="callnum" indexed="true" stored="false" multiValued="true" />
-        <field name="itemid" type="callnum" indexed="true" stored="false" multiValued="true" />
 
         <!-- Generic Fields
              ************** -->
