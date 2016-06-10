@@ -425,6 +425,7 @@ SWISSBIB SOLR-SCHEMA
         
         <copyField source="navAuthor_IDSBB" dest="navAuthor_orange" />
         <copyField source="navAuthor_SNL" dest="navAuthor_orange" />
+        <copyField source="navAuthor_HAN" dest="navAuthor_orange" />
 
         <!-- Topic Subject Facette fuer swissbib gruen (19.03.2012/osc) -->
         <copyField source="subpers_*" dest="navSub_green" />
