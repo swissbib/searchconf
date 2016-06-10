@@ -7,7 +7,7 @@
     solrconfig.xml Datei wurden zwecks besserer Leserlichkeit entfernt
     Sie können jederzeit mit einem Download der files nachgesehen werden -->
 
-    <luceneMatchVersion>5.5.0</luceneMatchVersion>
+    <luceneMatchVersion>5.5.1</luceneMatchVersion>
 
     <!-- lucene analysis jars nicht in standard techconfig -->
     <lib dir="${solr.install.dir:}/contrib/analysis-extras/lucene-libs" regex=".*\.jar" />
