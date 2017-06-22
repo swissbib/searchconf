@@ -453,6 +453,11 @@ SWISSBIB SOLR-SCHEMA
         <copyField source="classif_drsys_F" dest="navDrsys_F" />
         <copyField source="subgeo_*" dest="navSub_geofull" />
 
+        <!-- Topic Subject Facette für jusbib, ohne Geografika -->
+        <copyField source="subpers_*" dest="navSub_jus" />
+        <copyField source="subtitle_*" dest="navSub_jus" />
+        <copyField source="subtop_*" dest="navSub_jus" />
+
         <!-- copy fields for spelling -->
         <!-- ** Basic, single word spelling -->
         <copyField source="author" dest="spelling" />
