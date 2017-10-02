@@ -19,4 +19,4 @@ then
 fi
 
 JAVA_HOME=${APP_BASE}/java
-PATH=${APP_BASE}/java/bin:.:$PATH
+PATH=${APP_BASE}/jav    a/bin:.:$PATH
