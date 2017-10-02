@@ -1,0 +1,127 @@
+bin
+    start.master.sh
+    stop.sh
+
+configs
+    solr.home
+        bib
+            conf
+                admin-extra.html
+                admin-extra.menu-bottom.html
+                admin-extra.menu-top.html
+                clustering
+                    carrot2
+                        carrot2 scripte
+                currency.xml
+                dr_sys_synonyms.txt
+                elevate.xml
+                formsynonyms.txt
+                lang
+                    stopwords contraction hyphenation definitions
+                mapping-chars.txt
+                mapping-FoldToASCII.txt
+                mapping-ISOLatin1Accent.txt
+                protwords.txt
+                _rest_managed.json
+                schema.4.10.2.default.xml
+                _schema_analysis_stopwords_english.json
+                _schema_analysis_synonyms_english.json
+                schema.xml
+                scripts.conf
+                solrconfig.4.10.2.default.xml
+                solrconfig.xml
+                spellings.txt
+                stopspellwords.txt
+                stopwords_en.txt
+                stopwords.txt
+                synonyms.txt
+                timesynonyms.txt
+                update-script.js
+                velocity
+                    velocity scripte
+                xslt
+                    xslt scripte
+
+            core.properties (Definition des cores sb-biblio)
+            README.txt
+        bin
+        README.txt
+        solr.xml
+        used.libraries.txt
+        zoo.cfg
+core
+    contrib (hier finden sich die libs aus dem contrib Verzeichnis des download package)
+        analysis-extras
+        clustering
+        dataimporthandler
+        dataimporthandler-extras
+        extraction
+        langid
+        map-reduce
+        morphlines-cell
+        morphlines-core
+        uima
+        velocity
+
+    dist
+        solr-4.10.2.war
+        solr-analysis-extras-4.10.2.jar
+        solr-cell-4.10.2.jar
+        solr-clustering-4.10.2.jar
+        solr-core-4.10.2.jar
+        solr-dataimporthandler-4.10.2.jar
+        solr-dataimporthandler-extras-4.10.2.jar
+        solrj-lib
+            commons-io-2.3.jar
+            httpclient-4.3.1.jar
+            httpcore-4.3.jar
+            httpmime-4.3.1.jar
+            noggit-0.5.jar
+            slf4j-api-1.7.6.jar
+            wstx-asl-3.2.7.jar
+            zookeeper-3.4.6.jar
+
+
+
+        solr-langid-4.10.2.jar
+        solr-map-reduce-4.10.2.jar
+        solr-morphlines-cell-4.10.2.jar
+        solr-morphlines-core-4.10.2.jar
+        solr-solrj-4.10.2.jar
+        solr-test-framework-4.10.2.jar
+        solr-uima-4.10.2.jar
+        solr-velocity-4.10.2.jar
+
+        test-framework
+            lib
+                ant-1.8.2.jar
+                junit-4.10.jar
+                junit4-ant-2.1.6.jar
+                randomizedtesting-runner-2.1.6.jar
+            lucene-libs
+                lucene-test-framework-4.10.2.jar
+
+
+tomcat
+    bin
+    conf
+    lib
+    LICENSE
+    logs
+
+    NOTICE
+    RELEASE-NOTES
+    RUNNING.txt
+    solrlogs
+    temp
+    webapps
+        docs
+        examples
+        host-manager
+        manager
+        ROOT
+        solr
+        solr.war (Kopie aus dem Distverzeichnis)
+    work
+
+

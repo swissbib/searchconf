@@ -1,0 +1,142 @@
+$SOLR_BASE (so wie sie mit dem SOLR Download Paket ausgeliefert werden)
+    contrib
+        analysis-extras
+            lib
+                icu4j-53.1.jar
+                morfologik-fsa-1.7.1.jar
+                morfologik-polish-1.7.1.jar
+                morfologik-stemming-1.7.1.jar
+
+            lucene-libs
+                lucene-analyzers-icu-4.10.2.jar
+                lucene-analyzers-morfologik-4.10.2.jar
+                lucene-analyzers-smartcn-4.10.2.jar
+                lucene-analyzers-stempel-4.10.2.jar
+
+        clustering
+            lib
+                attributes-binder-1.2.1.jar
+                carrot2-mini-3.9.0.jar
+                hppc-0.5.2.jar
+                jackson-core-asl-1.9.13.jar
+                jackson-mapper-asl-1.9.13.jar
+                mahout-collections-1.0.jar
+                mahout-math-0.6.jar
+                simple-xml-2.7.jar
+
+
+        dataimporthandler
+            leer
+
+        dataimporthandler-extras
+            lib
+                activation-1.1.1.jar
+                javax.mail-1.5.1.jar
+                gimap-1.5.1.jar
+
+        extraction
+            lib
+
+                apache-mime4j-core-0.7.2.jar
+                apache-mime4j-dom-0.7.2.jar
+                aspectjrt-1.6.11.jar
+                bcmail-jdk15-1.45.jar
+                bcprov-jdk15-1.45.jar
+                boilerpipe-1.1.0.jar
+                commons-compress-1.7.jar
+                dom4j-1.6.1.jar
+                fontbox-1.8.4.jar
+                icu4j-53.1.jar
+                isoparser-1.0-RC-1.jar
+                jdom-1.0.jar
+                jempbox-1.8.4.jar
+                jhighlight-1.0.jar
+                juniversalchardet-1.0.3.jar
+                metadata-extractor-2.6.2.jar
+
+                pdfbox-1.8.4.jar
+                poi-3.10.1.jar
+                poi-ooxml-3.10.1.jar
+                poi-ooxml-schemas-3.10.1.jar
+                poi-scratchpad-3.10.1.jar
+                rome-0.9.jar
+                tagsoup-1.2.1.jar
+                tika-core-1.5.jar
+                tika-parsers-1.5.jar
+                tika-xmp-1.5.jar
+                vorbis-java-core-0.1.jar
+                vorbis-java-tika-0.1.jar
+                xercesImpl-2.9.1.jar
+                xmlbeans-2.6.0.jar
+                xmpcore-5.1.2.jar
+                xz-1.4.jar
+        langid
+            lib
+                jsonic-1.2.7.jar
+                langdetect-1.1-20120112.jar
+
+        uima
+            lib
+                AlchemyAPIAnnotator-2.3.1.jar
+                commons-digester-2.1.jar
+                OpenCalaisAnnotator-2.3.1.jar
+                Tagger-2.3.1.jar
+                uimaj-core-2.3.1.jar
+                WhitespaceTokenizer-2.3.1.jar
+            lucene-libs
+                lucene-analyzers-uima-4.10.1.jar
+
+        velocity
+            lib
+                commons-beanutils-1.8.3.jar
+                commons-collections-3.2.1.jar
+                velocity-1.7.jar
+                velocity-tools-2.0.jar
+
+
+        noch nicht verteilt: (brauchen wir sie??)
+            map-reduce
+            morphlines-cell
+            morphlines-core
+
+
+
+    dist
+
+        solr-4.10.2.war
+        solr-analysis-extras-4.10.2.jar
+        solr-cell-4.10.2.jar
+        solr-clustering-4.10.2.jar
+        solr-core-4.10.2.jar
+        solr-dataimporthandler-4.10.2.jar
+        solr-dataimporthandler-extras-4.10.2.jar
+        solrj-lib
+            commons-io-2.3.jar
+            httpclient-4.3.1.jar
+            httpcore-4.3.jar
+            httpmime-4.3.1.jar
+            noggit-0.5.jar
+            slf4j-api-1.7.6.jar
+            wstx-asl-3.2.7.jar
+            zookeeper-3.4.6.jar
+
+
+
+
+        solr-langid-4.10.2.jar
+        solr-map-reduce-4.10.2.jar
+        solr-morphlines-cell-4.10.2.jar
+        solr-morphlines-core-4.10.2.jar
+        solr-solrj-4.10.2.jar
+        solr-test-framework-4.10.2.jar
+        solr-uima-4.10.2.jar
+        solr-velocity-4.10.2.jar
+
+        test-framework
+            lib
+                ant-1.8.2.jar
+                junit-4.10.jar
+                junit4-ant-2.1.6.jar
+                randomizedtesting-runner-2.1.6.jar
+            lucene-libs
+                lucene-test-framework-4.10.2.jar
