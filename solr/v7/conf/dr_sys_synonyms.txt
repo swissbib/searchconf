@@ -1,0 +1,292 @@
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License,  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+#-----------------------------------------------------------------------
+#some test synonym mappings unlikely to appear in real input text
+#aaafoo => aaabar
+#bbbfoo => bbbfoo bbbbar
+#cccfoo => cccbar cccbaz
+#fooaaa,baraaa,bazaaa
+
+# Some synonym groups specific to this example
+#GB,gib,gigabyte,gigabytes
+#MB,mib,megabyte,megabytes
+#Television, Televisions, TV, TVs
+#notice we use "gib" instead of "GiB" so any WordDelimiterFilter coming
+#after us won't split it into two words.
+
+# Synonym mappings can be used for spelling correction too
+#pixima => pixma
+
+#END of standard header ------------------------------------------------
+
+1, Dictionnaires, listes d'abréviations, Wörterbücher, Abkürzungsverzeichnisse , Dictionaries, abbreviation lists
+1.1, Dictionnaires multilingues, Mehrsprachige Wörterbücher, Multilingual dictionaries
+1.2, Dictionnaires bilingues, Zweisprachige Wörterbücher, Bilingual dictionaries
+1.3, Dictionnaires de droit, Rechtswörterbücher, Law dictionaries
+1.4, Dictionnaires de sigles et d'abréviations, Sigelverzeichnisse und Abkürzungsverzeichnisse, Dictionaries of acronyms and abbreviations
+2, Répertoires, Personenregister und Institutionenregister, Directories
+3, Sources d'informations générales, Allgemeine Nachschlagewerke, Sources of general information
+4, Encyclopédies, Enzyklopädien, Encyclopaedias
+4.1, Encyclopédies juridiques, Rechtsenzyklopädien, Legal encyclopaedias
+5, Bibliographies, Bibliographien
+5.1, Bibliographies juridiques, Rechtsbibliographien, Legal bibliographies
+6, Biographies, Biographien
+7, Ouvrages non juridiques, Nichtjuristisches Schrifttum, Literature other than legal literature
+7.1, Philosophie, Philosophie, Philosophy
+7.2, Théologie, Theologie, Theology
+7.3, Sociologie générale, Allgemeine Soziologie, General sociology
+7.4, Psychologie Pédagogie, Psychologie Pädagogik, Psychology Education
+7.5, Méthodologie, Methodologie, Methodology
+7.6, Langue Linguistique Littérature, Sprache Sprachwissenschaft Literatur, Language Linguistics Literature
+7.7, Economie, Wirtschaft, Economics
+7.8, Géographie, Geographie, Geography
+7.9, Sciences exactes et naturelles Sciences appliquées, Exakte und Naturwissenschaften Angewandte Wissenschaften, Natural and exact sciences Applied sciences
+8, Organisation des bibliothèques Bibliothéconomie, Bibliothekswesen, Organisation of libraries Librarianship
+8.1, Bibliothèques de droit, Rechtsbibliothekswesen, Law librarianship
+9, Recueils de législation, Gesetzessammlungen, Collections of legislation
+10, Recueils de publications officielles, Amtliche Publikationen, Collections of official publications
+11, Recueils de jurisprudence, Entscheidsammlungen, Collections of judicial decisions, law reports
+12, Congrès et autres réunions scientifiques, Kongresse und andere wissenschaftliche Veranstaltungen, Congresses and other scientific meetings
+13, Collections d'archives, Archivsammlungen, Archives
+14, Périodiques, Periodika, Periodical publications
+15, Recueils de travaux, Aufsatzsammlungen, Collections of essays
+15.1, Mélanges, Festschriften
+16, Ouvrages généraux de droit, Juristische Gesamtdarstellungen, General legal treatises
+17, Histoire du droit, Rechtsgeschichte, Legal history
+17.1, Histoire du droit (19e siècle), Juristische Zeitgeschichte (19, Jhd), Legal History (19th century)
+17.2, Histoire du droit (20e siècle), Juristische Zeitgeschichte (20, Jhd), Legal History (20th century)
+18, Philosophie et théorie générale du droit, Rechtsphilosophie und allgemeine Rechtstheorie, Legal philosophy and legal theory
+18.1, Epistémologie juridique, Juristische Erkenntnistheorie, Legal epistemology
+18.10, Théorie économique du droit, Ökonomische Theorie des Rechts, Law and economics
+18.2, Sociologie du droit, Anthropologie juridique, Rechtssoziologie, Rechtsanthropologie, Sociology of law, Legal anthropology
+18.3, Logique juridique, Méthodologie du droit, Juristische Logik, Juristische Methodik, Legal logic, Methodology of law
+18.4, Sémiologie et sémiotique juridique, Juristische Semiologie und Semiotik, Legal semiology and semiotics
+18.5, Sources et théorie des normes, Interprétation, Rechtsquellen und Normentheorie, Auslegung, Sources and theory of norms, Legal interpretation
+18.6, Droit et morale, Recht und Moral, Law and ethics
+18.7, Droit et justice, Jusnaturalismes, Recht und Gerechtigkeit, Naturrecht, Law and justice, Natural law
+18.8, Juspositivismes, Rechtspositivismus, Legal positivism
+18.9, Droit et Idéologie, Recht und Ideologie, Law and Marxism
+19, Théorie et méthode du droit comparé, Theorie und Methodik der Rechtsvergleichung, Theory and method of comparative law
+20, Réforme du droit, Codification, Rechtsreform, Kodifizierung, 
+21, Unification du droit, Rechtsvereinheitlichung, Unification of law
+22, Technique législative, Rédaction juridique, Gesetzgebungstechnik, Abfassung juristischer Texte, Legislative technique, Legal drafting
+23, Recherche juridique, Rechtswissenschaftliche Forschung, Rechtsinformatik, Legal research, Computerized legal research
+24, Enseignement du droit, Rechtsunterricht, Legal education
+25, Professions et organisations juridiques, Juristische Berufe und Organisationen, Legal professions and organisations
+26, Droit international privé, Internationales Privatrecht, Private international law
+27, Sources du droit international privé, Quellen des IPR, Sources of private international law
+27.1, Conférences de La Haye de droit international privé, Haager IPR-Konferenz, Hague Conference on Private International Law
+27.2, Conférence interaméricaine de droit international privé CIDIP, Interamerikanische Konferenz für IPR, Interamerican Conference on Private International Law CIDIP
+28, Notions générales de droit international privé, Allgemeine Begriffe des internationalen Privatrechts, General concepts of private international law
+28.1, Rattachement, Anknüpfung, Connecting factors
+29, Procédure droit international privé, Prozessrecht und Verfahrensrecht im IPR, Procedure private international law
+29.1, Arbitrage international privé, Schiedsgerichtsbarkeit, International commercial arbitration
+30, Droit du commerce international, Internationales Handelsrecht, International commercial transactions
+30.1, Sociétés, Entreprises multinationales, Joint ventures, Gesellschaften, Multinationale Unternehmen, Joint ventures, Companies, Multinational enterprises, Joint ventures
+30.2, Vente internationale droit uniforme et règles de conflits, Internationales Kaufrecht Einheitsrecht und Kollisionsnormen, International sale of goods uniform law and conflict rules
+30.3, Commerce électronique, Elektronischer Handel, E-Commerce
+31, Sujets spéciaux de droit international privé, Einzelne Gebiete des IPR, Specific subjects of private international law
+31.1, Personnes, Personenrecht, Persons
+31.10, Quasi-contrats, Enrichissement illégitime , Vertragsähnliche Verhältnisse, Ungerechtfertigte Bereicherung, Quasi-contract, Unjust enrichment
+31.11, Concurrence, Cartels, Concurrence déloyale, Wettbewerbsrecht und Kartellrecht, Unlauterer Wettbewerb, Competition, Antitrust law, Unfair competition
+31.12, Propriété intellectuelle, Immaterialgüterrecht, Intellectual property
+31.2, Mariage et relations entre conjoints, Eherecht und Eheliches Güterrecht, Marriage and relations between spouses
+31.3, Relations entre parents et enfants, Tutelle, Beziehungen zwischen Eltern und Kindern, Vormundschaft, Relations between parents and children, Guardianship
+31.4, Successions, Erbrecht, Succession
+31.5, Trusts, Trusts, Trusts
+31.6, Propriété immobilière et mobilière, Eigentum an beweglichen Sachen und Grundeigentum, Property immovable and movable
+31.7, Contrats en général, Vertragsverhältnisse im allgemeinen, Contracts in general
+31.8, Contrats spéciaux, Besondere Vertragsverhältnisse, Specific types of contracts
+31.9, Responsabilité civile actes illicites, Torts , Ausservertragliche Haftung , Extra-contractual delictual liability, Torts 
+32, Etat, Gouvernement, Politique, Staat, Regierung, Politik, State, Government, Politics
+32.1, Partis et organisations politiques, Parteien und politische Organisationen, Political parties and organisations
+32.2, Politique extérieure, Relations internationales, Aussenpolitik, Internationale Beziehungen, International relations
+33, Constitutions, Verfassungstexte, Constitutions
+34, Droit constitutionnel et droit public, Verfassungsrecht und öffentliches Recht, Constitutional law and public law
+34.1, Fédéralisme, Régions , Föderalismus, Regionalismus, Federalism, Regionalism
+34.2, Contrôle de constitutionnalité, Kontrolle der Verfassungsmässigkeit, Review of constitutionality
+35, Pouvoir législatif, Parlement, Legislative, Parlament, Legislative power, Parliament
+36, Pouvoir exécutif, Exekutive, Executive power
+37, Nationalité, Droit d'établissement, Citoyenneté, Statut des étrangers, Staatsangehörigkeit, Bürgerrecht, Ausländerrecht, Nationality, Citizenship, Status of aliens
+37.1, Droits politiques, Politische Rechte, Political rights
+38, Droits fondamentaux, Grundrechte, Civil human rights, Fundamental rights
+38.1, Droit à la vie, Liberté personnelle, Persönliche Freiheit, Personal liberty
+38.10, Protection de la vie privée contre les atteintes de l'Etat, Schutz des Privatlebens vor staatlichen Eingriffen, Protection of privacy against the State
+38.11, Droits économiques et sociaux, Wirtschaftliche und soziale Rechte, Economic and social rights
+38.2, Egalité des êtres humains, Gleichheit aller Menschen, Equality of persons
+38.3, Egalité des sexes, Gleichheit von Mann und Frau, Sexual equality
+38.4, Egalité devant la loi, Gleichheit vor dem Gesetz, Equality before the law
+38.5, Liberté de pensée, Gedankenfreiheit, Freedom of thought
+38.6, Liberté d'opinion et d'expression, Meinungsäusserungsfreiheit, Freedom of opinion and of expression
+38.7, Liberté de réunion et d'association, Versammlungsfreiheit Vereinsfreiheit, Freedom of assembly and of association
+38.8, Droit de pétition, Désobéissance civique, Petitionsfreiheit, Ziviles Widerstandsrecht, Right of petition, Civil disobedience
+38.9, Garantie de la propriété, Eigentumsgarantie, Protection of property rights
+39, Droits des groupes, Minorités, Rechte der Gruppen, Minderheiten, Rights of groups, Minorities
+40, Droit administratif, Verwaltungsrecht, Administrative law
+40.1, Procédure administrative, Verwaltungsverfahren, Administrative procedure
+40.2, Contrôle de la légalité, Tribunaux administratifs, Kontrolle der Rechtsmässigkeit, Verwaltungsgerichte, Review of legality, Administrative courts
+40.3, Expropriation, Nationalisation, Privatisation, Enteignung, Verstaatlichung, Privatisierung, Expropriation, Nationalisation, Privatisation
+41, Droit communal, Gemeinderecht, Local government
+42, Police, Maintien de l'ordre, Polizei, Öffentliche Ordnung, Police, Maintenance of public order
+43, Défense nationale, Etat d'urgence, Landesverteidigung, Notstand, National defence, State of emergency
+43.1, Protection civile, Zivilschutz, Civil defence
+44, Droit économique, Wirtschaftsrecht, Economic law
+44.1, Etude prévisionnelle en matière d'économie et de développement, Wirtschaftsplanung Entwicklungsplanung, Economic and development planning
+45, Droit administratif économique, Wirtschaftsverwaltungsrecht, Economic administrative law, Regulation of trade and industry
+45.1, Services destinés au public, Gewerbe für die Allgemeinheit, Services
+45.2, Commerce extérieur, Droit douanier, Aussenhandel, Zollrecht, Foreign trade, Custom duties and tariffs
+45.3, Marchés uniques, Binnenmärkte, Common markets
+46, Droit professionnel, Berufsrecht, Professions and occupations
+47, Droit foncier, Aménagement du territoire, Construction, Bodenrecht, Raumplanung, Baurecht, Land law, Land use planning and zoning, Construction
+48, Agriculture, Forêts, Landwirtschaft Forstwirtschaft, Agriculture, Forests
+49, Ressources naturelles, Energie, Naturschätze, Energie, Natural resources, Energy
+49.1, Ressources minérales, Mines, Mineralische Bodenschätze, Bergbau, Mineral resources, Mining
+49.2, Pétrole et gaz naturel, Öl und Erdgas, Oil and natural gas
+49.3, Eau, Wasser, Water
+49.4, Energie nucléaire, Atomkraft, Nuclear energy
+49.5, Energies douces, Alternative Energien, Alternative energy sources
+50, Services industriels, Öffentliche Versorgungseinrichtungen, Regulated public utilities
+51, Droit de la circulation et des transports, Verkehrsrecht Transportrecht, Traffic and transportation law
+51.1, Circulation routière, Strassenverkehr, Road traffic
+51.2, Chemins de fer, Eisenbahnen, Railroads
+51.3, Navigation, Schiffahrt, Navigation
+51.4, Circulation aérienne, Luftfahrt, Air traffic
+52, Communications, Kommunikationsrecht, Communications
+52.1, Droits des media, Medienrecht, Mass media
+52.2, Services postaux, Postwesen, Postal services
+52.3, Télécommunications, Réseaux, Fernmeldewesen, Fernmeldenetze, Telegraph and telephone, Networks
+53, Finances publiques, Öffentliche Finanzen, Public finance
+54, Droit fiscal, Steuerrecht, Tax law
+54.1, Impôts sur le revenu et impôts directs en général, Einkommenssteuer und direkte Steuern im allgemeinen, Taxes on income and direct taxation in general
+54.2, Imposition des personnes morales , Besteuerung juristischer Personen, Taxation of legal entities
+54.3, Impôt sur la fortune et impôt sur le capital, Vermögenssteuern Kapitalsteuern, Property and capital taxes
+54.4, Impôts sur les successions et les donations, Erbschaftssteuern Schenkungssteuern, Inheritance and gift taxes
+54.5, Impôts indirects, Indirekte Steuern, Indirect taxes
+54.6, Droit de timbre et d'enregistrement , Stempelabgaben Registerabgaben, Stamp and registration duties
+54.7, Autres impôts et taxes , Andere Steuern, Abgaben und Gebühren, Other forms of taxation
+55, Droit du travail, Arbeitsrecht, Labour law
+55.1, Rapports collectifs de travail , Kollektives Arbeitsrecht, Collective agreements
+55.2, Règlement des conflits du travail , Beilegung von Arbeitskonflikten, Settlement of labour disputes
+55.3, Fonction publique, Öffentlicher Dienst, Civil service
+56, Droit social, Sozialdienst, Social welfare law
+57, Sécurité sociale et assurances sociales, Soziale Sicherheit und Sozialversicherungsrecht, Social security and social insurance
+57.1, Assurance-maladie et accidents, assurance-invalidité, Krankenversicherung Unfallversicherung Invalidenversicherung, Health, accident and invalidity insurance
+57.2, Assurance vieillesse et survivants, Prévoyance professionnelle., Altersversicherung Hinterlassenenversicherung, Berufliche Vorsorge, Old age, retirement and pension insurance
+57.3, Assurance-chômage, Arbeitslosenversicherung, Unemployment insurance
+58, Médecine, Santé publique, Medizin, Öffentliches Gesundheitswesen, Medicine, Public Health
+58.1, Professions médicales, Medizinische Berufe, Medical professions
+58.2, Denrées alimentaires, Produits pharmaceutiques, Cosmétiques, Nahrungsmittel, Pharmazeutische Produkte, Kosmetika, Food, Pharmaceutical products, Cosmetics
+58.3, Drogues, Alcool, Tabac, Drogen, Alkohol, Tabak, Narcotic drugs, Alcohol, Tobacco
+58.4, Procréation, Génétique, Contrôle des naissances, Fortpflanzung, Genetik, Geburtenkontrolle, Human procreation, Genetics, Birth control
+58.5, Médecine légale, Gerichtsmedizin, Forensic medicine
+58.6, Maladies transmissibles, Übertragbare Krankheiten, Infectious diseases
+59, Protection de l'environnement, Protection des animaux, Umweltschutz, Tierschutz, Environmental protection , Protection of animals
+60, Science, Enseignement, Recherche, Technologie, Wissenschaft, Unterricht, Forschung, Technologie, Science, Education, Research, Technology
+60.1, Droit de l'informatique, Informatikrecht, Computer law
+61, Culture, Art, Loisirs, Sports, Kultur, Kunst, Freizeit, Sport, Culture, Art, Leisure, Sport
+61.1, Culture, Art, Kultur, Kunst, Culture, Art
+61.2, Sports, Sport, Sport
+62, Eglises, Religions, Cultes, Kirchen, Religionen, Gottesdienste, Churches, Religions, Worship
+63, Droit privé, Privatrecht, Private law
+64, Notions générales de droit privé, Allgemeine Begriffe des Privatrechts, General concepts of private law
+65, Personnes, Personenrecht, Persons
+65.1, Protection des données, Datenschutz, Data protection
+65.2, Personnes morales, Juristische Personen, Legal entities
+66, Droit de la famille, Droit du mariage, Familienrecht, Eherecht, Family law, Marital law
+66.1, Conclusion du mariage, Dissolution du mariage, Eheschliessung, Auflösung der Ehe, Marriage, Termination of marriage
+66.2, Régimes matrimoniaux, Relations patrimoniales, Union libre, Güterrecht, Vermögensrechtliche Beziehungen, Eheähnliche Lebensgemeinschaft, Marriage settlement, Property relations between spouses, Cohabitation
+66.3, Relations entre parents et enfants, Tutelle, Beziehungen zwischen Eltern und Kindern, Vormundschaft, Relations between parents and children, Guardianship
+67, Successions, Erbrecht, Succession
+68, Equity, Equity, Equity
+69, Trusts, Trusts, Trusts
+70, Droits réels, Sachenrecht, Property
+70.1, Propriété foncière, Immobiliarsachenrecht, Real property
+70.2, Propriété étatique et collective, Staatseigentum, State and collective property
+71, Droit des obligations et des contrats, Obligationenrecht und Vertragsrecht, Law of obligations and law of contracts
+72, Notions générales de droit des obligations et des contrats, Allgemeine Begriffe des Obligationenrechts Vertragsrechts, General concepts of the law of obligations and the law of contract
+73, Contrats spéciaux, Einzelne Verträge, Specific types of contracts
+73.1, Vente, Echange, Donation, Kauf, Tausch und Schenkung, Sale, Exchange, Gift
+73.2, Bail à loyer, Bail à ferme, Crédit-bail, Miete, Pacht, Leasing, Lease and rent
+73.3, Prêt et dépôt, Leihe, Darlehen, Hinterlegung, Loan and deposit
+73.4, Contrat d'entreprise, Werkvertrag, Contract for services
+73.5, Contrat de transport, Contrat de voyage, Beförderungsverträge Frachtverträge, Reisevertrag, Carriage of persons and goods contract of carriage
+73.6, Mandat, Auftrag, Agency
+73.7, Cautionnement, Garanties, Bürgschaft, Garantieverträge, Bailment, Guaranty
+74, Quasi-contrats, Enrichissement illégitime, Vertragsähnliche Verhältnisse, Ungerechtfertigte Bereicherung, Quasi-contract, Unjust enrichment
+75, Responsabilité extra-contractuelle, Ausservertragliche Haftung, Extra-contractual liability, Torts Common Law
+75.1, Responsabilité en matière d'accidents de la circulation , Haftung für Verkehrsunfälle , Liability arising out of traffic accidents
+76, Responsabilité du fait des produits, Produktehaftung, Product liability
+77, Dommages, Réparation du dommage, Schaden, Schadenersatz, Damages and compensation
+78, Droit commercial, Handelsrecht, Commercial law
+78.1, Commerce électronique, Elektronischer Handel, E-Commerce
+79, Entreprises commerciales, Handelsunternehmen, Business organisations
+79.1, Sociétés de capitaux, Kapitalgesellschaften, Corporations
+79.2, Société anonyme, Aktiengesellschaft, Public limited liability company
+79.3, Société à responsabilité limitée, Gesellschaft mit beschränkter Haftung, Private limited liability company 
+79.4, Société coopérative, Genossenschaften, Co-operatives
+80, Comptabilité, Droit comptable, Rechnungswesen und Buchführung, Accounting
+81, Titres, Papiers-valeurs, Wertpapiere, Negotiable instruments, Securities
+82, Droit bancaire et boursier, Bankrecht Börsenrecht, Banking law, Stock exchange law
+83, Assurances privées, Privatversicherungen, Private insurance
+84, Concurrence, Cartels, Concurrence déloyale, Wettbewerbsrecht, Kartellrecht, Unlauterer Wettbewerb, Competition, Anti-trust law, Unfair competition
+85, Protection du consommateur, Konsumentenschutz, Consumer protection
+86, Propriété intellectuelle, Immaterialgüterrecht, Intellectual property
+86.1, Propriété industrielle, Gewerblicher Rechtsschutz, Industrial property
+86.2, Droit d'auteur, Urheberrecht, Copyright
+87, Droit pénal, Strafrecht, Criminal law
+87.1, Politique criminelle, Kriminalpolitik, Criminal policy
+88, Notions générales de droit pénal , Allgemeine Begriffe des Strafrechts, General concepts of criminal law
+89, Infractions pénales, Einzelne Straftaten, Specific offences
+89.1, Infractions contre la vie et l'intégrité corporelle, Straftaten gegen Leib und Leben, Offences against life and physical integrity
+89.2, Infractions contre le patrimoine, Droit pénal des affaires, Vermögensdelikte, Offences against property, White-collar crime
+89.3, Infractions contre la liberté et l'honneur, Straftaten gegen die Freiheit, Ehrverletzung, Offences against human freedom and honour
+89.4, Infractions contre l'Etat et la sécurité de l'Etat, Delikte gegen den Staat und Staatssicherheit, Offences against the State and security of the State
+89.5, Infractions contre l'ordre public, Straftaten gegen die öffentliche Ordnung, Offences against public safety and order
+89.6, Infractions contre l'ordre économique, Straftaten gegen die Wirtschaftsordnung, Offences against the national economic system
+89.7, Infractions contre la santé publique, Infractions en matière de stupéfiants, Straftaten gegen das öffentliche Gesundheitswesen, Betäubungsmitteldelikte, Offences against public health, Narcotics offences
+89.8, Infractions en matière de circulation, Verkehrsdelikte, Traffic offences
+89.9, Infractions contre la famille et la moralité publique, Straftaten gegen die Familie und gegen die öffentliche Sittlichkeit, Offences against the family and against public morals
+90, Criminologie, Kriminologie, Criminology
+90.1, Recherche et méthodologie, Forschung und Methodik, Research and methodology
+90.2, Criminologie clinique, Klinische Kriminologie, Clinical criminology
+90.3, Anthropologie criminelle, Sociologie pénale, Kriminalanthropologie, Strafsoziologie, Anthropology sociology applied to criminology
+90.4, Délinquants, Straftäter, Offenders
+90.5, Justice privée, Privatjustiz, Private justice
+90.6, Prédiction , Prognose, Prediction 
+90.7, Prévention, Prävention, Prevention
+90.8, Victimes, Victimologie, Viktimologie, Victims, Victimology
+91, Peines et mesures, Pénologie, Strafen und Massnahmen, Poenologie, Punishments and other measures, Penology
+91.1, Sanctions non privatives de liberté, Nichtfreiheitsentziehende Sanktionen, Punishments not involving deprivation of liberty
+91.2, Sanctions privatives de liberté, Freiheitsentziehende Sanktionen, Punishments involving deprivation of liberty
+91.3, Peine de mort, Todesstrafe, Capital punishment
+91.4, Grâce, Amnistie, Réhabilitation, Begnadigung, Amnestie, Rehabilitation, Pardon, Amnesty, Rehabilitation
+91.5, Resocialisation, Traitement post-pénitentiaire, Resozialisierung, Betreuung nach der Freilassung, Resocialisation, Follow-up treatment
+92, Délinquance juvénile, Jugendstrafrecht, Juvenile delinquency
+92.1, Organisation judiciaire, Procédure, Gerichtsorganisation, Gerichtsbarkeit, Verfahren, Judicial organisation, Procedure
+92.2, Peines et mesures, Strafvollzug Massnahmenvollzug, Execution of sentences
+93, Droit pénal administratif , Verwaltungsstrafrecht, Administrative criminal law 
+94, Droit pénal militaire et procédure pénale militaire, Militärstrafrecht und Militärstrafverfahren, Military justice and military criminal procedure
+95, Organisation de la justice, Gerichtsorganisation, Organisation of the administration of justice
+96, Droit judiciaire, Gerichtsverfahrensrecht, Judicial procedure
+97, Procédure civile , Zivilprozessrecht, Civil procedure
+97.1, Recours, Rechtsmittel, Appeals
+97.2, Arbitrage, Schiedsgerichtsbarkeit, Arbitration
+97.3, Exécution forcée, Faillite, Zwangsvollstreckung, Konkursrecht, Execution of judgements, Bankruptcy
+98, Procédure pénale, Strafprozessrecht, Criminal procedure
+98.1, Procédure préliminaire, Vorverfahren, Preliminary procedure
+98.2, Droits de la défense, Verteidigungsrechte, Rights of defence
+98.3, Détention préventive, Contrôle judiciaire, Untersuchungshaft, Preventive detention, Judicial supervision
+98.4, Audience, Participation populaire, Hauptverhandlung, Geschworene und Laienrichter, Trial, Lay participation
+98.5, Recours, Révision, Rechtsmittel, Appeal, Revision
+98.6, Police scientifique, Kriminalistik, Police science
+99, Procès, Prozesse, Trials
