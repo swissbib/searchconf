@@ -36,7 +36,7 @@
 
   <codecFactory class="solr.SchemaCodecFactory"/>
 
-  <schemaFactory class="ClassicIndexSchemaFactory"/>
+  <!--<schemaFactory class="ClassicIndexSchemaFactory"/> -->
 
   <indexConfig>
     <lockType>${solr.lock.type:native}</lockType>
