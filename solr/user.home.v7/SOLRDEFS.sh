@@ -6,7 +6,8 @@ export SOLR_BASE=${APP_BASE}/solr
 export SOLR_RUN=${SOLR_BASE}/bin
 export SOLR_DATA_BASE=/swissbib_index
 export SOLR_HOME=${SOLR_DATA_BASE}/solrHome7
-export ZK_HOST=sb-uzk1.swissbib.unibas.ch:2181,sb-uzk2.swissbib.unibas.ch:2181,sb-uzk3.swissbib.unibas.ch:2181/solr
+export ZK_HOST='sb-uzk1.swissbib.unibas.ch:2181,sb-uzk2.swissbib.unibas.ch:2181,sb-uzk3.swissbib.unibas.ch:2181/solr'
+export ZK_HOST_PUR='sb-uzk1.swissbib.unibas.ch:2181,sb-uzk2.swissbib.unibas.ch:2181,sb-uzk3.swissbib.unibas.ch:2181'
 
 export SOLR_DOCPROCBASE=/swissbib_index/solrDocumentProcessing
 if [  -d ${SOLR_DOCPROCBASE} ]
