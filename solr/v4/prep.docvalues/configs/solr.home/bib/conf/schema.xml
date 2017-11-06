@@ -206,11 +206,11 @@ SWISSBIB SOLR-SCHEMA
       </fieldType>
 
       <!-- field type for sort strings -->
+      <!--
       <fieldType name="alphaOnlySort" class="solr.TextField" sortMissingLast="true" omitNorms="true">
           <analyzer>
               <tokenizer class="solr.KeywordTokenizerFactory"/>
               
-              <!-- GH: ICUCollationKeyFilterFactory deprecated and no longer supported in 5.0 see p. 102 ReferenceGuide (Unicode Collation) -->
               
               <filter class="solr.ICUCollationKeyFilterFactory"
                       locale="de@collation=phonebook"
@@ -218,6 +218,10 @@ SWISSBIB SOLR-SCHEMA
                       />
           </analyzer>
       </fieldType>
+      -->
+    <fieldType name="alphaOnlySort"  class="solr.ICUCollationField"
+               locale="de"
+               strength="primary" />
   </types>
 
     <!-- =================
