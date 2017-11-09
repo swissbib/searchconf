@@ -154,47 +154,10 @@
     <!-- copy to generic fields -->
     <copyField source="sub*" dest="topic" />
 
-    <!-- COPY FIELDS FUER NAVIGATOREN / FACETTEN -->
-    <!-- Facetten fuer View orange (BaBe) -->
-    <!--
-    <copyField source="subtop_gnd" dest="navSub_orange" />
-    <copyField source="subtop_idsbb" dest="navSub_orange" />
-    <copyField source="subtop_mesh" dest="navSub_orange" />
-    <copyField source="subpers_gnd" dest="navSub_orange" />
-    <copyField source="subpers_idsbb" dest="navSub_orange" />
-    <copyField source="subpers_mesh" dest="navSub_orange" />
-    <copyField source="subtitle_gnd" dest="navSub_orange" />
-    <copyField source="subtitle_idsbb" dest="navSub_orange" />
-    <copyField source="subtitle_mesh" dest="navSub_orange" />
-    <copyField source="subgeo_gnd" dest="navSub_orange" />
-    <copyField source="subgeo_idsbb" dest="navSub_orange" />
-    <copyField source="subgeo_mesh" dest="navSub_orange" />
-    <copyField source="subtime_gnd" dest="navSub_orange" />
-    <copyField source="subtime_idsbb" dest="navSub_orange" />
-    <copyField source="subtime_mesh" dest="navSub_orange" />
-
-    <copyField source="navAuthor_IDSBB" dest="navAuthor_orange" />
-    <copyField source="navAuthor_SNL" dest="navAuthor_orange" />
-    <copyField source="navAuthor_HAN" dest="navAuthor_orange" />
-    -->
-
-    <!-- Topic Subject Facette fuer swissbib gruen (19.03.2012/osc) -->
-    <!--
-    <copyField source="subpers_*" dest="navSub_green" />
-    <copyField source="subtitle_*" dest="navSub_green" />
-    <copyField source="subtop_*" dest="navSub_green" />
-    <copyField source="subgeo_*" dest="navSub_green" />
-    -->
 
     <!-- Time Subject Facette für swissbib gruen (19.03.2012/osc) -->
     <copyField source="subtime_*" dest="navSubtime" />
 
-    <!-- Form Facette, mit Reduktionsmechanismus -->
-    <!--<copyField source="subform_ids*" dest="navSubform" />
-    <copyField source="subform_mesh" dest="navSubform" />
-    <copyField source="subform_gnd" dest="navSubform" />
-    <copyField source="subform_rero" dest="navSubform" />
-    <copyField source="subform_sbt" dest="navSubform" /> -->
 
     <!-- Facette Rechtssystematik fuer Jus-Portal (31.03.2013/tvi) -->
     <copyField source="classif_drsys_gen" dest="navDrsys" />
