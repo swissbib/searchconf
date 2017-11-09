@@ -3,10 +3,6 @@
 
 <schema name="swissbib vufind bibliographic schema" version="1.6">
 
-   <!-- If you remove this field, you must _also_ disable the update log in solrconfig.xml
-      or Solr won't start. _version_ and update log are required for SolrCloud
-   -->
-
 
     <!--
         GH 4.8.2017
@@ -113,6 +109,7 @@
 
     <!-- Sort Fields
          *********** -->
+    <!-- wir haben bis jetzt keine docvalues auf den sort Typen - wie gehen wir da vor??-->
     <field name="author_sort" type="alphaOnlySort" indexed="true" stored="false"/>
     <field name="title_sort" type="alphaOnlySort" indexed="true" stored="false"/>
     <field name="publishDateSort" type="string" indexed="true" stored="false"/>
@@ -241,30 +238,11 @@
 
 
 
-    <!-- field type definitions. The "name" attribute is
-       just a label to be used by field definitions.  The "class"
-       attribute and any other attributes determine the real
-       behavior of the fieldType.
-         Class names starting with "solr" refer to java classes in a
-       standard package such as org.apache.solr.analysis
-    -->
-
-    <!-- The StrField type is not analyzed, but indexed/stored verbatim.
-       It supports doc values but in that case the field needs to be
-       single-valued and either required or have a default value.
-      -->
     <fieldType name="string" class="solr.StrField" sortMissingLast="true" />
 
     <!-- boolean type: "true" or "false" -->
     <fieldType name="boolean" class="solr.BoolField" sortMissingLast="true"/>
 
-
-    <!--
-      Default numeric field types. For faster range queries, consider the tint/tfloat/tlong/tdouble types.
-
-      These fields support doc values, but they require the field to be
-      single-valued and either be required or have a default value.
-    -->
 
     <fieldType name="pint" class="solr.IntPointField" docValues="true"/>
     <fieldType name="pfloat" class="solr.FloatPointField" docValues="true"/>
@@ -286,55 +264,6 @@
 
     <fieldType name="random" class="solr.RandomSortField" indexed="true" />
 
-
-    <!--
-    start swissbib solr 5.5 types
-    -->
-    <!--
-    <fieldType name="navFieldCombined" class="solr.TextField">
-        <analyzer>
-            <tokenizer class="solr.KeywordTokenizerFactory" />
-            <filter class="solr.PatternReplaceFilterFactory"
-                pattern="[Ss]\.[Nn]\.|[Aa]nonym|[\[\]*]|\[.*\]|
-                         \u0022|\u003C|\u003E|\u003F|^\d{4}-\d{4}$|, \d{4}-\d{4}|
-                         Formschlagwort|Aufsatzsammlung"
-                replacement=""
-                replace="all" />
-            <filter class="solr.TrimFilterFactory" />
-            <filter class="solr.LengthFilterFactory" min="2" max="100" />
-        </analyzer>
-    </fieldType>
-    -->
-
-    <!-- used for: Navigator form (Formschlagworte)-->
-    <!--
-    <fieldType name="navFieldForm" class="solr.TextField">
-        <analyzer>
-            <tokenizer class="solr.KeywordTokenizerFactory" />
-
-            <filter class="solr.PatternReplaceFilterFactory"
-                    pattern="^[0A] Gesamtdarstell.*$"
-                    replacement="Gesamtdarstellung"
-            />
-            <filter class="solr.PatternReplaceFilterFactory"
-                    pattern="^Kongress \(.*\)"
-                    replacement="Kongressbericht"
-            />
-            <filter class="solr.PatternReplaceFilterFactory"
-                    pattern="^Ausstellung \(.*\)"
-                    replacement="Ausstellung"
-            />
-            <filter class="solr.PatternReplaceFilterFactory"
-                    pattern="\u003C|\u003E|\[|\]|\u0028|\u0029|Formschlagwort|Sondersammlungen"
-                    replacement=""
-            />
-            <filter class="solr.TrimFilterFactory" />
-
-            <filter class="solr.SynonymFilterFactory" synonyms="formsynonyms.txt" ignoreCase="true" expand="false" tokenizerFactory="solr.KeywordTokenizerFactory"/>
-            <filter class="solr.LengthFilterFactory" min="2" max="60" />
-        </analyzer>
-    </fieldType>
-    -->
 
     <fieldType name="text_untreated" class="solr.TextField" positionIncrementGap="100">
         <analyzer type="index">
@@ -435,12 +364,6 @@
 
 
 
-    <!-- text_substringed : Feldtyp fuer Text mit n-grams fuer wildcard-searches -->
-    <!--
-    with Solr 4 we used the sidefront attribute which was removed with Solr5
-    compare: http://stackoverflow.com/questions/28807427/edgengramfilterfactory-change-in-solr5
-    side=front is now default - how to reverse this? which filter?
-    -->
     <fieldType name="text_substringed" class="solr.TextField" positionIncrementGap="100" >
         <analyzer type="index">
             <tokenizer class="solr.WhitespaceTokenizerFactory" />
@@ -510,29 +433,10 @@
         </analyzer>
     </fieldType>
 
-    <!-- field type for sort strings -->
-    <!-- old alpha sort
-    <fieldType name="alphaOnlySort" docValues="true" class="solr.StrField"/>
-    -->
-    <!--
-    <fieldType name="alphaOnlySort" docValues="true" class="solr.ICUCollationField"
-               locale="de"
-               strength="primary" />
-      -->
+
     <fieldType name="alphaOnlySort"  class="solr.ICUCollationField"
-               locale="de"
+               custom="customRules.dat"
                strength="primary" />
-
-
-
-
-    <!--
-
-    end swissbib solr 5.5 types
-    -->
-
-
-
 
 
 
