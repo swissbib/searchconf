@@ -219,9 +219,17 @@ SWISSBIB SOLR-SCHEMA
           </analyzer>
       </fieldType>
       -->
+     <!--
     <fieldType name="alphaOnlySort"  class="solr.ICUCollationField"
                locale="de"
                strength="primary" />
+    -->
+
+    <fieldType name="alphaOnlySort"  class="solr.ICUCollationField"
+              custom="customRules.dat" 
+               strength="primary" />
+
+
   </types>
 
     <!-- =================
