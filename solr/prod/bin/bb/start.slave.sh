@@ -11,7 +11,7 @@ LOGFILE=${SOLR_TOMCAT}/solrlogs/solr.app.log
 
 function usage()
 {
- printf "usage: $0 -m <URL master Server e.g. http://sb-s15.swissbib.unibas.ch:8080/solr/sb-biblio/replication> -p <polling intervall recommended 00:59:00 or 00:79:00 or 00:99:00 >\n"
+ printf "usage: $0 -m <URL master Server e.g. http://sb-us6.swissbib.unibas.ch:8080/solr/sb-biblio/replication> -p <polling intervall recommended 00:59:00 or 00:79:00 or 00:99:00 >\n"
 }
 
 
@@ -49,7 +49,7 @@ function startSolr ()
 
     ulimit -v unlimited
 
-    JAVA_OPTS="$JAVA_OPTS -Xms12000m -Xmx16000m   -Dswissbib.master.url=${MASTERURL} -Dswissbib.poll.intervall=${POLLINGTIME}  \
+    JAVA_OPTS="$JAVA_OPTS -Xms8000m -Xmx12000m   -Dswissbib.master.url=${MASTERURL} -Dswissbib.poll.intervall=${POLLINGTIME}  \
          -Dsolr.data.dir=${SOLR_INDEX}   -Dsolr.solr.home=${SOLR_HOME} -Dsolr.lib.swissbib.dir=${SOLR_CORE} -Dsolr.log.path=$LOGFILE "
     export JAVA_OPTS=${JAVA_OPTS}
     echo "starting Slave solr server with JAVA_OPTS:"
