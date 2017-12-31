@@ -397,7 +397,7 @@
     </fieldType>
 
 
-    <fieldType name="alphaOnlySort"  class="solr.ICUCollationField"
+    <fieldType name="alphaOnlySort"  indexed="false" stored="false" docValues="true" class="solr.ICUCollationField"
                custom="customRules.dat"
                strength="primary" />
 
