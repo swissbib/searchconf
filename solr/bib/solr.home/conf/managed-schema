@@ -54,7 +54,7 @@
          ************** -->
     <field name="language" type="stringlike" indexed="true" stored="true" multiValued="true"/>
     <field name="format" type="string" indexed="true" stored="true" multiValued="true"/>
-    <field name="author" type="text_untreated" indexed="true" stored="false" termVectors="true" multiValued="true" />
+    <field name="author" type="text_untreated" indexed="true" stored="true" termVectors="true" multiValued="true" />
     <field name="title" type="text_untreated" indexed="true" stored="true" multiValued="true"/>
     <field name="title_short" type="text_untreated" indexed="true" stored="true" multiValued="true"/>
     <field name="title_sub" type="text_untreated" indexed="true" stored="false" multiValued="true"/>
@@ -93,7 +93,7 @@
 
     <!-- subject fields (generic field 'subfull', categories per vocabulary, classifications, special subject indexing, local subject indexing)
          **************  -->
-    <field name="topic" type="text_untreated" indexed="true" stored="false" multiValued="true" termVectors="true" />
+    <field name="topic" type="text_untreated" indexed="true" stored="true" multiValued="true" termVectors="true" />
     <dynamicField name="subpers_*" type="text_untreated" indexed="true" stored="false" multiValued="true" />
     <dynamicField name="subtime_*" type="text_untreated" indexed="true" stored="false" multiValued="true" />
     <dynamicField name="subtitle_*" type="text_untreated" indexed="true" stored="false" multiValued="true" />
