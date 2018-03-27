@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 SOLR_BASE=/usr/local/swissbib/solr
-SOLR_RUN=$SOLR_BASE/bin
+SOLR_RUN=$SOLR_BASE/bin 
 SOLR_HOME=/swissbib_index/solrHome7
 export ZK_HOST='sb-uzk1.swissbib.unibas.ch:2181,sb-uzk2.swissbib.unibas.ch:2181,sb-uzk3.swissbib.unibas.ch:2181/solr'
 
