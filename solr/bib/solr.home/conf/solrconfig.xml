@@ -204,6 +204,19 @@
   </requestHandler>
 
 
+  <requestHandler name="/terms" class="solr.SearchHandler" >
+    <lst name="defaults">
+      <bool name="terms">true</bool>
+      <!-- was used with Solr4 based on single core
+      <bool name="distrib">false</bool>-->
+    </lst>
+    <arr name="components">
+      <str>terms</str>
+    </arr>
+  </requestHandler>
+
+
+
 
   <requestHandler name="morelikethis" class="solr.MoreLikeThisHandler">
     <lst name="defaults">
