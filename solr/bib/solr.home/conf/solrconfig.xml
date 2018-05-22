@@ -3,7 +3,10 @@
 
 <config>
 
-  <luceneMatchVersion>7.2.1</luceneMatchVersion>
+  <!-- Updating to version 7.3.1 I didn't change anything with the exception of version number in solrconfig.xml
+  has to be better checked - once...
+  -->
+  <luceneMatchVersion>7.3.1</luceneMatchVersion>
 
 
 
