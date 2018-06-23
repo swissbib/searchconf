@@ -6,6 +6,7 @@ SOLR_RUN=${SOLR_BASE}/bin
 for host in sb-us15.swissbib.unibas.ch sb-us16.swissbib.unibas.ch sb-us17.swissbib.unibas.ch sb-us18.swissbib.unibas.ch
 do
 
+    echo "stop solr on host $host"
     ssh swissbib@$host "source .bashrc; cd ${SOLR_RUN}; ./solr stop -all"
 
 

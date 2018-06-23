@@ -54,11 +54,11 @@
          ************** -->
     <field name="language" type="stringlike" indexed="true" stored="true" multiValued="true"/>
     <field name="format" type="string" indexed="true" stored="true" multiValued="true"/>
-    <field name="author" type="text_untreated" indexed="true" stored="true" termVectors="true" multiValued="true" />
-    <field name="title" type="text_untreated" indexed="true" stored="true" multiValued="true"/>
-    <field name="title_short" type="text_untreated" indexed="true" stored="true" multiValued="true"/>
+    <field name="author" type="text_untreated" indexed="true" stored="true"  multiValued="true" termVectors="true" />
+    <field name="title" type="text_untreated" indexed="true" stored="true" multiValued="true" termVectors="true"/>
+    <field name="title_short" type="text_untreated" indexed="true" stored="true" multiValued="true" termVectors="true"/>
     <field name="title_sub" type="text_untreated" indexed="true" stored="false" multiValued="true"/>
-    <field name="publishDate" type="pints" indexed="true" stored="false"/>
+    <field name="publishDate" type="pints" indexed="true" stored="false" termVectors="true"/>
     <field name="thumbnail" type="string" indexed="false" stored="true"/>
     <!-- vf-generic fields still missing, some for display, others for snippets/highlight and building alphabrowse, check later -->
 
@@ -105,7 +105,7 @@
     <!-- Special or local subject indexing (sources are fields 690/691) -->
     <field name="sublocal" type="text_untreated" indexed="true" stored="false" multiValued="true" />
     <field name="submusic" type="text_untreated" indexed="true" stored="false" multiValued="true" />
-    <dynamicField name="classif_*" type="stringlike" indexed="true" stored="false" multiValued="true" />
+    <dynamicField name="classif_*" type="stringlike" indexed="true" stored="false" multiValued="true" termVectors="true" />
 
     <!-- Sort Fields
          *********** -->
