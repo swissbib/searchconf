@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-ZK_BASE=/usr/local/swissbib/zookeeper
-ZK_RUN=$ZK_BASE/bin
+export ZK_BASE=/usr/local/swissbib/zoosolr
+export ZK_RUN=$ZK_BASE/bin
 
 cd $ZK_RUN;
 ./zkServer.sh start
