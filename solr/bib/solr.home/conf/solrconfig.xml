@@ -179,6 +179,12 @@
 
 
   <requestHandler name="edismax" class="solr.SearchHandler">
+
+    <lst name="invariants">
+      <str name="mm">100</str>
+      <str name="sow">true</str>
+    </lst>
+
     <lst name="defaults">
       <str name="defType">edismax</str>
       <!-- str name="fl">a*,b*,c*,d*,e*,first_indexed,format,fullrecord,g*,h*,i*,l*,o*,p*,r*,s*,t*,u*,*_date*,*_isn*,*_str*,*_txt*</str -->
