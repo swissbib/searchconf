@@ -215,7 +215,7 @@
   </requestHandler>
 
 
-  <requestHandler name="/terms" class="solr.SearchHandler" >
+  <requestHandler name="/terms" class="solr.SearchHandler" startup="lazy">
     <lst name="defaults">
       <bool name="terms">true</bool>
       <!-- was used with Solr4 based on single core
