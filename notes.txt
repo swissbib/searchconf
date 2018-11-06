@@ -1,3 +1,0 @@
-
-2017 / 31 / 12 - master activities (GH)
-* development on solr version 7.2
