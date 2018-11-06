@@ -50,6 +50,24 @@
 # ü => ue
 "\u00FC" => "ue"
 
+# Ä decomposed => AE
+"\u0041\u0308" => "AE"
+
+# Ö decomposed => OE
+"\u004F\u0308" => "OE"
+
+# Ü decomposed => UE
+"\u0055\u0308" => "UE"
+
+# ä decomposed => ae
+"\u0061\u0308" => "ae"
+
+# ö decomposed => oe
+"\u006F\u0308" => "oe"
+
+# ü decomposed => ue
+"\u0075\u0308" => "ue"
+
 # ########
 # Specials
 # ########

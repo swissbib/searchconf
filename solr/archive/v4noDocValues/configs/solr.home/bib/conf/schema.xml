@@ -32,51 +32,6 @@ SWISSBIB SOLR-SCHEMA
       <fieldType name="tint" class="solr.TrieIntField" precisionStep="8" omitNorms="true" positionIncrementGap="0"/>a
       <fieldType name="long" class="solr.TrieLongField" precisionStep="0" positionIncrementGap="0"/>
 
-      <!-- field types for navigators / facets
-           ===================================
-      -->
-      <!-- subject and name entries -->
-      <fieldType name="navFieldCombined" class="solr.TextField">
-          <analyzer>
-              <tokenizer class="solr.KeywordTokenizerFactory" />
-              <filter class="solr.PatternReplaceFilterFactory"
-                  pattern="[Ss]\.[Nn]\.|[\[\]*]|\[.*\]|
-                           \u0022|\u003C|\u003E|\u003F|^\d{4}-\d{4}$|, \d{4}-\d{4}|
-                           Formschlagwort|Aufsatzsammlung"
-                  replacement=""
-                  replace="all" />
-              <filter class="solr.TrimFilterFactory" />
-              <filter class="solr.LengthFilterFactory" min="2" max="100" />
-          </analyzer>
-      </fieldType>
-
-      <!-- used for: Navigator form (Formschlagworte)-->
-      <fieldType name="navFieldForm" class="solr.TextField">
-          <analyzer>
-              <tokenizer class="solr.KeywordTokenizerFactory" />
-              <!-- PatternReplacements / osc -->
-              <filter class="solr.PatternReplaceFilterFactory"
-                      pattern="^[0A] Gesamtdarstell.*$"
-                      replacement="Gesamtdarstellung"
-                      />
-              <filter class="solr.PatternReplaceFilterFactory"
-                      pattern="^Kongress \(.*\)"
-                      replacement="Kongressbericht"
-                      />
-              <filter class="solr.PatternReplaceFilterFactory"
-                      pattern="^Ausstellung \(.*\)"
-                      replacement="Ausstellung"
-                      />
-              <filter class="solr.PatternReplaceFilterFactory"
-                      pattern="\u003C|\u003E|\[|\]|\u0028|\u0029|Formschlagwort|Sondersammlungen"
-                      replacement=""
-                      />
-              <filter class="solr.TrimFilterFactory" />
-              <!-- SynonymFilter erarbeitet mit Fachferenten Basel, Version 1.0 fertig (12.2011/osc)-->
-              <filter class="solr.SynonymFilterFactory" synonyms="formsynonyms.txt" ignoreCase="true" expand="false" tokenizerFactory="solr.KeywordTokenizerFactory"/>
-              <filter class="solr.LengthFilterFactory" min="2" max="60" />
-          </analyzer>
-      </fieldType>
 
       <!-- field types for search fields
            =============================
@@ -251,11 +206,11 @@ SWISSBIB SOLR-SCHEMA
       </fieldType>
 
       <!-- field type for sort strings -->
+      <!--
       <fieldType name="alphaOnlySort" class="solr.TextField" sortMissingLast="true" omitNorms="true">
           <analyzer>
               <tokenizer class="solr.KeywordTokenizerFactory"/>
               
-              <!-- GH: ICUCollationKeyFilterFactory deprecated and no longer supported in 5.0 see p. 102 ReferenceGuide (Unicode Collation) -->
               
               <filter class="solr.ICUCollationKeyFilterFactory"
                       locale="de@collation=phonebook"
@@ -263,6 +218,18 @@ SWISSBIB SOLR-SCHEMA
                       />
           </analyzer>
       </fieldType>
+      -->
+     <!--
+    <fieldType name="alphaOnlySort"  class="solr.ICUCollationField"
+               locale="de"
+               strength="primary" />
+    -->
+
+    <fieldType name="alphaOnlySort"  class="solr.ICUCollationField"
+              custom="customRules.dat" 
+               strength="primary" />
+
+
   </types>
 
     <!-- =================
@@ -307,7 +274,7 @@ SWISSBIB SOLR-SCHEMA
              ************** -->
         <field name="language" type="stringlike" indexed="true" stored="true" multiValued="true"/>
         <field name="format" type="string" indexed="true" stored="true" multiValued="true"/>
-        <field name="author" type="text_untreated" indexed="true" stored="false" termVectors="true" multiValued="true" />
+        <field name="author" type="text_untreated" indexed="true" stored="true" termVectors="true" multiValued="true" />
         <field name="title" type="text_untreated" indexed="true" stored="true" multiValued="true"/>
         <field name="title_short" type="text_untreated" indexed="true" stored="true" multiValued="true"/>
         <field name="title_sub" type="text_untreated" indexed="true" stored="false" multiValued="true"/>
@@ -346,7 +313,7 @@ SWISSBIB SOLR-SCHEMA
 
         <!-- subject fields (generic field 'subfull', categories per vocabulary, classifications, special subject indexing, local subject indexing)
              **************  -->
-        <field name="topic" type="text_untreated" indexed="true" stored="false" multiValued="true" termVectors="true" />
+        <field name="topic" type="text_untreated" indexed="true" stored="true" multiValued="true" termVectors="true" />
         <dynamicField name="subpers_*" type="text_untreated" indexed="true" stored="false" multiValued="true" />
         <dynamicField name="subtime_*" type="text_untreated" indexed="true" stored="false" multiValued="true" />
         <dynamicField name="subtitle_*" type="text_untreated" indexed="true" stored="false" multiValued="true" />
@@ -377,14 +344,30 @@ SWISSBIB SOLR-SCHEMA
 	    <field name="is_hierarchy_id" type="string" indexed="true" stored="true" multiValued="false"/>
 	    <field name="is_hierarchy_title" type="string" indexed="true" stored="true" multiValued="false"/>
             <field name="title_in_hierarchy" type="string" indexed="true" stored="true" multiValued="true" />
+
+	    <!--
+	    Silvia fragen: wird das gebraucht?
 	    <field name="hierarchy_browse" type="navFieldCombined" indexed="true" stored="false" multiValued="true"/>
+	    -->
 
         <!-- specific Facet Fields
              ********************* -->
+        <!--
         <dynamicField name="navAuthor_*" type="navFieldCombined" indexed="true" stored="false" multiValued="true" />
         <field name="navSubform" type="navFieldForm" multiValued="true" stored="false" />
+        -->
+        <dynamicField name="navAuthor_*" type="string" indexed="true" stored="false" multiValued="true" />
+        <field name="navSubform" type="string" indexed="true" multiValued="true" stored="false" />
+
+        <!--
         <dynamicField name="navSub_*" type="navFieldCombined" multiValued="true" stored="false" />
         <field name="navSubtime" type="navFieldCombined" multiValued="true" stored="false" />
+        bei navSubtime indexed="true" ??
+        -->
+        <dynamicField name="navSub_*" type="string" indexed="true" multiValued="true" stored="false" />
+        <field name="navSubtime" type="string" indexed="true" multiValued="true" stored="false" />
+
+
         <dynamicField name="navDrsys_*" type="string" multiValued="true" indexed="true" stored="false" />
         <field name="navDrsys" type="string" multiValued="true" indexed="true" stored="false" />
 
@@ -405,43 +388,18 @@ SWISSBIB SOLR-SCHEMA
         <!-- copy to generic fields -->
         <copyField source="sub*" dest="topic" />
 
-        <!-- COPY FIELDS FUER NAVIGATOREN / FACETTEN -->
-        <!-- Facetten fuer View orange (BaBe) -->
-        <copyField source="subtop_gnd" dest="navSub_orange" />
-        <copyField source="subtop_idsbb" dest="navSub_orange" />
-        <copyField source="subtop_mesh" dest="navSub_orange" />
-        <copyField source="subpers_gnd" dest="navSub_orange" />
-        <copyField source="subpers_idsbb" dest="navSub_orange" />
-        <copyField source="subpers_mesh" dest="navSub_orange" />
-        <copyField source="subtitle_gnd" dest="navSub_orange" />
-        <copyField source="subtitle_idsbb" dest="navSub_orange" />
-        <copyField source="subtitle_mesh" dest="navSub_orange" />
-        <copyField source="subgeo_gnd" dest="navSub_orange" />
-        <copyField source="subgeo_idsbb" dest="navSub_orange" />
-        <copyField source="subgeo_mesh" dest="navSub_orange" />
-        <copyField source="subtime_gnd" dest="navSub_orange" />
-        <copyField source="subtime_idsbb" dest="navSub_orange" />
-        <copyField source="subtime_mesh" dest="navSub_orange" />
-        
-        <copyField source="navAuthor_IDSBB" dest="navAuthor_orange" />
-        <copyField source="navAuthor_SNL" dest="navAuthor_orange" />
-        <copyField source="navAuthor_HAN" dest="navAuthor_orange" />
 
-        <!-- Topic Subject Facette fuer swissbib gruen (19.03.2012/osc) -->
-        <copyField source="subpers_*" dest="navSub_green" />
-        <copyField source="subtitle_*" dest="navSub_green" />
-        <copyField source="subtop_*" dest="navSub_green" />
-        <copyField source="subgeo_*" dest="navSub_green" />
 
         <!-- Time Subject Facette für swissbib gruen (19.03.2012/osc) -->
         <copyField source="subtime_*" dest="navSubtime" />
 
         <!-- Form Facette, mit Reduktionsmechanismus -->
+        <!--
         <copyField source="subform_ids*" dest="navSubform" />
         <copyField source="subform_mesh" dest="navSubform" />
         <copyField source="subform_gnd" dest="navSubform" />
         <copyField source="subform_rero" dest="navSubform" />
-        <copyField source="subform_sbt" dest="navSubform" />
+        <copyField source="subform_sbt" dest="navSubform" /> -->
 
         <!-- Facette Rechtssystematik fuer Jus-Portal (31.03.2013/tvi) -->
         <copyField source="classif_drsys_gen" dest="navDrsys" />
@@ -451,12 +409,14 @@ SWISSBIB SOLR-SCHEMA
         <copyField source="classif_drsys_D" dest="navDrsys_D" />
         <copyField source="classif_drsys_E" dest="navDrsys_E" />
         <copyField source="classif_drsys_F" dest="navDrsys_F" />
-        <copyField source="subgeo_*" dest="navSub_geofull" />
+        <!-- <copyField source="subgeo_*" dest="navSub_geofull" /> -->
 
         <!-- Topic Subject Facette für jusbib, ohne Geografika -->
+        <!--
         <copyField source="subpers_*" dest="navSub_jus" />
         <copyField source="subtitle_*" dest="navSub_jus" />
         <copyField source="subtop_*" dest="navSub_jus" />
+        -->
 
         <!-- copy fields for spelling -->
         <!-- ** Basic, single word spelling -->
