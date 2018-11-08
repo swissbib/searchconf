@@ -298,11 +298,13 @@
         <analyzer>
             <tokenizer class="solr.KeywordTokenizerFactory" />
             <filter class="solr.LowerCaseFilterFactory" />
+            <!-- remove spaces -->
             <filter class="solr.PatternReplaceFilterFactory"
                     pattern="\u0020"
                     replacement=""
                     replace="all"
             />
+            <!-- remove _  (underscore) -->
             <filter class="solr.PatternReplaceFilterFactory"
                     pattern="\u005f"
                     replacement=""
