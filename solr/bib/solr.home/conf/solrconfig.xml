@@ -147,7 +147,14 @@
     <httpCaching never304="true" />
   </requestDispatcher>
 
-  <requestHandler name="standard" class="solr.StandardRequestHandler" default="true"/>
+  <requestHandler name="standard" class="solr.SearchHandler" default="true">
+    <lst name="defaults">
+    <!-- the advanced search uses sometimes the standard requesthandler with a solr subquery
+         the split on whitespace parameter (sow) is also needed here see
+         https://github.com/swissbib/vufind/issues/671 -->
+      <str name="sow">true</str>
+    </lst>
+  </requestHandler>
 
 
   <!-- start von swissbib eingefügt -->
@@ -179,14 +186,6 @@
 
 
   <requestHandler name="edismax" class="solr.SearchHandler">
-
-    <lst name="invariants">
-      <!-- starting with SOLR7x default is false
-      more testing and knowledge about the background of this attribute  necessary
-      -->
-      <str name="sow">true</str>
-    </lst>
-
     <lst name="defaults">
       <!-- at the moment we assume that mm is always correctly set by discovery client - VuFind searchconf -->
       <!--<str name="mm">100</str>-->
@@ -195,9 +194,6 @@
       <str name="echoParams">explicit</str>
 
       <!-- Spellchecking -->
-
-
-
       <str name="spellcheck.extendedResults">true</str>
       <str name="spellcheck.count">10</str>
       <str name="spellcheck.alternativeTermCount">5</str>
@@ -207,6 +203,11 @@
       <str name="spellcheck.maxCollationTries">10</str>
       <str name="spellcheck.maxCollations">8</str>
       <str name="spellcheck.accuracy">0.5</str>
+
+      <!-- starting with SOLR7x default is false
+      more testing and knowledge about the background of this attribute  necessary
+      -->
+      <str name="sow">true</str>
 
     </lst>
     <arr name="last-components">
