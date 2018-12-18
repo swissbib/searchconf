@@ -43,7 +43,7 @@
 
   <indexConfig>
     <lockType>${solr.lock.type:native}</lockType>
-     <infoStream>true</infoStream>
+    <infoStream>true</infoStream>
   </indexConfig>
 
   <jmx />
@@ -55,20 +55,20 @@
       <str name="dir">${solr.ulog.dir:}</str>
       <int name="numVersionBuckets">${solr.ulog.numVersionBuckets:65536}</int>
     </updateLog>
- 
-     <autoCommit>
-       <maxTime>${solr.autoCommit.maxTime:15000}</maxTime> 
-       <openSearcher>false</openSearcher> 
-     </autoCommit>
+
+    <autoCommit>
+      <maxTime>${solr.autoCommit.maxTime:15000}</maxTime>
+      <openSearcher>false</openSearcher>
+    </autoCommit>
 
 
-     <autoSoftCommit> 
-       <maxTime>${solr.autoSoftCommit.maxTime:-1}</maxTime> 
-     </autoSoftCommit>
+    <autoSoftCommit>
+      <maxTime>${solr.autoSoftCommit.maxTime:-1}</maxTime>
+    </autoSoftCommit>
 
 
   </updateHandler>
-  
+
 
   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
        Query section - these settings control query time things like caches
@@ -77,7 +77,7 @@
 
     <maxBooleanClauses>1024</maxBooleanClauses>
 
- 
+
     <slowQueryThresholdMillis>-1</slowQueryThresholdMillis>
 
 
@@ -115,9 +115,9 @@
 
     <enableLazyFieldLoading>true</enableLazyFieldLoading>
 
-   <queryResultWindowSize>50</queryResultWindowSize>
+    <queryResultWindowSize>50</queryResultWindowSize>
 
-   <queryResultMaxDocsCached>200</queryResultMaxDocsCached>
+    <queryResultMaxDocsCached>200</queryResultMaxDocsCached>
 
     <HashDocSet maxSize="3000" loadFactor="0.75"/>
 
@@ -149,9 +149,9 @@
 
   <requestHandler name="standard" class="solr.SearchHandler" default="true">
     <lst name="defaults">
-    <!-- the advanced search uses sometimes the standard requesthandler with a solr subquery
-         the split on whitespace parameter (sow) is also needed here see
-         https://github.com/swissbib/vufind/issues/671 -->
+      <!-- the advanced search uses sometimes the standard requesthandler with a solr subquery
+           the split on whitespace parameter (sow) is also needed here see
+           https://github.com/swissbib/vufind/issues/671 -->
       <str name="sow">true</str>
 
       <str name="spellcheck.extendedResults">true</str>
@@ -239,31 +239,31 @@
   </requestHandler>
 
 
-<!--
-  trying to use a specialized defType (mlt)
-  <requestHandler name="morelikethis" class="solr.MoreLikeThisHandler">
-    <lst name="defaults">
-      <str name="mlt.fl">title, title_short, author, topic, publishDate,classif_rvk,classif_udc,classif_ddc</str>
-      <str name="defType">mlt</str>
-      <str name="mlt.qf">
-        title^75
-        title_short^100
-        topic^500
-        language^30
-        author^75
-        publishDate
-        classif_rvk^100
-        classif_udc^100
-        classif_ddc^100
-      </str>
-      <int name="mlt.mintf">1</int>
-      <int name="mlt.mindf">1</int>
-      <str name="mlt.boost">true</str>
-      <int name="mlt.count">5</int>
-      <int name="rows">5</int>
-    </lst>
-  </requestHandler>
--->
+  <!--
+    trying to use a specialized defType (mlt)
+    <requestHandler name="morelikethis" class="solr.MoreLikeThisHandler">
+      <lst name="defaults">
+        <str name="mlt.fl">title, title_short, author, topic, publishDate,classif_rvk,classif_udc,classif_ddc</str>
+        <str name="defType">mlt</str>
+        <str name="mlt.qf">
+          title^75
+          title_short^100
+          topic^500
+          language^30
+          author^75
+          publishDate
+          classif_rvk^100
+          classif_udc^100
+          classif_ddc^100
+        </str>
+        <int name="mlt.mintf">1</int>
+        <int name="mlt.mindf">1</int>
+        <str name="mlt.boost">true</str>
+        <int name="mlt.count">5</int>
+        <int name="rows">5</int>
+      </lst>
+    </requestHandler>
+  -->
 
   <requestHandler name="morelikethis" class="solr.MoreLikeThisHandler">
 
@@ -312,12 +312,12 @@
    -->
 
   <requestHandler name="/query" class="solr.SearchHandler">
-     <lst name="defaults">
-       <str name="echoParams">explicit</str>
-       <str name="wt">json</str>
-       <str name="indent">true</str>
-       <str name="df">text</str>
-     </lst>
+    <lst name="defaults">
+      <str name="echoParams">explicit</str>
+      <str name="wt">json</str>
+      <str name="indent">true</str>
+      <str name="df">text</str>
+    </lst>
   </requestHandler>
 
 
@@ -361,14 +361,14 @@
 
 
   <requestHandler name="/analysis/document"
-                  class="solr.DocumentAnalysisRequestHandler" 
+                  class="solr.DocumentAnalysisRequestHandler"
                   startup="lazy" />
 
   <!-- Echo the request contents back to the client -->
   <requestHandler name="/debug/dump" class="solr.DumpRequestHandler" >
     <lst name="defaults">
-     <str name="echoParams">explicit</str> 
-     <str name="echoHandler">true</str>
+      <str name="echoParams">explicit</str>
+      <str name="echoHandler">true</str>
     </lst>
   </requestHandler>
 
@@ -411,7 +411,7 @@
     </lst>
 
   </searchComponent>
-  
+
   <requestHandler name="/spell" class="solr.SearchHandler" startup="lazy">
     <lst name="defaults">
       <!-- Solr will use suggestions from both the 'default' spellchecker
@@ -421,14 +421,14 @@
       <str name="spellcheck.dictionary">default</str>
       <str name="spellcheck.dictionary">wordbreak</str>
       <str name="spellcheck">on</str>
-      <str name="spellcheck.extendedResults">true</str>       
+      <str name="spellcheck.extendedResults">true</str>
       <str name="spellcheck.count">10</str>
       <str name="spellcheck.alternativeTermCount">5</str>
-      <str name="spellcheck.maxResultsForSuggest">5</str>       
+      <str name="spellcheck.maxResultsForSuggest">5</str>
       <str name="spellcheck.collate">true</str>
-      <str name="spellcheck.collateExtendedResults">true</str>  
+      <str name="spellcheck.collateExtendedResults">true</str>
       <str name="spellcheck.maxCollationTries">10</str>
-      <str name="spellcheck.maxCollations">5</str>         
+      <str name="spellcheck.maxCollations">5</str>
     </lst>
     <arr name="last-components">
       <str>spellcheck</str>
@@ -438,7 +438,7 @@
   <searchComponent name="suggest" class="solr.SuggestComponent">
     <lst name="suggester">
       <str name="name">mySuggester</str>
-      <str name="lookupImpl">FuzzyLookupFactory</str>      
+      <str name="lookupImpl">FuzzyLookupFactory</str>
       <str name="dictionaryImpl">DocumentDictionaryFactory</str>
       <str name="field">cat</str>
       <str name="weightField">price</str>
@@ -447,7 +447,7 @@
     </lst>
   </searchComponent>
 
-  <requestHandler name="/suggest" class="solr.SearchHandler" 
+  <requestHandler name="/suggest" class="solr.SearchHandler"
                   startup="lazy" >
     <lst name="defaults">
       <str name="suggest">true</str>
@@ -558,7 +558,7 @@
     <highlighting>
       <!-- Configure the standard fragmenter -->
       <!-- This could most likely be commented out in the "default" case -->
-      <fragmenter name="gap" 
+      <fragmenter name="gap"
                   default="true"
                   class="solr.highlight.GapFragmenter">
         <lst name="defaults">
@@ -579,7 +579,7 @@
       </fragmenter>
 
       <!-- Configure the standard formatter -->
-      <formatter name="html" 
+      <formatter name="html"
                  default="true"
                  class="solr.highlight.HtmlFormatter">
         <lst name="defaults">
@@ -589,30 +589,30 @@
       </formatter>
 
       <!-- Configure the standard encoder -->
-      <encoder name="html" 
+      <encoder name="html"
                class="solr.highlight.HtmlEncoder" />
 
       <!-- Configure the standard fragListBuilder -->
-      <fragListBuilder name="simple" 
+      <fragListBuilder name="simple"
                        class="solr.highlight.SimpleFragListBuilder"/>
-      
+
       <!-- Configure the single fragListBuilder -->
-      <fragListBuilder name="single" 
+      <fragListBuilder name="single"
                        class="solr.highlight.SingleFragListBuilder"/>
-      
+
       <!-- Configure the weighted fragListBuilder -->
-      <fragListBuilder name="weighted" 
+      <fragListBuilder name="weighted"
                        default="true"
                        class="solr.highlight.WeightedFragListBuilder"/>
-      
+
       <!-- default tag FragmentsBuilder -->
-      <fragmentsBuilder name="default" 
+      <fragmentsBuilder name="default"
                         default="true"
                         class="solr.highlight.ScoreOrderFragmentsBuilder">
       </fragmentsBuilder>
 
       <!-- multi-colored tag FragmentsBuilder -->
-      <fragmentsBuilder name="colored" 
+      <fragmentsBuilder name="colored"
                         class="solr.highlight.ScoreOrderFragmentsBuilder">
         <lst name="defaults">
           <str name="hl.tag.pre"><![CDATA[
@@ -624,8 +624,8 @@
           <str name="hl.tag.post"><![CDATA[</b>]]></str>
         </lst>
       </fragmentsBuilder>
-      
-      <boundaryScanner name="default" 
+
+      <boundaryScanner name="default"
                        default="true"
                        class="solr.highlight.SimpleBoundaryScanner">
         <lst name="defaults">
@@ -633,8 +633,8 @@
           <str name="hl.bs.chars">.,!? &#9;&#10;&#13;</str>
         </lst>
       </boundaryScanner>
-      
-      <boundaryScanner name="breakIterator" 
+
+      <boundaryScanner name="breakIterator"
                        class="solr.highlight.BreakIteratorBoundaryScanner">
         <lst name="defaults">
           <!-- type should be one of CHARACTER, WORD(default), LINE and SENTENCE -->
@@ -652,11 +652,11 @@
   <queryResponseWriter name="json" class="solr.JSONResponseWriter">
     <str name="content-type">text/plain; charset=UTF-8</str>
   </queryResponseWriter>
-  
-    <queryResponseWriter name="velocity" class="solr.VelocityResponseWriter" startup="lazy">
-      <str name="template.base.dir">${velocity.template.base.dir:}</str>
-    </queryResponseWriter>
-  
+
+  <queryResponseWriter name="velocity" class="solr.VelocityResponseWriter" startup="lazy">
+    <str name="template.base.dir">${velocity.template.base.dir:}</str>
+  </queryResponseWriter>
+
 
   <queryResponseWriter name="xslt" class="solr.XSLTResponseWriter">
     <int name="xsltCacheLifetimeSeconds">5</int>
