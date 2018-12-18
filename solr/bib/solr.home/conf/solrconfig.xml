@@ -147,81 +147,68 @@
     <httpCaching never304="true" />
   </requestDispatcher>
 
+  <!-- the advanced search uses sometimes the standard requesthandler with a solr subquery
+     the split on whitespace parameter (sow) is also needed here see
+     https://github.com/swissbib/vufind/issues/671 -->
   <requestHandler name="standard" class="solr.SearchHandler" default="true">
     <lst name="defaults">
-      <!-- the advanced search uses sometimes the standard requesthandler with a solr subquery
-           the split on whitespace parameter (sow) is also needed here see
-           https://github.com/swissbib/vufind/issues/671 -->
-      <str name="sow">true</str>
-
-      <str name="spellcheck.extendedResults">true</str>
-      <str name="spellcheck.count">10</str>
-      <str name="spellcheck.alternativeTermCount">5</str>
-      <str name="spellcheck.maxResultsForSuggest">5</str>
-      <str name="spellcheck.collate">true</str>
-      <str name="spellcheck.collateExtendedResults">true</str>
-      <str name="spellcheck.maxCollationTries">10</str>
-      <str name="spellcheck.maxCollations">5</str>
-
-    </lst>
-    <arr name="last-components">
-      <str>spellcheck</str>
-    </arr>
-  </requestHandler>
-
-
-  <!-- start von swissbib eingefügt -->
-  <requestHandler name="dismax" class="solr.SearchHandler">
-    <lst name="defaults">
-      <str name="defType">dismax</str>
-      <!-- str name="fl">a*,b*,c*,d*,e*,first_indexed,format,fullrecord,g*,h*,i*,l*,o*,p*,r*,s*,t*,u*,*_date*,*_isn*,*_str*,*_txt*</str -->
-      <str name="echoParams">explicit</str>
-      <!--  <str name="spellcheck.extendedResults">true</str>
-              <str name="spellcheck.onlyMorePopular">true</str>
-              <str name="spellcheck.count">20</str> -->
-
-      <!-- Spellchecking -->
-
-      <str name="spellcheck.extendedResults">true</str>
-      <str name="spellcheck.count">10</str>
-      <str name="spellcheck.alternativeTermCount">5</str>
-      <str name="spellcheck.maxResultsForSuggest">5</str>
-      <str name="spellcheck.collate">true</str>
-      <str name="spellcheck.collateExtendedResults">true</str>
-      <str name="spellcheck.maxCollationTries">10</str>
-      <str name="spellcheck.maxCollations">5</str>
-
-    </lst>
-    <arr name="last-components">
-      <str>spellcheck</str>
-    </arr>
-  </requestHandler>
-
-
-  <requestHandler name="edismax" class="solr.SearchHandler">
-    <lst name="defaults">
-      <!-- at the moment we assume that mm is always correctly set by discovery client - VuFind searchconf -->
-      <!--<str name="mm">100</str>-->
-      <str name="defType">edismax</str>
-      <!-- str name="fl">a*,b*,c*,d*,e*,first_indexed,format,fullrecord,g*,h*,i*,l*,o*,p*,r*,s*,t*,u*,*_date*,*_isn*,*_str*,*_txt*</str -->
-      <str name="echoParams">explicit</str>
-
-      <!-- Spellchecking -->
-      <str name="spellcheck.extendedResults">true</str>
-      <str name="spellcheck.count">10</str>
-      <str name="spellcheck.alternativeTermCount">5</str>
-      <str name="spellcheck.maxResultsForSuggest">5</str>
-      <str name="spellcheck.collate">true</str>
-      <str name="spellcheck.collateExtendedResults">true</str>
-      <str name="spellcheck.maxCollationTries">10</str>
-      <str name="spellcheck.maxCollations">8</str>
-      <str name="spellcheck.accuracy">0.5</str>
 
       <!-- starting with SOLR7x default is false
       more testing and knowledge about the background of this attribute  necessary
       -->
       <str name="sow">true</str>
 
+      <str name="echoParams">explicit</str>
+
+      <!-- Spellchecking -->
+      <str name="spellcheck.extendedResults">true</str>
+      <str name="spellcheck.count">20</str>
+
+    </lst>
+    <arr name="last-components">
+      <str>spellcheck</str>
+    </arr>
+  </requestHandler>
+
+  <!-- some facets use the dismax parser, for example Subject_OR:, see
+   https://github.com/swissbib/vufind/pull/608 -->
+  <requestHandler name="dismax" class="solr.SearchHandler">
+    <lst name="defaults">
+      <str name="defType">dismax</str>
+
+      <!-- starting with SOLR7x default is false
+      more testing and knowledge about the background of this attribute  necessary
+      -->
+      <str name="sow">true</str>
+
+      <str name="echoParams">explicit</str>
+
+      <!-- Spellchecking -->
+      <str name="spellcheck.extendedResults">true</str>
+      <str name="spellcheck.count">20</str>
+    </lst>
+    <arr name="last-components">
+      <str>spellcheck</str>
+    </arr>
+  </requestHandler>
+
+  <!-- used most of the time, for example for simple search -->
+  <requestHandler name="edismax" class="solr.SearchHandler">
+    <lst name="defaults">
+      <!-- at the moment we assume that mm is always correctly set by discovery client - VuFind searchconf -->
+      <!--<str name="mm">100</str>-->
+      <str name="defType">edismax</str>
+
+      <!-- starting with SOLR7x default is false
+      more testing and knowledge about the background of this attribute  necessary
+      -->
+      <str name="sow">true</str>
+
+      <str name="echoParams">explicit</str>
+
+      <!-- Spellchecking -->
+      <str name="spellcheck.extendedResults">true</str>
+      <str name="spellcheck.count">20</str>
     </lst>
     <arr name="last-components">
       <str>spellcheck</str>
@@ -322,7 +309,7 @@
 
 
 
-  <initParams path="/update/**,/query,/select,/tvrh,/elevate,/spell,/browse">
+  <initParams path="/update/**,/query,/select,/tvrh,/elevate,/browse">
     <lst name="defaults">
       <str name="df">text</str>
     </lst>
@@ -376,64 +363,21 @@
 
 
   <searchComponent name="spellcheck" class="solr.SpellCheckComponent">
-
-    <!-- weitere Möglichkeiten für Spellchecker in 5.2 evaluieren und testen -->
-    <!-- einfach von 5.5 übernommen -->
-
     <lst name="spellchecker">
       <str name="name">default</str>
-      <str name="field">title</str>
+      <str name="field">spellingShingle</str>
       <str name="classname">solr.DirectSolrSpellChecker</str>
-      <str name="distanceMeasure">internal</str>
-      <float name="accuracy">0.5</float>
-      <int name="maxEdits">2</int>
-      <int name="minPrefix">1</int>
-      <int name="maxInspections">8</int>
-      <int name="minQueryLength">3</int>
-      <float name="maxQueryFrequency">0.01</float>
-      <str name="combineWords">true</str>
-
+      <float name="accuracy">0.75</float>
+      <str name="queryAnalyzerFieldType">textSpellShingle</str>
     </lst>
-
-
     <lst name="spellchecker">
       <str name="name">basicSpell</str>
-      <str name="field">author</str>
+      <str name="field">spelling</str>
       <str name="classname">solr.DirectSolrSpellChecker</str>
-      <str name="distanceMeasure">internal</str>
-      <float name="accuracy">0.5</float>
-      <int name="maxEdits">2</int>
-      <int name="minPrefix">1</int>
-      <int name="maxInspections">5</int>
-      <int name="minQueryLength">3</int>
-      <float name="maxQueryFrequency">0.01</float>
-      <str name="combineWords">true</str>
+      <float name="accuracy">0.75</float>
+      <str name="queryAnalyzerFieldType">textSpell</str>
     </lst>
-
   </searchComponent>
-
-  <requestHandler name="/spell" class="solr.SearchHandler" startup="lazy">
-    <lst name="defaults">
-      <!-- Solr will use suggestions from both the 'default' spellchecker
-           and from the 'wordbreak' spellchecker and combine them.
-           collations (re-written queries) can include a combination of
-           corrections from both spellcheckers -->
-      <str name="spellcheck.dictionary">default</str>
-      <str name="spellcheck.dictionary">wordbreak</str>
-      <str name="spellcheck">on</str>
-      <str name="spellcheck.extendedResults">true</str>
-      <str name="spellcheck.count">10</str>
-      <str name="spellcheck.alternativeTermCount">5</str>
-      <str name="spellcheck.maxResultsForSuggest">5</str>
-      <str name="spellcheck.collate">true</str>
-      <str name="spellcheck.collateExtendedResults">true</str>
-      <str name="spellcheck.maxCollationTries">10</str>
-      <str name="spellcheck.maxCollations">5</str>
-    </lst>
-    <arr name="last-components">
-      <str>spellcheck</str>
-    </arr>
-  </requestHandler>
 
   <searchComponent name="suggest" class="solr.SuggestComponent">
     <lst name="suggester">
