@@ -18,6 +18,9 @@
 
    <field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false" />
 
+    <!-- needed for simple search : an id analyzed the same way as author and title -->
+   <field name="id_txt" type="text_untreated" indexed="true" stored="false" multiValued="false" />
+
     <!-- Core Fields
          *********** -->
     <!--<field name="id" type="string" indexed="true" stored="true"/> -->
@@ -48,6 +51,8 @@
     <!-- following two fields will be empty at the moment -->
     <field name="collection" type="string" indexed="true" stored="true" multiValued="true" />
     <field name="isil" type="string" stored="true" indexed="true" multiValued="true" />
+
+    <!-- the full call number indexed as such : UBH KT 235 -> ubhkt235, used in advanced search -->
     <field name="callnumber" type="callnum" indexed="true" stored="false" multiValued="true" />
 
     <!-- Generic Fields
@@ -190,6 +195,12 @@
     <!-- copy field for dedicated index mylibrary - also nown as favorites -->
     <copyField source="institution" dest="mylibrary" />
 
+    <!-- call number field splitted at spaces for the simple search -->
+    <!-- UBH KT 235, will store UBH, KT and 235 separately -->
+    <copyField source="callnumber" dest="callnumber_txt_mv" />
+
+    <!-- id with the same analysis as title, author, ... for a coherent simple search -->
+    <copyField source="id" dest="id_txt" />
 
 
 
@@ -265,6 +276,8 @@
 
     <fieldType name="isn" class="solr.TextField" positionIncrementGap="100">
         <analyzer>
+            <!-- this tokenizer takes what is before the first whitespace
+             or the entire content if there is no whitespace-->
             <tokenizer class="solr.PatternTokenizerFactory" pattern="^(\S*)\s*.*$" group="1"/>
             <filter class="solr.LowerCaseFilterFactory"/>
             <filter class="solr.PatternReplaceFilterFactory"
