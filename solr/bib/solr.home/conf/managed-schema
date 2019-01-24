@@ -243,13 +243,14 @@
         <analyzer type="index">
             <charFilter class="solr.MappingCharFilterFactory" mapping="mapping-chars.txt"/>
             <tokenizer class="solr.ICUTokenizerFactory" rulefiles="Latn:Latin-break-only-on-whitespace.rbbi"/>
-            <filter class="solr.WordDelimiterFilterFactory"
+            <filter class="solr.WordDelimiterGraphFilterFactory"
                     generateWordParts="1"
                     generateNumberParts="1"
                     catenateWords="1"
                     catenateNumbers="1"
                     catenateAll="0"
                     splitOnCaseChange="1"/>
+            <filter class="solr.FlattenGraphFilterFactory"/> <!-- required on index analyzers after graph filters -->
             <filter class="solr.ICUFoldingFilterFactory"/>
             <filter class="solr.CJKWidthFilterFactory"/>
             <filter class="solr.CJKBigramFilterFactory"/>
@@ -259,13 +260,13 @@
         <analyzer type="query">
             <charFilter class="solr.MappingCharFilterFactory" mapping="mapping-chars.txt"/>
             <tokenizer class="solr.ICUTokenizerFactory" rulefiles="Latn:Latin-break-only-on-whitespace.rbbi"/>
-            <filter class="solr.WordDelimiterFilterFactory"
+            <filter class="solr.WordDelimiterGraphFilterFactory"
                     generateWordParts="1"
                     generateNumberParts="1"
                     catenateWords="1"
                     catenateNumbers="1"
                     catenateAll="0"
-                    splitOnCaseChange="0"/>
+                    splitOnCaseChange="1"/>
             <filter class="solr.ICUFoldingFilterFactory"/>
             <filter class="solr.CJKWidthFilterFactory"/>
             <filter class="solr.CJKBigramFilterFactory"/>
@@ -365,9 +366,25 @@
     <!-- Basic Text Field for use with Spell Correction
          enhanced with chain elements of old type text_spelled (14.05.2013 / osc) -->
     <fieldType name="textSpell" class="solr.TextField" positionIncrementGap="100">
-        <analyzer>
+        <analyzer type="index">
             <tokenizer class="solr.ICUTokenizerFactory"/>
-            <filter class="solr.WordDelimiterFilterFactory"
+            <filter class="solr.WordDelimiterGraphFilterFactory"
+                    generateWordParts="1"
+                    generateNumberParts="1"
+                    catenateWords="0"
+                    catenateNumbers="0"
+                    catenateAll="0"
+            />
+            <filter class="solr.FlattenGraphFilterFactory"/> <!-- required on index analyzers after graph filters -->
+            <filter class="solr.ICUFoldingFilterFactory"/>
+            <filter class="solr.StopFilterFactory" words="stopspellwords.txt" ignoreCase="true" />
+            <filter class="solr.TrimFilterFactory" />
+            <filter class="solr.LengthFilterFactory" min="3" max="50" />
+            <filter class="solr.RemoveDuplicatesTokenFilterFactory"/>
+        </analyzer>
+        <analyzer type="query">
+            <tokenizer class="solr.ICUTokenizerFactory"/>
+            <filter class="solr.WordDelimiterGraphFilterFactory"
                     generateWordParts="1"
                     generateNumberParts="1"
                     catenateWords="0"
