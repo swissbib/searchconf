@@ -16,103 +16,89 @@
     -->
     <field name="_root_" type="string" indexed="true" stored="false" docValues="false"/>
 
+
+    <!-- Core Fields
+         *********** -->
+    <field name="freshness" type="pdate" indexed="true" stored="false"/>
+    <field name="fullrecord" type="string" indexed="false" stored="true"/>
+    <field name="fulltext" type="text_untreated" indexed="true" stored="true" multiValued="true" termVectors="true"
+           termPositions="true" termOffsets="true"/>
+    <field name="holdings" type="string" indexed="false" stored="true"/>
     <field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false"/>
 
     <!-- needed for simple search : an id analyzed the same way as author and title -->
     <field name="id_txt" type="text_untreated" indexed="true" stored="false" multiValued="false"/>
 
-    <!-- Core Fields
-         *********** -->
-    <!--<field name="id" type="string" indexed="true" stored="true"/> -->
-    <field name="fullrecord" type="string" indexed="false" stored="true"/>
-    <field name="holdings" type="string" indexed="false" stored="true"/>
-    <field name="freshness" type="pdate" indexed="true" stored="false"/>
-
-    <field name="fulltext" type="text_untreated" indexed="true" stored="true" multiValued="true" termVectors="true"
-           termPositions="true" termOffsets="true"/>
     <!-- used for loading correct record driver -->
     <field name="recordtype" type="string" indexed="false" stored="true" required="true"/>
-    <!-- why use the following three fields? -->
-    <!--
-   <field name="marc_error" type="string" indexed="false" stored="true" multiValued="true"/>
-   <field name="allfields" type="text_untreated" indexed="true" stored="false"/>
-   <field name="allfields_unstemmed" type="text_untreated" indexed="true" stored="false"/>
-    -->
-    <!--   <field name="fulltext_unstemmed" type="text_untreated" indexed="true" stored="false"/>-->
     <field name="spelling" type="textSpell" indexed="true" stored="true" multiValued="true"/>
     <field name="spellingShingle" type="textSpellShingle" indexed="true" stored="true" multiValued="true"/>
 
 
-    <!-- Institutional Fields (and call numbers, maybe holdings later, information to access a physical or remote electronic resource)
+    <!-- Institutional Fields
          ******************** -->
-    <field name="union" type="string" indexed="true" stored="true" multiValued="true"/>
     <field name="institution" type="string" indexed="true" stored="true" multiValued="true"/>
     <field name="mylibrary" type="string" indexed="true" stored="false" multiValued="true"/>
+    <field name="union" type="string" indexed="true" stored="true" multiValued="true"/>
 
     <!-- following two fields will be empty at the moment -->
     <field name="collection" type="string" indexed="true" stored="true" multiValued="true"/>
     <field name="isil" type="string" stored="true" indexed="true" multiValued="true"/>
 
-    <!-- the full call number indexed as such : UBH KT 235 -> ubhkt235, used in advanced search -->
-    <field name="callnumber" type="callnum" indexed="true" stored="false" multiValued="true"/>
 
     <!-- Generic Fields
          ************** -->
-    <field name="language" type="stringlike" indexed="true" stored="true" multiValued="true"/>
-    <field name="format" type="string" indexed="true" stored="true" multiValued="true"/>
     <field name="author" type="text_untreated" indexed="true" stored="true" multiValued="true" termVectors="true"/>
-    <field name="title" type="text_untreated" indexed="true" stored="true" multiValued="true" termVectors="true"/>
-    <field name="title_short" type="text_untreated" indexed="true" stored="true" multiValued="true" termVectors="true"/>
-    <field name="title_sub" type="text_untreated" indexed="true" stored="false" multiValued="true"/>
-    <field name="publishDate" type="pints" indexed="true" stored="false" termVectors="true"/>
-    <field name="thumbnail" type="string" indexed="false" stored="true"/>
-    <!-- vf-generic fields still missing, some for display, others for snippets/highlight and building alphabrowse, check later -->
+    <field name="author_additional" type="text_untreated" indexed="true" stored="false" multiValued="true"/>
 
-    <!-- Catalog Specific Fields
-         *********************** -->
+    <!-- the full call number indexed as such : UBH KT 235 -> ubhkt235, used in advanced search -->
+    <field name="callnumber" type="callnum" indexed="true" stored="false" multiValued="true"/>
     <field name="ctrlnum" type="isn" indexed="true" stored="false" multiValued="true"/>
-    <field name="isbn" type="isn" indexed="true" stored="true" multiValued="true"/>
-
-    <field name="issn" type="isn" indexed="true" stored="true" multiValued="true"/>
+    <field name="format" type="string" indexed="true" stored="true" multiValued="true"/>
 
     <!-- I guess it's not necessary to store FRBR-id.  todo: Clarify ramifications for grouping -->
     <field name="groupid_isn_mv" type="isn" indexed="true" stored="true"/>
-
-    <dynamicField name="*_isn_mv" type="isn" indexed="true" stored="true" multiValued="true"/>
-
+    <field name="isbn" type="isn" indexed="true" stored="true" multiValued="true"/>
+    <field name="issn" type="isn" indexed="true" stored="true" multiValued="true"/>
+    <field name="journals" type="text_untreated" indexed="true" stored="false" multiValued="true"/>
+    <field name="language" type="stringlike" indexed="true" stored="true" multiValued="true"/>
+    <field name="localcode" type="stringlike" indexed="true" stored="false" multiValued="true"/>
+    <field name="publishDate" type="pints" indexed="true" stored="false" termVectors="true"/>
+    <field name="series" type="text_untreated" indexed="true" stored="false" multiValued="true"/>
+    <field name="subundef" type="text_untreated" indexed="true" stored="false" multiValued="true"/>
+    <field name="subgnd_enriched" type="text_untreated" indexed="true" stored="false" multiValued="true"/>
+    <field name="thumbnail" type="string" indexed="false" stored="true"/>
+    <field name="title" type="text_untreated" indexed="true" stored="true" multiValued="true" termVectors="true"/>
+    <field name="title_short" type="text_untreated" indexed="true" stored="true" multiValued="true" termVectors="true"/>
+    <field name="title_sub" type="text_untreated" indexed="true" stored="false" multiValued="true"/>
     <field name="title_alt" type="text_untreated" indexed="true" stored="false" multiValued="true"/>
     <field name="title_old" type="text_untreated" indexed="true" stored="true" multiValued="true"/>
     <field name="title_new" type="text_untreated" indexed="true" stored="true" multiValued="true"/>
-    <field name="author_additional" type="text_untreated" indexed="true" stored="false" multiValued="true"/>
-    <field name="series" type="text_untreated" indexed="true" stored="false" multiValued="true"/>
-    <field name="journals" type="text_untreated" indexed="true" stored="false" multiValued="true"/>
-    <field name="localcode" type="stringlike" indexed="true" stored="false" multiValued="true"/>
+    <field name="topic" type="text_untreated" indexed="true" stored="true" multiValued="true" termVectors="true"/>
+
+
+    <!-- Generice Dynamic Fields
+         *********************** -->
+    <dynamicField name="*_isn_mv" type="isn" indexed="true" stored="true" multiValued="true"/>
     <dynamicField name="*_str_mv" docValues="true" type="string" indexed="true" stored="true" multiValued="true"/>
     <dynamicField name="*_txt_mv" type="text_untreated" indexed="true" stored="false" multiValued="true"/>
-    <!--
-    <field name="author-letter" type="string" indexed="true" stored="true"/>
-    <field name="title_full" type="text_untreated" indexed="true" stored="true"/>
-    <field name="title_full_unstemmed" type="text_untreated" indexed="true" stored="true"/>
-    <field name="title_fullStr" type="string" indexed="true" stored="true"/>
-    <field name="title_auth" type="text_untreated" indexed="true" stored="true"/>
-    -->
 
-    <!-- subject fields (generic field 'subfull', categories per vocabulary, classifications, special subject indexing, local subject indexing)
-         **************  -->
-    <field name="topic" type="text_untreated" indexed="true" stored="true" multiValued="true" termVectors="true"/>
+
     <dynamicField name="subpers_*" type="text_untreated" indexed="true" stored="false" multiValued="true"/>
     <dynamicField name="subtime_*" type="text_untreated" indexed="true" stored="false" multiValued="true"/>
     <dynamicField name="subtitle_*" type="text_untreated" indexed="true" stored="false" multiValued="true"/>
     <dynamicField name="subtop_*" type="text_untreated" indexed="true" stored="false" multiValued="true"/>
     <dynamicField name="subgeo_*" type="text_untreated" indexed="true" stored="false" multiValued="true"/>
     <dynamicField name="subform_*" type="text_untreated" indexed="true" stored="false" multiValued="true"/>
-    <field name="subundef" type="text_untreated" indexed="true" stored="false" multiValued="true"/>
-    <field name="subgnd_enriched" type="text_untreated" indexed="true" stored="false" multiValued="true"/>
-    <!-- Special or local subject indexing (sources are fields 690/691) -->
+
+
+    <!-- Special or local subject indexing (sources are fields 690/691)
+         ************************************************************** -->
     <field name="sublocal" type="text_untreated" indexed="true" stored="false" multiValued="true"/>
     <field name="submusic" type="text_untreated" indexed="true" stored="false" multiValued="true"/>
     <dynamicField name="classif_*" type="stringlike" indexed="true" stored="false" multiValued="true"
                   termVectors="true"/>
+
 
     <!-- Sort Fields
          *********** -->
@@ -120,6 +106,7 @@
     <field name="author_sort" type="alphaOnlySort" indexed="true" stored="false"/>
     <field name="title_sort" type="alphaOnlySort" indexed="true" stored="false"/>
     <field name="publishDateSort" type="string" indexed="true" stored="false"/>
+
 
     <!-- Hierarchy Fields
          **************** -->
@@ -135,7 +122,7 @@
     <!-- Todo: @Silva wird dieses Feld überhaupt gebraucht?? ich habe das in den Dokumenten bisher nicht gefunden
     <field name="hierarchy_browse" type="navFieldCombined" indexed="true" stored="false" multiValued="true"/>-->
 
-    <!-- specific Facet Fields
+    <!-- Specific Facet Fields
          ********************* -->
     <dynamicField name="navAuthor_*" type="string" docValues="true" indexed="true" stored="false" multiValued="true"/>
     <field name="navSubform" type="string" docValues="true" multiValued="true" stored="false"/>
@@ -144,8 +131,8 @@
     <dynamicField name="navDrsys_*" type="string" docValues="true" multiValued="true" indexed="true" stored="false"/>
     <field name="navDrsys" type="string" docValues="true" multiValued="true" indexed="true" stored="false"/>
 
-    <!--  special fields
-        **************** -->
+    <!-- Special fields
+         ************** -->
     <field name="time_processed" type="pdate" stored="true" indexed="true"/>
     <field name="time_indexed" type="pdate" default="NOW/MINUTE" stored="true" indexed="true"/>
     <!-- mandatory field for schema version 1.5-->
@@ -211,68 +198,42 @@
     <uniqueKey>id</uniqueKey>
 
 
-    <fieldType name="string" class="solr.StrField" sortMissingLast="true"/>
+
+    <!-- ===========
+         FIELD TYPES
+         ===========
+    -->
+
+    <fieldType name="alphaOnlySort" indexed="false" stored="false" docValues="true" class="solr.ICUCollationField"
+               custom="customRules.dat"
+               strength="primary"/>
 
     <!-- boolean type: "true" or "false" -->
     <fieldType name="boolean" class="solr.BoolField" sortMissingLast="true"/>
 
-
-    <fieldType name="pint" class="solr.IntPointField" docValues="true"/>
-    <fieldType name="pfloat" class="solr.FloatPointField" docValues="true"/>
-    <fieldType name="plong" class="solr.LongPointField" docValues="true"/>
-    <fieldType name="pdouble" class="solr.DoublePointField" docValues="true"/>
-
-
-    <fieldType name="pints" class="solr.IntPointField" docValues="true" multiValued="true"/>
-    <fieldType name="pfloats" class="solr.FloatPointField" docValues="true" multiValued="true"/>
-    <fieldType name="plongs" class="solr.LongPointField" docValues="true" multiValued="true"/>
-    <fieldType name="pdoubles" class="solr.DoublePointField" docValues="true" multiValued="true"/>
-
-    <!-- KD-tree versions of date fields -->
-    <fieldType name="pdate" class="solr.DatePointField" docValues="true"/>
-    <fieldType name="pdates" class="solr.DatePointField" docValues="true" multiValued="true"/>
-
     <!--Binary data type. The data should be sent/retrieved in as Base64 encoded Strings -->
     <fieldType name="binary" class="solr.BinaryField"/>
 
-    <fieldType name="random" class="solr.RandomSortField" indexed="true"/>
-
-
-    <fieldType name="text_untreated" class="solr.TextField" positionIncrementGap="100">
-        <analyzer type="index">
-            <charFilter class="solr.MappingCharFilterFactory" mapping="mapping-chars.txt"/>
-            <tokenizer class="solr.ICUTokenizerFactory" rulefiles="Latn:Latin-break-only-on-whitespace.rbbi"/>
-            <filter class="solr.WordDelimiterGraphFilterFactory"
-                    generateWordParts="1"
-                    generateNumberParts="1"
-                    catenateWords="1"
-                    catenateNumbers="1"
-                    catenateAll="0"
-                    splitOnCaseChange="1"/>
-            <filter class="solr.FlattenGraphFilterFactory"/> <!-- required on index analyzers after graph filters -->
-            <filter class="solr.ICUFoldingFilterFactory"/>
-            <filter class="solr.CJKWidthFilterFactory"/>
-            <filter class="solr.CJKBigramFilterFactory"/>
-            <filter class="solr.ReversedWildcardFilterFactory"/>
-            <filter class="solr.RemoveDuplicatesTokenFilterFactory"/>
-        </analyzer>
-        <analyzer type="query">
-            <charFilter class="solr.MappingCharFilterFactory" mapping="mapping-chars.txt"/>
-            <tokenizer class="solr.ICUTokenizerFactory" rulefiles="Latn:Latin-break-only-on-whitespace.rbbi"/>
-            <filter class="solr.WordDelimiterGraphFilterFactory"
-                    generateWordParts="1"
-                    generateNumberParts="1"
-                    catenateWords="0"
-                    catenateNumbers="0"
-                    catenateAll="0"
-                    splitOnCaseChange="1"/>
-            <filter class="solr.ICUFoldingFilterFactory"/>
-            <filter class="solr.CJKWidthFilterFactory"/>
-            <filter class="solr.CJKBigramFilterFactory"/>
-            <filter class="solr.RemoveDuplicatesTokenFilterFactory"/>
+    <!-- callnum : Feldtyp fuer Signaturen. Ev. spaeter wieder mit stringlike zusammenfuehren -->
+    <fieldType name="callnum" class="solr.TextField">
+        <analyzer>
+            <tokenizer class="solr.KeywordTokenizerFactory"/>
+            <filter class="solr.LowerCaseFilterFactory"/>
+            <!-- remove spaces -->
+            <filter class="solr.PatternReplaceFilterFactory"
+                    pattern="\u0020"
+                    replacement=""
+                    replace="all"
+            />
+            <!-- remove _  (underscore) -->
+            <filter class="solr.PatternReplaceFilterFactory"
+                    pattern="\u005f"
+                    replacement=""
+                    replace="all"
+            />
+            <filter class="solr.TrimFilterFactory"/>
         </analyzer>
     </fieldType>
-
 
     <fieldType name="isn" class="solr.TextField" positionIncrementGap="100">
         <analyzer>
@@ -295,6 +256,26 @@
         </analyzer>
     </fieldType>
 
+    <fieldType name="pint" class="solr.IntPointField" docValues="true"/>
+    <fieldType name="pfloat" class="solr.FloatPointField" docValues="true"/>
+    <fieldType name="plong" class="solr.LongPointField" docValues="true"/>
+    <fieldType name="pdouble" class="solr.DoublePointField" docValues="true"/>
+
+    <!-- same but multivalued -->
+    <fieldType name="pints" class="solr.IntPointField" docValues="true" multiValued="true"/>
+    <fieldType name="pfloats" class="solr.FloatPointField" docValues="true" multiValued="true"/>
+    <fieldType name="plongs" class="solr.LongPointField" docValues="true" multiValued="true"/>
+    <fieldType name="pdoubles" class="solr.DoublePointField" docValues="true" multiValued="true"/>
+
+    <!-- KD-tree versions of date fields -->
+    <fieldType name="pdate" class="solr.DatePointField" docValues="true"/>
+    <fieldType name="pdates" class="solr.DatePointField" docValues="true" multiValued="true"/>
+
+
+
+    <fieldType name="random" class="solr.RandomSortField" indexed="true"/>
+
+    <fieldType name="string" class="solr.StrField" sortMissingLast="true"/>
 
     <!-- stringlike : Feldtyp fuer Klassifikationen und Codes, lowercase und trunkierbar -->
     <fieldType name="stringlike" class="solr.TextField">
@@ -303,27 +284,6 @@
             <filter class="solr.LowerCaseFilterFactory"/>
             <filter class="solr.TrimFilterFactory"/>
             <filter class="solr.LengthFilterFactory" min="2" max="100"/>
-        </analyzer>
-    </fieldType>
-
-    <!-- callnum : Feldtyp fuer Signaturen. Ev. spaeter wieder mit stringlike zusammenfuehren -->
-    <fieldType name="callnum" class="solr.TextField">
-        <analyzer>
-            <tokenizer class="solr.KeywordTokenizerFactory"/>
-            <filter class="solr.LowerCaseFilterFactory"/>
-            <!-- remove spaces -->
-            <filter class="solr.PatternReplaceFilterFactory"
-                    pattern="\u0020"
-                    replacement=""
-                    replace="all"
-            />
-            <!-- remove _  (underscore) -->
-            <filter class="solr.PatternReplaceFilterFactory"
-                    pattern="\u005f"
-                    replacement=""
-                    replace="all"
-            />
-            <filter class="solr.TrimFilterFactory"/>
         </analyzer>
     </fieldType>
 
@@ -426,8 +386,38 @@
         </analyzer>
     </fieldType>
 
-
-    <fieldType name="alphaOnlySort" indexed="false" stored="false" docValues="true" class="solr.ICUCollationField"
-               custom="customRules.dat"
-               strength="primary"/>
+    <fieldType name="text_untreated" class="solr.TextField" positionIncrementGap="100">
+        <analyzer type="index">
+            <charFilter class="solr.MappingCharFilterFactory" mapping="mapping-chars.txt"/>
+            <tokenizer class="solr.ICUTokenizerFactory" rulefiles="Latn:Latin-break-only-on-whitespace.rbbi"/>
+            <filter class="solr.WordDelimiterGraphFilterFactory"
+                    generateWordParts="1"
+                    generateNumberParts="1"
+                    catenateWords="1"
+                    catenateNumbers="1"
+                    catenateAll="0"
+                    splitOnCaseChange="1"/>
+            <filter class="solr.FlattenGraphFilterFactory"/> <!-- required on index analyzers after graph filters -->
+            <filter class="solr.ICUFoldingFilterFactory"/>
+            <filter class="solr.CJKWidthFilterFactory"/>
+            <filter class="solr.CJKBigramFilterFactory"/>
+            <filter class="solr.ReversedWildcardFilterFactory"/>
+            <filter class="solr.RemoveDuplicatesTokenFilterFactory"/>
+        </analyzer>
+        <analyzer type="query">
+            <charFilter class="solr.MappingCharFilterFactory" mapping="mapping-chars.txt"/>
+            <tokenizer class="solr.ICUTokenizerFactory" rulefiles="Latn:Latin-break-only-on-whitespace.rbbi"/>
+            <filter class="solr.WordDelimiterGraphFilterFactory"
+                    generateWordParts="1"
+                    generateNumberParts="1"
+                    catenateWords="0"
+                    catenateNumbers="0"
+                    catenateAll="0"
+                    splitOnCaseChange="1"/>
+            <filter class="solr.ICUFoldingFilterFactory"/>
+            <filter class="solr.CJKWidthFilterFactory"/>
+            <filter class="solr.CJKBigramFilterFactory"/>
+            <filter class="solr.RemoveDuplicatesTokenFilterFactory"/>
+        </analyzer>
+    </fieldType>
 </schema>
