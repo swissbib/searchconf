@@ -3,6 +3,7 @@
 
 <schema name="swissbib vufind bibliographic schema" version="1.6">
 
+    <!-- January 2019, Lionel: reorder fields and work on definitions for callnumber field -->
 
     <!--
         GH 4.8.2017
