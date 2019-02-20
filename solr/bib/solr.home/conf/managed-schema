@@ -56,6 +56,9 @@
     <field name="callnumber" type="callnum" indexed="true" stored="false" multiValued="true"/>
     <field name="ctrlnum" type="isn" indexed="true" stored="false" multiValued="true"/>
     <field name="format" type="string" indexed="true" stored="true" multiValued="true"/>
+    <field name="libraryFacet" type="string" indexed="true" stored="true" multiValued="true"/>
+
+
 
     <!-- I guess it's not necessary to store FRBR-id.  todo: Clarify ramifications for grouping -->
     <field name="groupid_isn_mv" type="isn" indexed="true" stored="true"/>
