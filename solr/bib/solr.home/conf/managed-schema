@@ -246,6 +246,7 @@
                     replacement="$10"
                     replace="all"
             />
+            <!-- this removes all characters which are not a-z, A-Z, 0-9, and _ (underscore)-->
             <filter class="solr.PatternReplaceFilterFactory"
                     pattern="[^\w]+"
                     replacement=""
