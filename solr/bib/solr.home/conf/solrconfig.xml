@@ -379,28 +379,125 @@
     </lst>
   </searchComponent>
 
-  <searchComponent name="suggest" class="solr.SuggestComponent">
+
+  <!-- SUGGESTIONS -->
+
+  <requestHandler name="/suggest-title" class="solr.SearchHandler"
+                  startup="lazy" >
+    <lst name="defaults">
+      <str name="suggest">true</str>
+      <str name="suggest.count">10</str>
+      <str name="suggest.dictionary">suggestTitle</str>
+    </lst>
+    <arr name="components">
+      <str>suggest-title</str>
+    </arr>
+  </requestHandler>
+
+  <searchComponent name="suggest-title" class="solr.SuggestComponent">
     <lst name="suggester">
-      <str name="name">mySuggester</str>
-      <str name="lookupImpl">FuzzyLookupFactory</str>
+      <str name="name">suggestTitle</str>
+      <str name="lookupImpl">AnalyzingInfixLookupFactory</str>
       <str name="dictionaryImpl">DocumentDictionaryFactory</str>
-      <str name="field">cat</str>
-      <str name="weightField">price</str>
-      <str name="suggestAnalyzerFieldType">string</str>
+      <!-- str name="indexPath">/your/path</str -->
+      <str name="field">title</str>
+      <!-- str name="weightField">price</str-->
+      <str name="suggestAnalyzerFieldType">text_untreated</str>
       <str name="buildOnStartup">false</str>
     </lst>
   </searchComponent>
 
-  <requestHandler name="/suggest" class="solr.SearchHandler"
+
+
+  <requestHandler name="/suggest-author" class="solr.SearchHandler"
+                  startup="lazy" >
+    <lst name="defaults">
+      <str name="suggest">true</str>
+      <str name="suggest.count">10</str>
+      <str name="suggest.dictionary">suggestAuthor</str>
+    </lst>
+    <arr name="components">
+      <str>suggest-author</str>
+    </arr>
+  </requestHandler>
+
+  <searchComponent name="suggest-author" class="solr.SuggestComponent">
+    <lst name="suggester">
+      <str name="name">suggestAuthor</str>
+      <str name="lookupImpl">AnalyzingInfixLookupFactory</str>
+      <str name="dictionaryImpl">DocumentDictionaryFactory</str>
+      <!-- str name="indexPath">/your/path</str -->
+      <str name="field">author</str>
+      <!-- str name="weightField">price</str-->
+      <str name="suggestAnalyzerFieldType">text_untreated</str>
+      <str name="buildOnStartup">false</str>
+    </lst>
+  </searchComponent>
+
+
+
+  <requestHandler name="/suggest-topic" class="solr.SearchHandler"
+                  startup="lazy" >
+    <lst name="defaults">
+      <str name="suggest">true</str>
+      <str name="suggest.count">10</str>
+      <str name="suggest.dictionary">suggestTopic</str>
+    </lst>
+    <arr name="components">
+      <str>suggest-topic</str>
+    </arr>
+  </requestHandler>
+
+  <searchComponent name="suggest-topic" class="solr.SuggestComponent">
+    <lst name="suggester">
+      <str name="name">suggestTopic</str>
+      <str name="lookupImpl">AnalyzingInfixLookupFactory</str>
+      <str name="dictionaryImpl">DocumentDictionaryFactory</str>
+      <!-- str name="indexPath">/your/path</str -->
+      <str name="field">topic</str>
+      <!-- str name="weightField">price</str-->
+      <str name="suggestAnalyzerFieldType">text_untreated</str>
+      <str name="buildOnStartup">false</str>
+    </lst>
+  </searchComponent>
+
+
+  <!-- MULTIPLE dictionaries -->
+
+  <searchComponent name="suggest-title-author" class="solr.SuggestComponent">
+    <lst name="suggester">
+      <str name="name">suggestTitle</str>
+      <str name="lookupImpl">AnalyzingInfixLookupFactory</str>
+      <str name="dictionaryImpl">DocumentDictionaryFactory</str>
+      <!-- str name="indexPath">/your/path</str -->
+      <str name="field">title</str>
+      <!-- str name="weightField">price</str-->
+      <str name="suggestAnalyzerFieldType">text_untreated</str>
+      <str name="buildOnStartup">false</str>
+    </lst>
+    <lst name="suggester">
+      <str name="name">suggestAuthor</str>
+      <str name="lookupImpl">AnalyzingInfixLookupFactory</str>
+      <str name="dictionaryImpl">DocumentDictionaryFactory</str>
+      <!-- str name="indexPath">/your/path</str -->
+      <str name="field">author</str>
+      <!-- str name="weightField">price</str-->
+      <str name="suggestAnalyzerFieldType">text_untreated</str>
+      <str name="buildOnStartup">false</str>
+    </lst>
+  </searchComponent>
+
+  <requestHandler name="/suggest-title-author" class="solr.SearchHandler"
                   startup="lazy" >
     <lst name="defaults">
       <str name="suggest">true</str>
       <str name="suggest.count">10</str>
     </lst>
     <arr name="components">
-      <str>suggest</str>
+      <str>suggest-title-author</str>
     </arr>
   </requestHandler>
+
 
 
   <searchComponent name="tvComponent" class="solr.TermVectorComponent"/>
