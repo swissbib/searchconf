@@ -227,6 +227,8 @@
                     replace="all"
             />
             <!-- remove _  (underscore) -->
+            <!-- in aleph _ are part of callnumbers and have a special-->
+            <!--            meaning for numerus currens -->
             <filter class="solr.PatternReplaceFilterFactory"
                     pattern="\u005f"
                     replacement=""
