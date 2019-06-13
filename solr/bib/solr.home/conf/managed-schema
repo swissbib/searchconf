@@ -138,9 +138,6 @@
     <field name="time_indexed" type="pdate" default="NOW/MINUTE" stored="true" indexed="true"/>
     <!-- mandatory field for schema version 1.5-->
     <field name="_version_" type="plong" indexed="false" stored="false"/>
-    <!-- Fallback-Feld zur Fehlervermeidung beim Indexierung, nicht vorhergesehenes wird nicht
-         indexiert, darf aber sein -->
-    <dynamicField name="*" type="text_untreated" indexed="false" stored="false" multiValued="true"/>
 
     <!-- =================
          COPY INSTRUCTIONS
