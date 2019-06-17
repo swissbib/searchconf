@@ -186,6 +186,9 @@
     <!-- UBH KT 235, will store UBH, KT and 235 separately -->
     <copyField source="callnumber" dest="callnumber_txt_mv"/>
 
+    <!-- localcode field splitted at spaces for the simple search -->
+    <copyField source="localcode" dest="localcode_txt_mv"/>
+
     <!-- id with the same analysis as title, author, ... for a coherent simple search -->
     <copyField source="id" dest="id_txt"/>
 
