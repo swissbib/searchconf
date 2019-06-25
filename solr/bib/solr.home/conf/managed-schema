@@ -76,6 +76,7 @@
     <field name="title_old" type="text_untreated" indexed="true" stored="true" multiValued="true"/>
     <field name="title_new" type="text_untreated" indexed="true" stored="true" multiValued="true"/>
     <field name="topic" type="text_untreated" indexed="true" stored="true" multiValued="true" termVectors="true"/>
+    <field name="container_id" type="text_untreated" indexed="false" stored="false" multiValued="true"/>
 
 
     <!-- Generice Dynamic Fields
