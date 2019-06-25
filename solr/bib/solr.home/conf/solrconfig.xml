@@ -364,6 +364,7 @@
 
   <searchComponent name="spellcheck" class="solr.SpellCheckComponent">
     <lst name="spellchecker">
+      <!-- two words (shingle) spell suggestions -->
       <str name="name">default</str>
       <str name="field">spellingShingle</str>
       <str name="classname">solr.DirectSolrSpellChecker</str>
@@ -371,6 +372,7 @@
       <str name="queryAnalyzerFieldType">textSpellShingle</str>
     </lst>
     <lst name="spellchecker">
+      <!-- one word spell suggestion -->
       <str name="name">basicSpell</str>
       <str name="field">spelling</str>
       <str name="classname">solr.DirectSolrSpellChecker</str>
