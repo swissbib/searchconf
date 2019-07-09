@@ -59,12 +59,16 @@
 
     <!-- I guess it's not necessary to store FRBR-id.  todo: Clarify ramifications for grouping -->
     <field name="groupid_isn_mv" type="isn" indexed="true" stored="true"/>
+    <!-- needed for simple search : an id analyzed the same way as author and title -->
+    <field name="groupid_txt" type="string" indexed="true" stored="true" multiValued="false"/>
+
     <field name="isbn" type="isn" indexed="true" stored="true" multiValued="true"/>
     <field name="issn" type="isn" indexed="true" stored="true" multiValued="true"/>
     <field name="journals" type="text_untreated" indexed="true" stored="false" multiValued="true"/>
     <field name="language" type="stringlike" indexed="true" stored="true" multiValued="true"/>
     <field name="localcode" type="stringlike" indexed="true" stored="false" multiValued="true"/>
     <field name="publishDate" type="pints" indexed="true" stored="false" termVectors="true"/>
+    <field name="publishDateInt" type="pint" indexed="true" stored="true"/>
     <field name="series" type="text_untreated" indexed="true" stored="false" multiValued="true"/>
     <field name="subundef" type="text_untreated" indexed="true" stored="false" multiValued="true"/>
     <field name="subgnd_enriched" type="text_untreated" indexed="true" stored="false" multiValued="true"/>
@@ -192,6 +196,10 @@
 
     <!-- id with the same analysis as title, author, ... for a coherent simple search -->
     <copyField source="id" dest="id_txt"/>
+
+    <!-- to collapse on frbr-clusters -->
+    <copyField source="groupid_isn_mv" dest="groupid_txt"/>
+    <copyField source="publishDateSort" dest="publishDateInt"/>
 
 
     <!-- Field to use to determine and enforce document uniqueness.
