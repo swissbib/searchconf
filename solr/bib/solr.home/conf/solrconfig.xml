@@ -370,6 +370,13 @@
       <str name="classname">solr.DirectSolrSpellChecker</str>
       <float name="accuracy">0.75</float>
       <str name="queryAnalyzerFieldType">textSpellShingle</str>
+      <!-- str name="spellcheck.maxResultsForSuggest">5000</str -->
+      <!-- a word which is in less than XX documents will yield suggestions -->
+      <!-- float name="maxQueryFrequency">1</float-->
+
+      <!-- suggestions should be present in at least XX documents -->
+      <float name="thresholdTokenFrequency">10</float>
+
     </lst>
     <lst name="spellchecker">
       <!-- one word spell suggestion -->
@@ -377,6 +384,12 @@
       <str name="field">spelling</str>
       <str name="classname">solr.DirectSolrSpellChecker</str>
       <float name="accuracy">0.75</float>
+      <!-- a word which is in less than XX documents will yield suggestions -->
+      <!--float name="maxQueryFrequency">1</float-->
+      <!-- str name="spellcheck.maxResultsForSuggest">5000</str-->
+      
+      <!-- suggestions should be present in at least XX documents -->
+      <float name="thresholdTokenFrequency">10</float>
       <str name="queryAnalyzerFieldType">textSpell</str>
     </lst>
   </searchComponent>
